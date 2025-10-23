@@ -1,5 +1,8 @@
 import { RgbColor, HslColor } from './types';
 
+const pInt16 = (hex: string) => parseInt(hex, 16);
+const pFloat = (val: string) => parseFloat(val);
+
 export const stringToColor = (color: string): RgbColor | HslColor => {
   const p = color.split(/[\s,\(\)%#]+/);
 

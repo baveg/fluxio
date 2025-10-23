@@ -1,4 +1,5 @@
 import { toColor } from './toColor';
+
 /**
  * Generates a random color with optional constraints
  * @param h - Maximum hue (0-360), defaults to 360

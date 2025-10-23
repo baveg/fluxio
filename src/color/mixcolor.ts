@@ -1,5 +1,6 @@
 import { toRgb } from './toRgb';
 import { toColor } from './toColor';
+
 /**
  * mixes two colors with a specified ratio
  * @param color1 - first color in any supported format

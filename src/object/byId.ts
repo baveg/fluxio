@@ -1,5 +1,6 @@
 import { Dictionary } from '../check/isDictionary';
-import { ArRecVal, by, RecVal } from './by';
+import { ArRecVal, RecVal } from './_groupBy';
+import { by } from './by';
 
 interface ById {
   <T extends { id?: string }>(items: T[]): Dictionary<T>;

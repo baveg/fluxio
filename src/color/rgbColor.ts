@@ -1,6 +1,7 @@
 import { round } from '../number/round';
 import { clamp } from '../number/clamp';
-import { RgbColor } from './RgbColor';
+import { RgbColor } from './types';
+
 /**
  * Creates a new RGB color array with properly rounded values
  * @param r - Red component (0-255)

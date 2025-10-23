@@ -1,4 +1,5 @@
 import { toHsl } from './toHsl';
+
 /**
  * Determines if a color is light (lightness > 50%)
  * @param color - Color in any supported format

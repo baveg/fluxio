@@ -1,4 +1,4 @@
-import { jsonParse } from '../json';
+import { jsonParse } from '../string/json';
 import { ReqContext } from './reqTypes';
 
 export const reqFetch = async <T = any>(ctx: ReqContext<T>): Promise<void> => {

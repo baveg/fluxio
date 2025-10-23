@@ -1,7 +1,9 @@
 import { isArrayOfNumber } from '../check/isArrayOfNumber';
+import { hslToRgb } from './hslToRgb';
 import { rgbColor } from './rgbColor';
 import { stringToColor } from './stringToColor';
-import { RgbColor } from './RgbColor';
+import { RgbColor } from './types';
+
 /**
  * Converts any color format to RGB
  * @param color - Color in any supported format

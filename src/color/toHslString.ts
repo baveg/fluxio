@@ -1,4 +1,5 @@
 import { toHsl } from './toHsl';
+
 /**
  * Converts any color to CSS HSL/HSLA string format
  * @param color - Color in any supported format

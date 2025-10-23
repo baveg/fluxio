@@ -1,5 +1,6 @@
 import { toRgb } from './toRgb';
 import { toColor } from './toColor';
+
 /**
  * Inverts a color
  * @param color - Color in any supported format

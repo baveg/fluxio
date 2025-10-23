@@ -1,4 +1,5 @@
 import { addHsl } from './addHsl';
+
 /**
  * increases the saturation of a color
  * @param color - color in any supported format

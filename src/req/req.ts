@@ -1,4 +1,4 @@
-import { jsonStringify } from '../json';
+import { jsonStringify } from '../string/json';
 import { logger } from '../logger';
 import { ReqContext, ReqHeaders, ReqOptions, ReqResponseType } from './reqTypes';
 import { reqError } from './ReqError';

@@ -1,4 +1,5 @@
 import { addHsl } from './addHsl';
+
 /**
  * lightens a color by a specified amount
  * @param color - color in any supported format

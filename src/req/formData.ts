@@ -1,7 +1,7 @@
 import { isArray } from '../check/isArray';
 import { isDefined } from '../check/isDefined';
 import { isObject } from '../check/isObject';
-import { jsonStringify } from '../json';
+import { jsonStringify } from '../string/json';
 import { FormDataObject } from './reqTypes';
 
 export const formData = (form: FormDataObject | FormData | null | undefined, base?: FormData) => {

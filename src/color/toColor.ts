@@ -1,4 +1,5 @@
 import { toRgb } from './toRgb';
+
 /**
  * Converts any color format to hexadecimal string
  * @param color - Color in any supported format

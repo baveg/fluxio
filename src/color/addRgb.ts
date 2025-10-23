@@ -1,7 +1,7 @@
 import { isNumber } from '../check/isNumber';
 import { toRgb } from './toRgb';
 import { toColor } from './toColor';
-import { RgbColor } from './RgbColor';
+import { RgbColor } from './types';
 
 export const addRgb = (color: any, values: Partial<RgbColor>) => {
   color = toRgb(color);

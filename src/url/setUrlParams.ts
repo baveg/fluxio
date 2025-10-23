@@ -1,7 +1,7 @@
 import { isBoolean } from '../check/isBoolean';
 import { isString } from '../check/isString';
 import { count } from '../object/count';
-import { jsonStringify } from '../json';
+import { jsonStringify } from '../string/json';
 import { getUrlParams } from './getUrlParams';
 
 export const setUrlParams = (url: string, changes?: Record<string, any> | null): string => {

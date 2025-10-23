@@ -1,4 +1,5 @@
 import { lighten } from './lighten';
+
 /**
  * darkens a color by a specified amount
  * @param color - color in any supported format

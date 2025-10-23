@@ -1,0 +1,41 @@
+{
+  "name": "fluxio",
+  "version": "0.1.0",
+  "description": "Functional utility library for TypeScript",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "functional",
+    "utility",
+    "typescript",
+    "color",
+    "number"
+  ],
+  "author": "baveg",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baveg/fluxio.git"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,4 +1,5 @@
 import { toRgb } from './toRgb';
+
 /**
  * Converts any color to CSS RGB/RGBA string format
  * @param color - Color in any supported format

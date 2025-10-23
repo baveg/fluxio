@@ -1,18 +1,22 @@
 import { Pipe } from "./Flux";
-import { flux } from "./getOrCreateFlux";
 
-type AddListener<K, E> = (type: K, listener: (event: E) => void, ...args: any[]) => void;
-type RemoveListener<K, E> = (type: K, listener: (event: E) => void, ...args: any[]) => void;
-type ExtractType<F> = F extends AddListener<infer K, any> ? K : never;
-type ExtractEvent<F> = F extends AddListener<any, infer E> ? E : never;
-type ObjectListener<K extends string, E> = {
-    addEventListener: AddListener<K, E>;
-    removeEventListener: RemoveListener<K, E>;
+type ObjectListener<K, E> = {
+    addEventListener: (type: K, listener: (event: E) => void, ...args: any[]) => void;
+    removeEventListener: (type: K, listener: (event: E) => void, ...args: any[]) => void;
 }
+type ExtractType<T> = T extends ObjectListener<infer K, any> ? K : never;
+type ExtractEvent<T, K extends ExtractType<T>> = T extends ObjectListener<K, infer E> ? E : never;
 
 interface EventFlux {
-    <T extends ObjectListener<K, E>, K extends string, E extends Event>(
-        element: T, type: K, options?: any, key?: string
+    <
+        T extends ObjectListener<K, E>,
+        K = ExtractType<T>,
+        E = ExtractEvent<T, K>
+    >(
+        element: T,
+        type: K,
+        options?: any,
+        key?: string
     ): Pipe<E>;
 }
 
@@ -35,4 +39,6 @@ export const eventFlux = ((element: any, type: string, options?: any, key?: stri
     );
 }) as EventFlux;
 
-eventFlux(document.body, 'click').on(event => event)
+const div = document.createElement('div');
+
+eventFlux(div, 'click').on(event => event)

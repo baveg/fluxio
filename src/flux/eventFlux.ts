@@ -3,40 +3,36 @@ import { flux } from "./getOrCreateFlux";
 
 type AddListener<K, E> = (type: K, listener: (event: E) => void, ...args: any[]) => void;
 type RemoveListener<K, E> = (type: K, listener: (event: E) => void, ...args: any[]) => void;
-type ExtractType<F> = F extends AddListener<infer K, infer E> ? K : never;
-type ExtractEvent<F> = F extends AddListener<infer K, infer E> ? E : never;
-type Element<K, E> = {
+type ExtractType<F> = F extends AddListener<infer K, any> ? K : never;
+type ExtractEvent<F> = F extends AddListener<any, infer E> ? E : never;
+type ObjectListener<K extends string, E> = {
     addEventListener: AddListener<K, E>;
     removeEventListener: RemoveListener<K, E>;
 }
 
-export const eventFlux = <
-    T extends Element<K, E>,
-    K extends ExtractType<T> = ExtractType<T>,
-    E extends ExtractEvent<T> = ExtractEvent<T>,
->(
-    element: T,
-    type: K,
-    options?: any,
-    key?: string
-) => flux(
-    () => {
-        let event: E;
-        return new Pipe<E>(
-            (listener) => {
-                const onEvent = (e: E) => {
-                    event = e;
-                    listener();
-                }
-                element.addEventListener(type as any, onEvent as any, options);
-                return () => element.removeEventListener(type as any, onEvent as any, options);
-            },
-            (pipe) => {
-                pipe.set(event)
-            }
-        )
-    },
-    key
-);
+interface EventFlux {
+    <T extends ObjectListener<K, E>, K extends string, E extends Event>(
+        element: T, type: K, options?: any, key?: string
+    ): Pipe<E>;
+}
 
-eventFlux(document.body, 'click', {}, 'bodyClick')
+export const eventFlux = ((element: any, type: string, options?: any, key?: string) => {
+    let lastEvent: Event;
+    return new Pipe<Event>(
+        (listener) => {
+            const onEvent = (event: Event) => {
+                lastEvent = event;
+                listener();
+            }
+            element.addEventListener(type, onEvent, options);
+            return () => element.removeEventListener(type, onEvent, options);
+        },
+        (pipe) => {
+            pipe.set(lastEvent)
+        },
+        undefined,
+        key
+    );
+}) as EventFlux;
+
+eventFlux(document.body, 'click').on(event => event)

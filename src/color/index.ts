@@ -1,3 +1,5 @@
+export * from './HslColor';
+export * from './RgbColor';
 export * from './addHsl';
 export * from './addRgb';
 export * from './darken';

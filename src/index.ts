@@ -9,7 +9,7 @@ export * from './object';
 export * from './req';
 export * from './string';
 export * from './url';
-export * from './Flux';
+export * from './flux';
 export * from './Store';
 export * from './glb';
 export * from './logger';

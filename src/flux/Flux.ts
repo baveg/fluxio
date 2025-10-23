@@ -1,96 +1,28 @@
-import { throttle } from './async/throttle';
-import { debounce } from './async/debounce';
-import { isDefined } from './check/isDefined';
-import { isFun } from './check/isFun';
-import { toVoid } from './cast/toVoid';
-import { toError } from './cast/toError';
-import { logger } from './logger';
-import { Store } from './Store';
-import { removeItem } from './array/removeItem';
+import { throttle } from '../async/throttle';
+import { debounce } from '../async/debounce';
+import { isDefined } from '../check/isDefined';
+import { isFunction } from '../check/isFunction';
+import { toVoid } from '../cast/toVoid';
+import { toError } from '../cast/toError';
+import { logger } from '../logger';
+import { Store } from '../Store';
+import { removeItem } from '../array/removeItem';
 
 export type Listener<T> = (next: T) => void;
 export type Unsubscribe = () => void;
 export type Next<T> = T | ((prev: T) => T);
-
-// Type utilities for Flux tuples
-type UnwrapFlux<T extends readonly Flux<any>[]> = {
-  [K in keyof T]: T[K] extends Flux<infer U> ? U : never;
-};
-
-interface NewFlux {
-  <T>(init?: undefined, key?: string): Flux<T | undefined>;
-  <T>(init: T, key?: string): Flux<T>;
-}
-export const flux = (<T>(init: T, key: string): Flux<T> => new Flux(init, key)) as NewFlux;
 
 /**
  * Reactive state container with observable pattern.
  * Supports subscriptions, transformations, and persistence.
  */
 export class Flux<T = any> {
-  private static map: Record<string, Flux<any>> = {};
-
-  /**
-   * Get or create a singleton Flux instance by key.
-   * @param factory Value, factory function, or Flux factory
-   * @param key Optional unique key for singleton lookup
-   * @returns Existing or new Flux instance
-   */
-  static get<T>(factory: T | (() => T) | (() => Flux<T>), key?: string) {
-    if (key) {
-      const last = this.map[key];
-      if (last) return last;
-    }
-    const value = isFun(factory) ? factory() : factory;
-    const flux = value instanceof Flux ? value : new Flux<T>(value, key);
-    if (key) {
-      this.map[key] = flux;
-    }
-    return flux;
-  }
-
-  /**
-   * Combine multiple Flux instances into a single Pipe that emits tuples.
-   * Updates whenever any source Flux changes.
-   * @param sources Array of Flux instances to combine
-   * @param key Optional key for the combined Pipe
-   * @returns Pipe emitting tuple of all source values
-   * @example
-   * const name$ = flux('John');
-   * const age$ = flux(30);
-   * const combined$ = Flux.combine([name$, age$]);
-   * combined$.on(([name, age]) => console.log(name, age));
-   */
-  static combine<const Sources extends readonly Flux<any>[]>(
-    sources: Sources,
-    key?: string
-  ): Pipe<UnwrapFlux<Sources>> {
-    if (!key) key = sources.map((f) => f.key).join('+');
-    return new Pipe(
-      (listener) => {
-        const offs: Unsubscribe[] = [];
-        for (const source of sources) offs.push(source.on(listener));
-        return () => {
-          for (const off of offs) off();
-          offs.length = 0;
-        };
-      },
-      (pipe) => {
-        pipe.set(sources.map((s) => s.get()) as UnwrapFlux<Sources>);
-      },
-      (pipe) => {
-        const values = pipe.get();
-        if (Array.isArray(values)) values.forEach((v: any, i) => sources[i]!.set(v));
-      },
-      key
-    );
-  }
-
   public readonly key?: string;
   public readonly log = logger(this.key || 'Flux');
   public readonly listeners: Listener<T>[] = [];
   private v: T;
-  private isBinded?: boolean;
+  private _get?: typeof this.get;
+  private _set?: typeof this.set;
 
   constructor(init: T, key?: string) {
     this.v = init;
@@ -142,28 +74,12 @@ export class Flux<T = any> {
   }
 
   /**
-   * Getter property for current value.
-   * @returns Current value
-   */
-  public get val() {
-    return this.get();
-  }
-
-  /**
-   * Setter property that forces notification.
-   * @param next New value
-   */
-  public set val(next: T) {
-    this.set(next, true);
-  }
-
-  /**
    * Set a new value and notify listeners if changed.
    * @param next New value or updater function
    * @param force Force notification even if value hasn't changed
    */
   set(next: Next<T>, force?: boolean) {
-    if (isFun(next)) next = next(this.get());
+    if (isFunction(next)) next = next(this.get());
     if (!force && this.isEqual(this.v, next)) return;
     this.v = next;
     this.log.d('set', next);
@@ -179,33 +95,19 @@ export class Flux<T = any> {
   }
 
   /**
-   * Bind get and set methods to this instance.
-   * Useful for passing methods as callbacks.
-   * @returns This instance for chaining
-   */
-  bind() {
-    if (!this.isBinded) {
-      this.isBinded = true;
-      this.get = this.get.bind(this);
-      this.set = this.set.bind(this);
-    }
-    return this;
-  }
-
-  /**
    * Get bound getter function.
    * @returns Bound get method
    */
-  public get getter() {
-    return this.bind().get;
+  public getter() {
+    return this._get || (this._get = this.get.bind(this));
   }
 
   /**
    * Get bound setter function.
    * @returns Bound set method
    */
-  public get setter() {
-    return this.bind().set;
+  public setter() {
+    return this._set || (this._set = this.get.bind(this));
   }
 
   /**
@@ -227,9 +129,9 @@ export class Flux<T = any> {
    * @returns This instance for chaining
    */
   off(listener: Listener<T>) {
-    const listeners = this.listeners;
-    removeItem(listeners, listener);
-    if (listeners.length === 0) this.clear();
+    if (removeItem(this.listeners, listener).length === 0) {
+      this.clear();
+    }
     return this;
   }
 
@@ -330,7 +232,7 @@ export class Flux<T = any> {
     return this.pipe<U>(
       (pipe) => {
         convert(this.get())
-          .then(pipe.setter)
+          .then(pipe.setter())
           .catch((error) => {
             pipe.log.e('convert', convert, error);
           });
@@ -338,7 +240,7 @@ export class Flux<T = any> {
       reverse ?
         (pipe, value) => {
           reverse(value)
-            .then(this.setter)
+            .then(this.setter())
             .catch((error) => {
               pipe.log.e('reverse', reverse, error);
             });
@@ -394,7 +296,8 @@ export class Flux<T = any> {
   delay(ms: number): Pipe<T, T> {
     return this.pipe(
       (pipe) => {
-        setTimeout(() => pipe.set(this.get()), ms);
+        const val = this.get();
+        setTimeout(() => pipe.set(val), ms);
       },
       undefined,
       this.key + 'Delay'
@@ -418,18 +321,7 @@ export class Flux<T = any> {
       this.key + 'Filter'
     );
   }
-
-  /**
-   * React-style hook return: [value, setter].
-   * Useful for destructuring in components.
-   * @returns Tuple of current value and setter function
-   * @example
-   * const [count, setCount] = count$.use();
-   */
-  use(): [T, typeof this.set] {
-    return [this.val, this.setter];
-  }
-
+  
   /**
    * Apply an accumulator function, emitting each intermediate result.
    * Similar to Array.reduce but emits all intermediate values.
@@ -475,7 +367,7 @@ export class Pipe<T = any, U = T> extends Flux<T> {
   }
 
   set(next: Next<T>, force?: boolean) {
-    if (isFun(next)) next = next(this.get());
+    if (isFunction(next)) next = next(this.get());
     super.set(next, force);
     this.onSet(this, next);
   }
@@ -489,7 +381,7 @@ export class Pipe<T = any, U = T> extends Flux<T> {
         this.isInit = true;
         this.sync(this);
       };
-      this.sourceOff = isFun(this.source) ? this.source(listener) : this.source.on(listener);
+      this.sourceOff = isFunction(this.source) ? this.source(listener) : this.source.on(listener);
     }
 
     return off;

@@ -1,6 +1,6 @@
 import { isDictionary } from '../check/isDictionary';
 import { isNil } from '../check/isNil';
-import { isFun } from '../check/isFun';
+import { isFun } from '../check/isFunction';
 import { isArray } from '../check/isArray';
 
 export type ArRecKey<T> = undefined | null | keyof T | ((item: T, index: number) => any);

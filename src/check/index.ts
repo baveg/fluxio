@@ -8,7 +8,7 @@ export * from './isBoolean';
 export * from './isDefined';
 export * from './isDictionary';
 export * from './isError';
-export * from './isFun';
+export * from './isFunction';
 export * from './isNil';
 export * from './isNumber';
 export * from './isObject';

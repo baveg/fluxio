@@ -4,10 +4,7 @@ import { isObject } from '../check/isObject';
 import { jsonStringify } from '../json';
 import { FormDataObject } from './reqTypes';
 
-export const formData = (
-  form: FormDataObject | FormData | null | undefined,
-  base?: FormData
-) => {
+export const formData = (form: FormDataObject | FormData | null | undefined, base?: FormData) => {
   if (!form) return;
   if (form instanceof FormData) return form;
   const r = base || new FormData();

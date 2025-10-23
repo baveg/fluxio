@@ -14,7 +14,7 @@ export type Next<T> = T | ((prev: T) => T);
 
 // Type utilities for Flux tuples
 type UnwrapFlux<T extends readonly Flux<any>[]> = {
-  [K in keyof T]: T[K] extends Flux<infer U> ? U : never
+  [K in keyof T]: T[K] extends Flux<infer U> ? U : never;
 };
 
 interface NewFlux {
@@ -27,7 +27,7 @@ export const flux = (<T>(init: T, key: string): Flux<T> => new Flux(init, key)) 
  * Reactive state container with observable pattern.
  * Supports subscriptions, transformations, and persistence.
  */
-export class Flux<T=any> {
+export class Flux<T = any> {
   private static map: Record<string, Flux<any>> = {};
 
   /**
@@ -65,7 +65,7 @@ export class Flux<T=any> {
     sources: Sources,
     key?: string
   ): Pipe<UnwrapFlux<Sources>> {
-    if (!key) key = sources.map(f => f.key).join('+');
+    if (!key) key = sources.map((f) => f.key).join('+');
     return new Pipe(
       (listener) => {
         const offs: Unsubscribe[] = [];
@@ -73,10 +73,12 @@ export class Flux<T=any> {
         return () => {
           for (const off of offs) off();
           offs.length = 0;
-        }
-      }, (pipe) => {
-        pipe.set(sources.map(s => s.get()) as UnwrapFlux<Sources>);
-      }, (pipe) => {
+        };
+      },
+      (pipe) => {
+        pipe.set(sources.map((s) => s.get()) as UnwrapFlux<Sources>);
+      },
+      (pipe) => {
         const values = pipe.get();
         if (Array.isArray(values)) values.forEach((v: any, i) => sources[i]!.set(v));
       },
@@ -90,10 +92,7 @@ export class Flux<T=any> {
   private v: T;
   private isBinded?: boolean;
 
-  constructor(
-    init: T,
-    key?: string
-  ) {
+  constructor(init: T, key?: string) {
     this.v = init;
     this.key = key;
     this.log.d('new', init);
@@ -260,7 +259,7 @@ export class Flux<T=any> {
       });
     });
   }
-  
+
   /**
    * Persist Flux value to localStorage and sync changes.
    * Requires a key to be set on the Flux instance.
@@ -286,7 +285,11 @@ export class Flux<T=any> {
    * @param key Optional key for the pipe
    * @returns A new Pipe instance
    */
-  pipe<U=T>(sync: (pipe: Pipe<U, T>) => void, onSet?: (pipe: Pipe<U, T>, value: U) => void, key?: string) {
+  pipe<U = T>(
+    sync: (pipe: Pipe<U, T>) => void,
+    onSet?: (pipe: Pipe<U, T>, value: U) => void,
+    key?: string
+  ) {
     return new Pipe<U, T>(this, sync, onSet, key);
   }
 
@@ -301,11 +304,17 @@ export class Flux<T=any> {
    * doubled$.get() // 10
    */
   map<U>(convert: (value: T) => U, reverse?: (value: U) => T) {
-    return this.pipe<U>(pipe => {
-      pipe.set(convert(this.get()));
-    }, reverse ? (pipe, value) => {
-      this.set(reverse(value))
-    } : undefined, this.key + 'Map');
+    return this.pipe<U>(
+      (pipe) => {
+        pipe.set(convert(this.get()));
+      },
+      reverse ?
+        (pipe, value) => {
+          this.set(reverse(value));
+        }
+      : undefined,
+      this.key + 'Map'
+    );
   }
 
   /**
@@ -318,15 +327,25 @@ export class Flux<T=any> {
    * const user$ = userId$.mapAsync(id => fetchUser(id));
    */
   mapAsync<U>(convert: (value: T) => Promise<U>, reverse?: (value: U) => Promise<T>) {
-    return this.pipe<U>(pipe => {
-      convert(this.get()).then(pipe.setter).catch((error) => {
-        pipe.log.e('convert', convert, error);
-      });
-    }, reverse ? (pipe, value) => {
-      reverse(value).then(this.setter).catch((error) => {
-        pipe.log.e('reverse', reverse, error);
-      });
-    } : undefined, this.key + 'MapAsync');
+    return this.pipe<U>(
+      (pipe) => {
+        convert(this.get())
+          .then(pipe.setter)
+          .catch((error) => {
+            pipe.log.e('convert', convert, error);
+          });
+      },
+      reverse ?
+        (pipe, value) => {
+          reverse(value)
+            .then(this.setter)
+            .catch((error) => {
+              pipe.log.e('reverse', reverse, error);
+            });
+        }
+      : undefined,
+      this.key + 'MapAsync'
+    );
   }
 
   /**
@@ -339,9 +358,13 @@ export class Flux<T=any> {
    * // Only emits 300ms after user stops typing
    */
   debounce(ms: number) {
-    return this.pipe(debounce((pipe: Pipe<T, T>) => {
-      pipe.set(this.get())
-    }, ms), undefined, this.key + 'Debounce');
+    return this.pipe(
+      debounce((pipe: Pipe<T, T>) => {
+        pipe.set(this.get());
+      }, ms),
+      undefined,
+      this.key + 'Debounce'
+    );
   }
 
   /**
@@ -354,9 +377,13 @@ export class Flux<T=any> {
    * // Emits at most once every 100ms
    */
   throttle(ms: number) {
-    return this.pipe(throttle((pipe: Pipe<T, T>) => {
-      pipe.set(this.get());
-    }, ms), undefined, this.key + 'Throttle');
+    return this.pipe(
+      throttle((pipe: Pipe<T, T>) => {
+        pipe.set(this.get());
+      }, ms),
+      undefined,
+      this.key + 'Throttle'
+    );
   }
 
   /**
@@ -365,9 +392,13 @@ export class Flux<T=any> {
    * @returns Delayed Pipe
    */
   delay(ms: number): Pipe<T, T> {
-    return this.pipe((pipe) => {
-      setTimeout(() => pipe.set(this.get()), ms);
-    }, undefined, this.key + 'Delay');
+    return this.pipe(
+      (pipe) => {
+        setTimeout(() => pipe.set(this.get()), ms);
+      },
+      undefined,
+      this.key + 'Delay'
+    );
   }
 
   /**
@@ -376,12 +407,16 @@ export class Flux<T=any> {
    * @returns A new Pipe that only emits filtered values
    */
   filter(predicate: (value: T) => boolean) {
-    return this.pipe((pipe) => {
-      const value = this.get();
-      if (predicate(value)) {
-        pipe.set(value);
-      }
-    }, undefined, this.key + 'Filter');
+    return this.pipe(
+      (pipe) => {
+        const value = this.get();
+        if (predicate(value)) {
+          pipe.set(value);
+        }
+      },
+      undefined,
+      this.key + 'Filter'
+    );
   }
 
   /**
@@ -398,7 +433,7 @@ export class Flux<T=any> {
   /**
    * Apply an accumulator function, emitting each intermediate result.
    * Similar to Array.reduce but emits all intermediate values.
-   * 
+   *
    * @example
    * const count$ = flux(1);
    * const sum$ = count$.scan((acc, n) => acc + n, 0);
@@ -407,22 +442,26 @@ export class Flux<T=any> {
    */
   scan<U>(accumulator: (acc: U, value: T) => U, seed: U) {
     let acc = seed;
-    return this.pipe<U>((pipe) => {
-      acc = accumulator(acc, this.get());
-      pipe.set(acc);
-    }, undefined, this.key + 'Scan');
+    return this.pipe<U>(
+      (pipe) => {
+        acc = accumulator(acc, this.get());
+        pipe.set(acc);
+      },
+      undefined,
+      this.key + 'Scan'
+    );
   }
 }
 
-export class Pipe<T=any, U=T> extends Flux<T> {
+export class Pipe<T = any, U = T> extends Flux<T> {
   private sourceOff?: () => void;
   public isInit?: boolean;
 
   constructor(
-    public readonly source: Flux<U>|((listener: () => void) => Unsubscribe),
+    public readonly source: Flux<U> | ((listener: () => void) => Unsubscribe),
     public readonly sync: (pipe: Pipe<T, U>) => void,
     public readonly onSet: (pipe: Pipe<T, U>, value: T) => void = toVoid,
-    key?: string,
+    key?: string
   ) {
     super(undefined as T, key || 'Pipe');
   }
@@ -448,7 +487,7 @@ export class Pipe<T=any, U=T> extends Flux<T> {
       this.log.d('connect');
       const listener = () => {
         this.isInit = true;
-        this.sync(this)
+        this.sync(this);
       };
       this.sourceOff = isFun(this.source) ? this.source(listener) : this.source.on(listener);
     }

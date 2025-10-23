@@ -4,7 +4,7 @@
  *
  * @example Event sequence (ms = 1000):
  * Time:     0  1  2  3  4  5  6  7  8  9
- * Events:   a  b  c     d        e  f   
+ * Events:   a  b  c     d        e  f
  * Executes:          c     d           f
  *
  * Each event cancels the previous timer and starts a new one.
@@ -15,7 +15,7 @@ interface Debounce {
   <A>(fn: (value: A) => unknown, ms: number): (value: A) => void;
 }
 export const debounce = (<A>(fn: (value?: A) => unknown, ms: number) => {
-  let timer: ReturnType<typeof setTimeout>|undefined;
+  let timer: ReturnType<typeof setTimeout> | undefined;
   let lastValue: A | undefined;
   const update = () => {
     timer = undefined;

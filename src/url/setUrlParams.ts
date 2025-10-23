@@ -1,8 +1,8 @@
-import { isBoolean } from "../check/isBoolean";
-import { isString } from "../check/isString";
-import { count } from "../object/count";
-import { jsonStringify } from "../json";
-import { getUrlParams } from "./getUrlParams";
+import { isBoolean } from '../check/isBoolean';
+import { isString } from '../check/isString';
+import { count } from '../object/count';
+import { jsonStringify } from '../json';
+import { getUrlParams } from './getUrlParams';
 
 export const setUrlParams = (url: string, changes?: Record<string, any> | null): string => {
   if (!changes || count(changes) === 0) return url;

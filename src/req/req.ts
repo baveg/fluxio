@@ -54,7 +54,11 @@ export const req = async <T>(options: ReqOptions<T>): Promise<T> => {
   headers.Accept = acceptMap[resType] || acceptJson;
 
   const body =
-    o.body || (json ? (fData ? formData(json, fData) : jsonStringify(json)) : fData);
+    o.body ||
+    (json ?
+      fData ? formData(json, fData)
+      : jsonStringify(json)
+    : fData);
 
   if (json) headers['Content-Type'] = 'application/json';
 
@@ -78,15 +82,11 @@ export const req = async <T>(options: ReqOptions<T>): Promise<T> => {
   } as ReqContext<T>;
 
   const request =
-    o.request || typeof o.fetch === 'function'
-      ? reqFetch
-      : typeof o.xhr === 'function'
-        ? reqXHR
-        : o.xhr && typeof XMLHttpRequest === 'function'
-          ? reqXHR
-          : typeof fetch === 'function'
-            ? reqFetch
-            : null;
+    o.request || typeof o.fetch === 'function' ? reqFetch
+    : typeof o.xhr === 'function' ? reqXHR
+    : o.xhr && typeof XMLHttpRequest === 'function' ? reqXHR
+    : typeof fetch === 'function' ? reqFetch
+    : null;
 
   if (!request) {
     throw toError('no request xhr or fetch');

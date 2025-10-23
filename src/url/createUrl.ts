@@ -1,7 +1,7 @@
-import { isString } from "../check/isString";
-import { glb } from "../glb";
-import { setUrlParams } from "./setUrlParams";
-import { urlJoin } from "./urlJoin";
+import { isString } from '../check/isString';
+import { glb } from '../glb';
+import { setUrlParams } from './setUrlParams';
+import { urlJoin } from './urlJoin';
 
 export const createUrl = (
   baseUrl?: string | null,

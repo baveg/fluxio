@@ -1,4 +1,4 @@
-import { logger } from './logger';
+import { logger } from '../logger';
 
 export const jsonLog = logger('json');
 

@@ -33,7 +33,7 @@ export class Store {
       return init;
     }
   }
-  
+
   set<T = any>(key: string, value?: T): void {
     const { log, storage, prefix, data } = this;
     try {

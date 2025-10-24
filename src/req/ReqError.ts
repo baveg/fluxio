@@ -1,5 +1,5 @@
 import { toError } from '../cast/toError';
-import type { ReqContext } from './reqTypes';
+import type { ReqContext } from './types';
 
 export class ReqError<T = any> extends Error {
   status: number;

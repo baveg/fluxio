@@ -1,6 +1,6 @@
 import { jsonStringify } from '../string/json';
 import { logger } from '../logger/Logger';
-import { ReqContext, ReqHeaders, ReqOptions, ReqResponseType } from './reqTypes';
+import { ReqContext, ReqHeaders, ReqOptions, ReqResponseType } from './types';
 import { reqError } from './ReqError';
 import { formData } from './formData';
 import { reqFetch } from './reqFetch';

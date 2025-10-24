@@ -1,5 +1,5 @@
 import { getStorage } from '../storage';
-import { flux } from './Flux';
+import { Flux, flux } from './Flux';
 import { findFlux } from './findFlux';
 
 /**
@@ -11,12 +11,12 @@ import { findFlux } from './findFlux';
  * const count$ = flux(0, 'counter');
  * count$.store(); // Loads from localStorage and auto-saves changes
  */
-export const fluxStorage = <T>(
+export const fluxStored = <T>(
   key: string,
   init: T,
   check?: (value: T) => boolean,
   storage = getStorage()
-) =>
+): Flux<T> =>
   findFlux(key, () => {
     const value = storage.get(key, init, check);
     const target = flux(value);

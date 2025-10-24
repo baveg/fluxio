@@ -376,4 +376,4 @@ export const pipe = <T = any, U = T>(
   onSet: (pipe: Pipe<T, U>, value: T) => void = toVoid
 ) => new Pipe<T, U>(source, sync, onSet);
 
-export const isFlux = (v: any): v is Flux => v instanceof Flux
+export const isFlux = (v: any): v is Flux => v instanceof Flux;

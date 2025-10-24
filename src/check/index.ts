@@ -1,4 +1,3 @@
-
 export * from './getCheck';
 export * from './isArrayOf';
 export * from './isArray';

@@ -1,6 +1,6 @@
-import { clamp } from "../number/clamp";
-import { rgbColor } from "./rgbColor";
-import { HslColor, RgbColor } from "./types";
+import { clamp } from '../number/clamp';
+import { rgbColor } from './rgbColor';
+import { HslColor, RgbColor } from './types';
 
 export const hslToRgb = (hsl: HslColor): RgbColor => {
   // Handle HSL format

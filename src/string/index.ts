@@ -1,2 +1,15 @@
+
+export * from './base64toBlob';
+export * from './clean';
 export * from './humanize';
+export * from './isSearched';
 export * from './json';
+export * from './lower';
+export * from './pad';
+export * from './pascal';
+export * from './randString';
+export * from './replace';
+export * from './setTemplate';
+export * from './splitWords';
+export * from './truncate';
+export * from './upper';

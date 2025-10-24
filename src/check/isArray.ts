@@ -1,1 +1,1 @@
-export const isArray = <T extends any>(v: any): v is T[] => Array.isArray(v);
+export const isArray = <T = any>(v: any): v is T[] => Array.isArray(v);

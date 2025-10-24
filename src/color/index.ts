@@ -1,3 +1,4 @@
+
 export * from './addHsl';
 export * from './addRgb';
 export * from './darken';
@@ -15,8 +16,8 @@ export * from './setHsl';
 export * from './setRgb';
 export * from './stringToColor';
 export * from './toColor';
-export * from './toHsl';
 export * from './toHslString';
-export * from './toRgb';
+export * from './toHsl';
 export * from './toRgbString';
+export * from './toRgb';
 export * from './types';

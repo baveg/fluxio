@@ -1,4 +1,4 @@
-import type { Logger } from '../logger';
+import type { Logger } from '../logger/Logger';
 import type { ReqError } from './ReqError';
 
 export type FormDataObject = { [prop: string]: any };

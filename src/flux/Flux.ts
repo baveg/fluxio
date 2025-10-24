@@ -3,31 +3,27 @@ import { debounce } from '../async/debounce';
 import { isDefined } from '../check/isDefined';
 import { isFunction } from '../check/isFunction';
 import { toVoid } from '../cast/toVoid';
-import { toError } from '../cast/toError';
-import { logger } from '../logger';
-import { Store } from '../Store';
+import { logger } from '../logger/Logger';
 import { removeItem } from '../array/removeItem';
 
-export type Listener<T> = (next: T) => void;
-export type Unsubscribe = () => void;
-export type Next<T> = T | ((prev: T) => T);
+export const fluxLog = logger('Flux');
+
+export type FListener<T> = (value: T, error?: any) => void;
+export type FUnsubscribe = () => void;
+export type FNext<T> = T | ((prev: T) => T);
 
 /**
  * Reactive state container with observable pattern.
  * Supports subscriptions, transformations, and persistence.
  */
 export class Flux<T = any> {
-  public readonly key?: string;
-  public readonly log = logger(this.key || 'Flux');
-  public readonly listeners: Listener<T>[] = [];
+  public readonly listeners: FListener<T>[] = [];
   private v: T;
   private _get?: typeof this.get;
   private _set?: typeof this.set;
 
-  constructor(init: T, key?: string) {
+  constructor(init: T) {
     this.v = init;
-    this.key = key;
-    this.log.d('new', init);
   }
 
   /**
@@ -78,12 +74,16 @@ export class Flux<T = any> {
    * @param next New value or updater function
    * @param force Force notification even if value hasn't changed
    */
-  set(next: Next<T>, force?: boolean) {
-    if (isFunction(next)) next = next(this.get());
-    if (!force && this.isEqual(this.v, next)) return;
-    this.v = next;
-    this.log.d('set', next);
-    for (const listener of this.listeners) listener(next);
+  set(next: FNext<T>, force?: boolean) {
+    const value = isFunction(next) ? next(this.get()) : next;
+    if (!force && this.isEqual(this.v, value)) return;
+    this.v = value;
+    for (const listener of this.listeners) listener(value);
+  }
+
+  error(error: any) {
+    const value = this.v;
+    for (const listener of this.listeners) listener(value, error);
   }
 
   /**
@@ -116,8 +116,7 @@ export class Flux<T = any> {
    * @param isRepeat If true, immediately call listener with current value
    * @returns Unsubscribe function
    */
-  on(listener: Listener<T>, isRepeat?: boolean): Unsubscribe {
-    this.log.d('on', listener, isRepeat);
+  on(listener: FListener<T>, isRepeat?: boolean): FUnsubscribe {
     if (isRepeat) listener(this.get());
     this.listeners.push(listener);
     return () => this.off(listener);
@@ -128,7 +127,7 @@ export class Flux<T = any> {
    * @param listener Listener function to remove
    * @returns This instance for chaining
    */
-  off(listener: Listener<T>) {
+  off(listener: FListener<T>) {
     if (removeItem(this.listeners, listener).length === 0) {
       this.clear();
     }
@@ -139,7 +138,6 @@ export class Flux<T = any> {
    * Remove all listeners.
    */
   clear() {
-    this.log.d('clear', this.listeners.length);
     this.listeners.length = 0;
   }
 
@@ -151,48 +149,29 @@ export class Flux<T = any> {
    * const user$ = flux(null);
    * const user = await user$.wait(); // Waits for non-null value
    */
-  async wait(filter: (value: T) => boolean = isDefined) {
-    return new Promise<T>((resolve) => {
-      const off = this.on((value) => {
-        if (filter(value)) {
-          off();
-          resolve(value);
+  async wait(filter: (value: T, error: any) => boolean = isDefined) {
+    return new Promise<T>((resolve, reject) => {
+      const off = this.on((value, error) => {
+        try {
+          if (filter(value, error)) {
+            off();
+            resolve(value);
+          }
+        } catch (e) {
+          reject(e);
         }
       });
     });
   }
 
   /**
-   * Persist Flux value to localStorage and sync changes.
-   * Requires a key to be set on the Flux instance.
-   * @param check Optional validation function for stored value
-   * @returns This instance for chaining
-   * @example
-   * const count$ = flux(0, 'counter');
-   * count$.store(); // Loads from localStorage and auto-saves changes
-   */
-  store(check?: (value: T) => boolean) {
-    const { key } = this;
-    if (!key) throw toError('no key');
-    const last = Store.get().get(key, this.get(), check);
-    this.set(last, true);
-    this.on((value) => Store.get().set(key, value));
-    return this;
-  }
-
-  /**
    * Creates a bidirectional pipe with custom sync logic.
    * @param sync Function called to sync source value to pipe
    * @param onSet Function called when pipe value is set (for reverse sync)
-   * @param key Optional key for the pipe
    * @returns A new Pipe instance
    */
-  pipe<U = T>(
-    sync: (pipe: Pipe<U, T>) => void,
-    onSet?: (pipe: Pipe<U, T>, value: U) => void,
-    key?: string
-  ) {
-    return new Pipe<U, T>(this, sync, onSet, key);
+  pipe<U = T>(sync: (pipe: Pipe<U, T>) => void, onSet?: (pipe: Pipe<U, T>, value: U) => void) {
+    return new Pipe<U, T>(this, sync, onSet);
   }
 
   /**
@@ -208,14 +187,17 @@ export class Flux<T = any> {
   map<U>(convert: (value: T) => U, reverse?: (value: U) => T) {
     return this.pipe<U>(
       (pipe) => {
-        pipe.set(convert(this.get()));
+        try {
+          pipe.set(convert(this.get()));
+        } catch (e) {
+          pipe.error(e);
+        }
       },
       reverse ?
-        (pipe, value) => {
+        (_pipe, value) => {
           this.set(reverse(value));
         }
-      : undefined,
-      this.key + 'Map'
+      : undefined
     );
   }
 
@@ -233,20 +215,15 @@ export class Flux<T = any> {
       (pipe) => {
         convert(this.get())
           .then(pipe.setter())
-          .catch((error) => {
-            pipe.log.e('convert', convert, error);
-          });
+          .catch((error) => pipe.error(error));
       },
       reverse ?
-        (pipe, value) => {
+        (_pipe, value) => {
           reverse(value)
             .then(this.setter())
-            .catch((error) => {
-              pipe.log.e('reverse', reverse, error);
-            });
+            .catch((error) => this.error(error));
         }
-      : undefined,
-      this.key + 'MapAsync'
+      : undefined
     );
   }
 
@@ -264,8 +241,7 @@ export class Flux<T = any> {
       debounce((pipe: Pipe<T, T>) => {
         pipe.set(this.get());
       }, ms),
-      undefined,
-      this.key + 'Debounce'
+      undefined
     );
   }
 
@@ -283,8 +259,7 @@ export class Flux<T = any> {
       throttle((pipe: Pipe<T, T>) => {
         pipe.set(this.get());
       }, ms),
-      undefined,
-      this.key + 'Throttle'
+      undefined
     );
   }
 
@@ -294,14 +269,10 @@ export class Flux<T = any> {
    * @returns Delayed Pipe
    */
   delay(ms: number): Pipe<T, T> {
-    return this.pipe(
-      (pipe) => {
-        const val = this.get();
-        setTimeout(() => pipe.set(val), ms);
-      },
-      undefined,
-      this.key + 'Delay'
-    );
+    return this.pipe((pipe) => {
+      const val = this.get();
+      setTimeout(() => pipe.set(val), ms);
+    }, undefined);
   }
 
   /**
@@ -310,18 +281,14 @@ export class Flux<T = any> {
    * @returns A new Pipe that only emits filtered values
    */
   filter(predicate: (value: T) => boolean) {
-    return this.pipe(
-      (pipe) => {
-        const value = this.get();
-        if (predicate(value)) {
-          pipe.set(value);
-        }
-      },
-      undefined,
-      this.key + 'Filter'
-    );
+    return this.pipe((pipe) => {
+      const value = this.get();
+      if (predicate(value)) {
+        pipe.set(value);
+      }
+    }, undefined);
   }
-  
+
   /**
    * Apply an accumulator function, emitting each intermediate result.
    * Similar to Array.reduce but emits all intermediate values.
@@ -334,14 +301,10 @@ export class Flux<T = any> {
    */
   scan<U>(accumulator: (acc: U, value: T) => U, seed: U) {
     let acc = seed;
-    return this.pipe<U>(
-      (pipe) => {
-        acc = accumulator(acc, this.get());
-        pipe.set(acc);
-      },
-      undefined,
-      this.key + 'Scan'
-    );
+    return this.pipe<U>((pipe) => {
+      acc = accumulator(acc, this.get());
+      pipe.set(acc);
+    }, undefined);
   }
 }
 
@@ -350,12 +313,11 @@ export class Pipe<T = any, U = T> extends Flux<T> {
   public isInit?: boolean;
 
   constructor(
-    public readonly source: Flux<U> | ((listener: () => void) => Unsubscribe),
+    public readonly source: Flux<U> | ((listener: () => void) => FUnsubscribe),
     public readonly sync: (pipe: Pipe<T, U>) => void,
-    public readonly onSet: (pipe: Pipe<T, U>, value: T) => void = toVoid,
-    key?: string
+    public readonly onSet: (pipe: Pipe<T, U>, value: T) => void = toVoid
   ) {
-    super(undefined as T, key || 'Pipe');
+    super(undefined as T);
   }
 
   get() {
@@ -366,17 +328,16 @@ export class Pipe<T = any, U = T> extends Flux<T> {
     return super.get();
   }
 
-  set(next: Next<T>, force?: boolean) {
+  set(next: FNext<T>, force?: boolean) {
     if (isFunction(next)) next = next(this.get());
     super.set(next, force);
     this.onSet(this, next);
   }
 
-  on(listener: Listener<T>, isRepeat?: boolean) {
+  on(listener: FListener<T>, isRepeat?: boolean) {
     const off = super.on(listener, isRepeat);
 
     if (!this.sourceOff) {
-      this.log.d('connect');
       const listener = () => {
         this.isInit = true;
         this.sync(this);
@@ -391,9 +352,26 @@ export class Pipe<T = any, U = T> extends Flux<T> {
     super.clear();
 
     if (this.sourceOff) {
-      this.log.d('disconnect');
       this.sourceOff();
       this.sourceOff = undefined;
     }
   }
 }
+
+/**
+ * Create Flux instance.
+ * @param factory Value, factory function, or Flux factory
+ * @returns Existing or new Flux instance
+ */
+export const flux = <T>(init: T) => new Flux<T>(init);
+
+/**
+ * Create Pipe instance.
+ * @param source Flux, or listener
+ * @returns Existing or new Flux instance
+ */
+export const pipe = <T = any, U = T>(
+  source: Flux<U> | ((listener: () => void) => FUnsubscribe),
+  sync: (pipe: Pipe<T, U>) => void,
+  onSet: (pipe: Pipe<T, U>, value: T) => void = toVoid
+) => new Pipe<T, U>(source, sync, onSet);

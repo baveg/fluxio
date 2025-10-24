@@ -1,27 +1,16 @@
-import { timerFlux } from "../src";
+import { fTimer, LogTable } from '../src';
+import { fLogTable } from '../src/flux/fluxLogTable';
 
-const rows: string[][] = [];
+const logTable = new LogTable();
 
-const getTime = () => Math.round(Date.now() / 100);
+const count$ = fTimer(100).scan((count) => count + 1, 0);
 
-const start = getTime();
-const getTimeIndex = () => getTime() - start;
+fLogTable(count$, logTable, 'count$');
 
-const setCell = (collIndex: number, rowIndex: number, value: any) => {
-    const row = rows[rowIndex] || (rows[rowIndex] = []);
-    row[collIndex] = value;
-}
+const throttle$ = count$.throttle(500);
 
-const setCellTime = (rowIndex: number, value: any) => setCell(getTimeIndex(), rowIndex, value);
+fLogTable(throttle$, logTable, 'throttle$');
 
-const showTimeline = () => {
-    console.info('Timeline :\n', rows.map(row => row.join('\t')).join('\n'));
-}
+const map$ = throttle$.map((v) => v.toString(16));
 
-const count$ = timerFlux(100).scan(count => count + 1, 0);
-
-count$.on(value => setCellTime(0, value));
-
-count$.throttle(500).map(v => v.toString(16)).on(value => setCellTime(1, value));
-
-count$.on(showTimeline);
+fLogTable(map$, logTable, 'map$');

@@ -1,7 +1,7 @@
 import { isString } from '../check/isString';
 import { glb } from '../glb';
 import { setUrlParams } from './setUrlParams';
-import { urlJoin } from './urlJoin';
+import { pathJoin } from './pathJoin';
 
 export const createUrl = (
   baseUrl?: string | null,
@@ -15,7 +15,7 @@ export const createUrl = (
       const location = glb.location || {};
       baseUrl = (location.protocol || 'http:') + '//' + (location.host || '0.0.0.0');
     }
-    url = urlJoin(baseUrl, url);
+    url = pathJoin(baseUrl, url);
   }
 
   url = setUrlParams(url, params);

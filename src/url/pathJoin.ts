@@ -1,4 +1,4 @@
-export const urlJoin = (...args: string[]): string =>
+export const pathJoin = (...args: string[]): string =>
   args
     .map((a, i) =>
       a.substring(

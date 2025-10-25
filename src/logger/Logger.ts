@@ -7,7 +7,10 @@ export interface Logger {
   e: (...args: any[]) => void;
 }
 
-export const getLogIcon = (level: LogLevel) => level === 'warn' ? '⚠️' : level === 'error' ? '❌' : '';
+export const getLogIcon = (level: LogLevel) =>
+  level === 'warn' ? '⚠️'
+  : level === 'error' ? '❌'
+  : '';
 
 let log = (name: string, level: LogLevel, args: any[]) => {
   if (typeof console === 'object' && level in console) {

@@ -1,4 +1,4 @@
-import { isArrayOfNumber } from '../check/isArrayOfNumber';
+import { isArrayOfNumber } from '../check/isArrayOf';
 import { hslToRgb } from './hslToRgb';
 import { rgbColor } from './rgbColor';
 import { stringToColor } from './stringToColor';

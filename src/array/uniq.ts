@@ -1,10 +1,10 @@
-import { TMap } from '../types';
-import { stringify } from '../json';
+import { Dictionary } from '../check/isDictionary';
+import { jsonStringify } from '../string/json';
 
-export const uniq = <T>(a: T[]): T[] => {
-  const o: TMap<any> = {};
+export const uniq = <T>(a: T[], isJson = true): T[] => {
+  const o: Dictionary<any> = {};
   for (const v of a) {
-    o[stringify(v) || String(v)] = v;
+    o[(isJson ? jsonStringify(v) : null) || String(v)] = v;
   }
   return Object.values(o);
 };

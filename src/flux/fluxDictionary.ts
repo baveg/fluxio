@@ -1,8 +1,23 @@
-import { deepClone } from '@common/utils';
+import { deepClone } from '../object/deepClone';
 import { Dictionary } from '../check/isDictionary';
 import { Flux, Pipe } from './Flux';
+import { isEmpty } from '../check/isEmpty';
+import { isNil } from '../check/isNil';
+import { merge } from '../object/merge';
 
 export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
+  constructor(source: Flux<Dictionary<T>>) {
+    super(
+      source,
+      () => {
+        this.set(source.get());
+      },
+      (_, value) => {
+        source.set(value);
+      }
+    );
+  }
+
   apply(cb: (next: Dictionary<T>) => void) {
     const prev = this.get();
     const next = deepClone({ ...prev });
@@ -12,7 +27,7 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
   }
 
   merge(changes: Record<string, Partial<T>>, isReplace?: boolean) {
-    const prev = this.v;
+    const prev = this.get();
     if (!prev) return this;
 
     for (const key in changes) {
@@ -21,7 +36,7 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
       }
     }
 
-    if (isItemEmpty(changes)) return this;
+    if (isEmpty(changes)) return this;
 
     const next = { ...prev };
 
@@ -43,7 +58,7 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
   }
 
   getItem(id: string): T | undefined {
-    return this.v[id];
+    return this.get()[id];
   }
 
   setItem(id: string, item: T | undefined) {
@@ -57,6 +72,10 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
   getItems() {
     return Object.values(this.get());
   }
+
+  getItem$(id: string) {
+    return this.map((d) => d[id]);
+  }
 }
 
-export const fluxDictionary = <T>(source: Flux<T>) => new FluxDictionary(source);
+export const fluxDictionary = <T>(source: Flux<Dictionary<T>>) => new FluxDictionary(source);

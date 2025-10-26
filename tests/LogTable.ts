@@ -1,8 +1,10 @@
-import { padEnd } from '../string/pad';
-import { truncate } from '../string/truncate';
-import { logger } from './Logger';
-import { humanize } from '../string/humanize';
-import { removeIndex } from '../array/removeIndex';
+import { padEnd } from '../src/string/pad';
+import { truncate } from '../src/string/truncate';
+import { logger } from '../src/logger/Logger';
+import { humanize } from '../src/string/humanize';
+import { removeIndex } from '../src/array/removeIndex';
+import { toError } from '../src/cast/toError';
+import { Flux } from '../src/flux/Flux';
 
 export class LogTable {
   public readonly log = logger('LogTable');
@@ -62,3 +64,11 @@ export class LogTable {
     this.log.i('\n', this.toString());
   }
 }
+
+export const fluxLogTable = (flux: Flux, table: LogTable, name: string) => {
+  const rowIndex = table.addRow(name);
+  flux.on((value, error) => {
+    table.setCellTime(rowIndex, error ? 'E:' + toError(error).message : value);
+  });
+  return flux;
+};

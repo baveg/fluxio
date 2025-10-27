@@ -1,3 +1,3 @@
-import { isFun } from './isFunction';
+import { isFunction } from './isFunction';
 
-export const isPromise = (v: any): v is Promise<any> => isFun(v?.then);
+export const isPromise = (v: any): v is Promise<any> => isFunction(v?.then);

@@ -1,4 +1,7 @@
-export const getUrlParams = (url: string): Record<string, string> => {
+import { glb } from "../glb";
+
+export const getUrlParams = (url?: string): Record<string, string> => {
+  if (!url) url = glb.location?.href;
   let match;
   const pl = /\+/g;
   const search = /([^&=]+)=?([^&]*)/g;

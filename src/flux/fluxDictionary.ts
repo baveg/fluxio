@@ -1,6 +1,6 @@
 import { deepClone } from '../object/deepClone';
 import { Dictionary } from '../check/isDictionary';
-import { Flux, Pipe } from './Flux';
+import { flux, Flux, Pipe } from './Flux';
 import { isEmpty } from '../check/isEmpty';
 import { isNil } from '../check/isNil';
 import { merge } from '../object/merge';
@@ -78,4 +78,4 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
   }
 }
 
-export const fluxDictionary = <T>(source: Flux<Dictionary<T>>) => new FluxDictionary(source);
+export const fluxDictionary = <T>(source: Flux<Dictionary<T>> = flux({})) => new FluxDictionary(source);

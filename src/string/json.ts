@@ -6,7 +6,7 @@ export const jsonStringify = (value: any): string => {
   try {
     return JSON.stringify(value);
   } catch (e) {
-    jsonLog.e('stringify', e);
+    jsonLog.e('jsonStringify', e);
     return String(value);
   }
 };

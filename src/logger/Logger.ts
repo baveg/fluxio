@@ -44,3 +44,5 @@ export const logger = (tag: string): Logger => {
 const n = () => {};
 
 export const voidLogger = { d: n, i: n, w: n, e: n };
+
+export const globalLogger = logger('global');

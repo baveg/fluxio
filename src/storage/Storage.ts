@@ -1,5 +1,6 @@
 import { glb } from '../glb';
 import { toError } from '../cast/toError';
+import { clear } from '../object/clear';
 import { logger } from '../logger/Logger';
 
 export class Storage {
@@ -42,5 +43,10 @@ export class Storage {
       log.e('set', key, value, error);
       throw error;
     }
+  }
+
+  clear() {
+    this.ls?.clear();
+    clear(this.data);
   }
 }

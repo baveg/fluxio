@@ -1,3 +1,4 @@
+import { logger } from 'fluxio/logger/Logger';
 import { isFunction } from '../check/isFunction';
 import { flux, Flux, isFlux } from './Flux';
 
@@ -5,9 +6,11 @@ export const map: Record<string, Flux<any>> = {};
 
 export type FFactory<T> = () => Flux<T> | T | (() => T);
 
-const createFlux = <T>(factory: FFactory<T>): Flux<T> => {
+const createFlux = <T>(key: string, factory: FFactory<T>): Flux<T> => {
   const value = isFunction(factory) ? factory() : factory;
-  return isFlux(value) ? (value as Flux<T>) : flux<T>(value as T);
+  const result = isFlux(value) ? (value as Flux<T>) : flux<T>(value as T);
+  result.log = logger(key);
+  return result;
 };
 
 interface FindFlux {
@@ -22,4 +25,4 @@ interface FindFlux {
  * @returns Existing or new Flux instance
  */
 export const findFlux: FindFlux = <T>(key: string, factory: FFactory<T>): Flux<T> =>
-  map[key] || (map[key] = createFlux(factory));
+  map[key] || (map[key] = createFlux(key, factory));

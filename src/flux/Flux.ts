@@ -12,13 +12,19 @@ export type FListener<T> = (value: T, error?: any) => void;
 export type FUnsubscribe = () => void;
 export type FNext<T> = T | ((prev: T) => T);
 
+export type PipeSource<T, U> = Flux<U> | ((listener: () => void) => FUnsubscribe);
+export type PipeOnSync<T, U> = (pipe: Pipe<T, U>) => void;
+export type PipeOnSet<T, U> = (value: T, pipe: Pipe<T, U>) => void;
+export type PipeOnInit<T, U> = (pipe: Pipe<T, U>) => void;
+
 /**
  * Reactive state container with observable pattern.
  * Supports subscriptions, transformations, and persistence.
  */
 export class Flux<T = any> {
   public readonly listeners: FListener<T>[] = [];
-  private v: T;
+  public log = fluxLog;
+  public v: T;
   private _get?: typeof this.get;
   private _set?: typeof this.set;
 
@@ -76,13 +82,18 @@ export class Flux<T = any> {
    */
   set(next: FNext<T>, force?: boolean) {
     const value = isFunction(next) ? next(this.get()) : next;
-    if (!force && this.isEqual(this.v, value)) return;
+    if (!force && this.isEqual(this.v, value)) {
+      this.log.d('set isEqual', value, this.v, this.listeners);
+      return;
+    }
+    this.log.d('set', value, this.listeners);
     this.v = value;
     for (const listener of this.listeners) listener(value);
   }
 
   error(error: any) {
     const value = this.v;
+    this.log.w('error', error, this.listeners);
     for (const listener of this.listeners) listener(value, error);
   }
 
@@ -170,8 +181,12 @@ export class Flux<T = any> {
    * @param onSet Function called when pipe value is set (for reverse sync)
    * @returns A new Pipe instance
    */
-  pipe<U = T>(sync: (pipe: Pipe<U, T>) => void, onSet?: (pipe: Pipe<U, T>, value: U) => void) {
-    return new Pipe<U, T>(this, sync, onSet);
+  pipe<U = T>(
+    onSync: PipeOnSync<U, T>,
+    onSet: PipeOnSet<U, T> = toVoid,
+    onInit: PipeOnInit<U, T> = toVoid,
+  ) {
+    return new Pipe<U, T>(this, onSync, onSet, onInit);
   }
 
   /**
@@ -194,7 +209,7 @@ export class Flux<T = any> {
         }
       },
       reverse ?
-        (_pipe, value) => {
+        (value) => {
           this.set(reverse(value));
         }
       : undefined
@@ -214,11 +229,11 @@ export class Flux<T = any> {
     return this.pipe<U>(
       (pipe) => {
         convert(this.get())
-          .then(pipe.setter())
+          .then(value => pipe.set(value))
           .catch((error) => pipe.error(error));
       },
       reverse ?
-        (_pipe, value) => {
+        (value) => {
           reverse(value)
             .then(this.setter())
             .catch((error) => this.error(error));
@@ -238,10 +253,9 @@ export class Flux<T = any> {
    */
   debounce(ms: number) {
     return this.pipe(
-      debounce((pipe: Pipe<T, T>) => {
-        pipe.set(this.get());
-      }, ms),
-      undefined
+      debounce((pipe: Pipe<T, T>) => pipe.set(this.get()), ms),
+      (value) => this.set(value),
+      (pipe) => pipe.set(this.get()),
     );
   }
 
@@ -256,10 +270,9 @@ export class Flux<T = any> {
    */
   throttle(ms: number) {
     return this.pipe(
-      throttle((pipe: Pipe<T, T>) => {
-        pipe.set(this.get());
-      }, ms),
-      undefined
+      throttle((pipe: Pipe<T, T>) => pipe.set(this.get()), ms),
+      (value) => this.set(value),
+      (pipe) => pipe.set(this.get()),
     );
   }
 
@@ -313,9 +326,10 @@ export class Pipe<T = any, U = T> extends Flux<T> {
   public isInit?: boolean;
 
   constructor(
-    public readonly source: Flux<U> | ((listener: () => void) => FUnsubscribe),
-    public readonly sync: (pipe: Pipe<T, U>) => void,
-    public readonly onSet: (pipe: Pipe<T, U>, value: T) => void = toVoid
+    public readonly source: PipeSource<T, U>,
+    public readonly onSync: PipeOnSync<T, U>,
+    public readonly onSet: PipeOnSet<T, U> = toVoid,
+    public readonly onInit: PipeOnInit<T, U> = toVoid,
   ) {
     super(undefined as T);
   }
@@ -323,7 +337,8 @@ export class Pipe<T = any, U = T> extends Flux<T> {
   get() {
     if (!this.isInit) {
       this.isInit = true;
-      this.sync(this);
+      this.onInit(this);
+      this.onSync(this);
     }
     return super.get();
   }
@@ -331,7 +346,7 @@ export class Pipe<T = any, U = T> extends Flux<T> {
   set(next: FNext<T>, force?: boolean) {
     if (isFunction(next)) next = next(this.get());
     super.set(next, force);
-    this.onSet(this, next);
+    this.onSet(next, this);
   }
 
   on(listener: FListener<T>, isRepeat?: boolean) {
@@ -339,8 +354,11 @@ export class Pipe<T = any, U = T> extends Flux<T> {
 
     if (!this.sourceOff) {
       const listener = () => {
-        this.isInit = true;
-        this.sync(this);
+        if (!this.isInit) {
+          this.isInit = true;
+          this.onInit(this);
+        }
+        this.onSync(this);
       };
       this.sourceOff = isFunction(this.source) ? this.source(listener) : this.source.on(listener);
     }
@@ -371,9 +389,10 @@ export const flux = <T>(init: T) => new Flux<T>(init);
  * @returns Existing or new Flux instance
  */
 export const pipe = <T = any, U = T>(
-  source: Flux<U> | ((listener: () => void) => FUnsubscribe),
-  sync: (pipe: Pipe<T, U>) => void,
-  onSet: (pipe: Pipe<T, U>, value: T) => void = toVoid
-) => new Pipe<T, U>(source, sync, onSet);
+  source: PipeSource<T, U>,
+  onSync: PipeOnSync<T, U>,
+  onSet?: PipeOnSet<T, U>,
+  onInit?: PipeOnInit<T, U>,
+) => new Pipe<T, U>(source, onSync, onSet, onInit);
 
 export const isFlux = (v: any): v is Flux => v instanceof Flux;

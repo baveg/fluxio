@@ -83,10 +83,10 @@ export class Flux<T = any> {
   set(next: FNext<T>, force?: boolean) {
     const value = isFunction(next) ? next(this.get()) : next;
     if (!force && this.isEqual(this.v, value)) {
-      this.log.d('set isEqual', value, this.v, this.listeners);
+      // this.log.d('set isEqual', value, this.v, this.listeners);
       return;
     }
-    this.log.d('set', value, this.listeners);
+    // this.log.d('set', value, this.listeners);
     this.v = value;
     for (const listener of this.listeners) listener(value);
   }

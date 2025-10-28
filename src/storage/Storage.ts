@@ -2,7 +2,7 @@ import { glb } from '../glb';
 import { toError } from '../cast/toError';
 import { clear } from '../object/clear';
 import { logger } from '../logger/Logger';
-import { isFunction } from 'fluxio/check';
+import { Dictionary, isDefined, isFunction, isNotNil } from 'fluxio/check';
 
 export interface IStorage {
   getItem: (key: string) => string | null;
@@ -15,37 +15,42 @@ export class Storage {
   public log = logger('Storage');
   public readonly ls?: IStorage = glb.localStorage;
   public readonly prefix: string = '';
-  public readonly data: Record<string, any> = {};
+  public readonly data: Dictionary<any> = {};
 
   get<T = any>(key: string, factory: T | (() => T), check?: (value: T) => boolean): T {
     if (!key) throw toError('no key');
+
     const { log, ls, prefix, data } = this;
-    let value: any;
+    if (isDefined(data[key])) return data[key];
+
+    const init = (isFunction(factory) ? factory() : factory);
+    // log.d('get init', key, init);
+
+    if (!ls) return init;
+
     try {
-      if (ls) {
-        const json = ls.getItem(prefix + key);
-        value = json ? JSON.parse(json) : undefined;
-      } else {
-        value = data[key];
-      }
-      if (value !== undefined) {
-        if (check && !check(value)) throw 'no check';
-        log.d('get', key, value);
+      const json = ls.getItem(prefix + key);
+      const value = json ? JSON.parse(json) : undefined;
+
+      if (isDefined(value)) {
+        if (check && value !== init && !check(value)) throw 'no check';
+        // log.d('get item', key, value);
+        data[key] = value;
         return value;
       }
     } catch (error) {
-      log.e('get', key, value, factory, check, error);
+      log.e('get error', key, factory, check, error);
     }
-    const init = (isFunction(factory) ? factory() : factory);
-    log.d('get init', key, init);
-    this.set(key, init);
+
+    // log.d('get undefined', key, init);
+    data[key] = init;
     return init;
   }
 
   set<T = any>(key: string, value?: T): void {
     const { log, ls, prefix, data } = this;
     try {
-      log.d('set', key, value);
+      // log.d('set', key, value);
       if (!key) throw toError('no key');
       if (value === undefined) {
         delete data[key];

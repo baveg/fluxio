@@ -16,10 +16,11 @@ export const fluxStored = <T>(
   key: string,
   factory: T | (() => T),
   check?: (value: T) => boolean,
+  clean?: (value: T) => T,
   storage = getStorage()
 ): Flux<T> =>
   findFlux(key, () => {
-    const init = storage.get(key, factory, check);
+    const init = storage.get(key, factory, check, clean);
     const target = flux<T>(init);
     target.throttle(50).on((value) => {
       fluxLog.d('fluxStored set', key, value);

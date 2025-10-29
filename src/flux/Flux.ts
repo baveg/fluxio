@@ -23,6 +23,7 @@ export type PipeOnInit<T, U> = (pipe: Pipe<T, U>) => void;
  */
 export class Flux<T = any> {
   public readonly listeners: FListener<T>[] = [];
+  public key?: string;
   public log = fluxLog;
   public v: T;
   private _get?: typeof this.get;
@@ -332,6 +333,10 @@ export class Pipe<T = any, U = T> extends Flux<T> {
     public readonly onInit: PipeOnInit<T, U> = toVoid,
   ) {
     super(undefined as T);
+    if (isFlux(source)) {
+      this.key = source.key;
+      this.log = source.log;
+    }
   }
 
   get() {

@@ -9,6 +9,7 @@ export type FFactory<T> = () => Flux<T> | T | (() => T);
 const createFlux = <T>(key: string, factory: FFactory<T>): Flux<T> => {
   const value = isFunction(factory) ? factory() : factory;
   const result = isFlux(value) ? (value as Flux<T>) : flux<T>(value as T);
+  result.key = key;
   result.log = logger(key);
   return result;
 };

@@ -1,8 +1,9 @@
 import { glb } from '../glb';
 import { toError } from '../cast/toError';
+import { toMe } from '../cast/toMe';
 import { clear } from '../object/clear';
 import { logger } from '../logger/Logger';
-import { Dictionary, isDefined, isFunction, isNotNil } from 'fluxio/check';
+import { Dictionary, isDefined, isFunction } from 'fluxio/check';
 
 export interface IStorage {
   getItem: (key: string) => string | null;
@@ -17,7 +18,12 @@ export class Storage {
   public readonly prefix: string = '';
   public readonly data: Dictionary<any> = {};
 
-  get<T = any>(key: string, factory: T | (() => T), check?: (value: T) => boolean): T {
+  get<T = any>(
+    key: string,
+    factory: T | (() => T),
+    check?: (value: T) => boolean,
+    clean: (value: T) => T = toMe,
+  ): T {
     if (!key) throw toError('no key');
 
     const { log, ls, prefix, data } = this;
@@ -35,8 +41,8 @@ export class Storage {
       if (isDefined(value)) {
         if (check && value !== init && !check(value)) throw 'no check';
         // log.d('get item', key, value);
-        data[key] = value;
-        return value;
+        if (key === '') debugger;
+        return data[key] = clean(value);
       }
     } catch (error) {
       log.e('get error', key, factory, check, error);

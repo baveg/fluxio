@@ -9,6 +9,7 @@ export * from './deleteUndef';
 export * from './firstKey';
 export * from './getChanges';
 export * from './isDeepEqual';
+export * from './keepIf';
 export * from './merge';
 export * from './setKey';
 export * from './sortKey';

@@ -12,9 +12,9 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
       () => {
         this.set(source.get());
       },
-      (_, value) => {
+      (value) => {
         source.set(value);
-      }
+      },
     );
   }
 

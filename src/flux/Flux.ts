@@ -6,8 +6,6 @@ import { toVoid } from '../cast/toVoid';
 import { logger } from '../logger/Logger';
 import { removeItem } from '../array/removeItem';
 
-export const fluxLog = logger('Flux');
-
 export type FListener<T> = (value: T, error?: any) => void;
 export type FUnsubscribe = () => void;
 export type FNext<T> = T | ((prev: T) => T);
@@ -24,7 +22,6 @@ export type PipeOnInit<T, U> = (pipe: Pipe<T, U>) => void;
 export class Flux<T = any> {
   public readonly listeners: FListener<T>[] = [];
   public key?: string;
-  public log = fluxLog;
   public v: T;
   private _get?: typeof this.get;
   private _set?: typeof this.set;
@@ -84,17 +81,14 @@ export class Flux<T = any> {
   set(next: FNext<T>, force?: boolean) {
     const value = isFunction(next) ? next(this.get()) : next;
     if (!force && this.isEqual(this.v, value)) {
-      // this.log.d('set isEqual', value, this.v, this.listeners);
       return;
     }
-    // this.log.d('set', value, this.listeners);
     this.v = value;
     for (const listener of this.listeners) listener(value);
   }
 
   error(error: any) {
     const value = this.v;
-    this.log.w('error', error, this.listeners);
     for (const listener of this.listeners) listener(value, error);
   }
 
@@ -335,7 +329,6 @@ export class Pipe<T = any, U = T> extends Flux<T> {
     super(undefined as T);
     if (isFlux(source)) {
       this.key = source.key;
-      this.log = source.log;
     }
   }
 

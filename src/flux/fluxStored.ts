@@ -1,6 +1,5 @@
-import { isDefined } from 'fluxio/check';
 import { getStorage } from '../storage';
-import { Flux, flux, fluxLog } from './Flux';
+import { Flux, flux } from './Flux';
 import { findFlux } from './findFlux';
 
 /**
@@ -22,8 +21,7 @@ export const fluxStored = <T>(
   findFlux(key, () => {
     const init = storage.get(key, factory, check, clean);
     const target = flux<T>(init);
-    target.throttle(50).on((value) => {
-      fluxLog.d('fluxStored set', key, value);
+    target.throttle(100).on((value) => {
       storage.set(key, value);
     });
     return target;

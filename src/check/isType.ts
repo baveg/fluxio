@@ -6,7 +6,7 @@ import { isError } from './isError';
 import { isFileOrBlob } from './isFileOrBlob';
 import { isFunction } from './isFunction';
 import { isItem } from './isItem';
-import { isInt, isNumber, isPositive } from './isNumber';
+import { isFloat, isUFloat, isInt, isUInt } from './isNumber';
 import { isString, isStringValid } from './isString';
 import { Dictionary, isDictionary } from './isDictionary';
 
@@ -18,13 +18,13 @@ const typeMap: Dictionary<(v: any) => boolean> = {
   error: isError,
   file: isFileOrBlob,
   function: isFunction,
-  number: isNumber,
-  positive: isPositive,
+  float: isFloat,
+  ufloat: isUFloat,
   int: isInt,
+  uint: isUInt,
   string: isString,
   stringValid: isStringValid,
   dictionary: isDictionary,
-  items: isItems,
 };
 type TypeMap = typeof typeMap;
 

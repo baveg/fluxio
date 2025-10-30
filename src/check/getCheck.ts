@@ -1,14 +1,14 @@
 import { isArray } from './isArray';
 import { isBoolean } from './isBoolean';
 import { isDictionary } from './isDictionary';
-import { isNumber } from './isNumber';
+import { isFloat } from './isNumber';
 import { isString } from './isString';
 
 export type Check = (v: any) => boolean;
 
 export const getCheck = (v: any): Check =>
   isString(v) ? isString
-  : isNumber(v) ? isNumber
+  : isFloat(v) ? isFloat
   : isBoolean(v) ? isBoolean
   : isArray(v) ? isArray
   : isDictionary(v) ? isDictionary

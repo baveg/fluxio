@@ -8,6 +8,7 @@ export * from './deleteKey';
 export * from './deleteUndef';
 export * from './firstKey';
 export * from './getChanges';
+export * from './getPath';
 export * from './isDeepEqual';
 export * from './keepIf';
 export * from './merge';

@@ -5,9 +5,9 @@ import { HslColor } from './types';
 
 export const mulHsl = (color: any, values: Partial<HslColor>) => {
   color = toHsl(color);
-  if (isNumber(values.h)) color.h *= values.h;
-  if (isNumber(values.s)) color.s *= values.s;
-  if (isNumber(values.l)) color.l *= values.l;
-  if (isNumber(values.a)) color.a *= values.a;
+  if (isFloat(values.h)) color.h *= values.h;
+  if (isFloat(values.s)) color.s *= values.s;
+  if (isFloat(values.l)) color.l *= values.l;
+  if (isFloat(values.a)) color.a *= values.a;
   return toColor(color);
 };

@@ -7,7 +7,8 @@
 //   && (allowNaN || !Number.isNaN(v))
 //   && (allowInfinity || Number.isFinite(v));
 
-export const isNumber = (v: any): v is number => typeof v === 'number' && !Number.isNaN(v) && Number.isFinite(v);
+export const isNumber = (v: any): v is number =>
+  typeof v === 'number' && !Number.isNaN(v) && Number.isFinite(v);
 
 export const isFloat = isNumber;
 

@@ -14,7 +14,7 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
       },
       (value) => {
         source.set(value);
-      },
+      }
     );
   }
 
@@ -78,4 +78,5 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
   }
 }
 
-export const fluxDictionary = <T>(source: Flux<Dictionary<T>> = flux({})) => new FluxDictionary(source);
+export const fluxDictionary = <T>(source: Flux<Dictionary<T>> = flux({})) =>
+  new FluxDictionary(source);

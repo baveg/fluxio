@@ -179,7 +179,7 @@ export class Flux<T = any> {
   pipe<U = T>(
     onSync: PipeOnSync<U, T>,
     onSet: PipeOnSet<U, T> = toVoid,
-    onInit: PipeOnInit<U, T> = toVoid,
+    onInit: PipeOnInit<U, T> = toVoid
   ) {
     return new Pipe<U, T>(this, onSync, onSet, onInit);
   }
@@ -224,7 +224,7 @@ export class Flux<T = any> {
     return this.pipe<U>(
       (pipe) => {
         convert(this.get())
-          .then(value => pipe.set(value))
+          .then((value) => pipe.set(value))
           .catch((error) => pipe.error(error));
       },
       reverse ?
@@ -250,7 +250,7 @@ export class Flux<T = any> {
     return this.pipe(
       debounce((pipe: Pipe<T, T>) => pipe.set(this.get()), ms),
       (value) => this.set(value),
-      (pipe) => pipe.set(this.get()),
+      (pipe) => pipe.set(this.get())
     );
   }
 
@@ -267,7 +267,7 @@ export class Flux<T = any> {
     return this.pipe(
       throttle((pipe: Pipe<T, T>) => pipe.set(this.get()), ms),
       (value) => this.set(value),
-      (pipe) => pipe.set(this.get()),
+      (pipe) => pipe.set(this.get())
     );
   }
 
@@ -324,7 +324,7 @@ export class Pipe<T = any, U = T> extends Flux<T> {
     public readonly source: PipeSource<T, U>,
     public readonly onSync: PipeOnSync<T, U>,
     public readonly onSet: PipeOnSet<T, U> = toVoid,
-    public readonly onInit: PipeOnInit<T, U> = toVoid,
+    public readonly onInit: PipeOnInit<T, U> = toVoid
   ) {
     super(undefined as T);
     if (isFlux(source)) {
@@ -390,7 +390,7 @@ export const pipe = <T = any, U = T>(
   source: PipeSource<T, U>,
   onSync: PipeOnSync<T, U>,
   onSet?: PipeOnSet<T, U>,
-  onInit?: PipeOnInit<T, U>,
+  onInit?: PipeOnInit<T, U>
 ) => new Pipe<T, U>(source, onSync, onSet, onInit);
 
 export const isFlux = (v: any): v is Flux => v instanceof Flux;

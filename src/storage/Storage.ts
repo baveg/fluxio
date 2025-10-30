@@ -22,14 +22,14 @@ export class Storage {
     key: string,
     factory: T | (() => T),
     check?: (value: T) => boolean,
-    clean: (value: T) => T = toMe,
+    clean: (value: T) => T = toMe
   ): T {
     if (!key) throw toError('no key');
 
     const { log, ls, prefix, data } = this;
     if (isDefined(data[key])) return data[key];
 
-    const init = (isFunction(factory) ? factory() : factory);
+    const init = isFunction(factory) ? factory() : factory;
     // log.d('get init', key, init);
 
     if (!ls) return init;
@@ -42,7 +42,7 @@ export class Storage {
         if (check && value !== init && !check(value)) throw 'no check';
         // log.d('get item', key, value);
         if (key === '') debugger;
-        return data[key] = clean(value);
+        return (data[key] = clean(value));
       }
     } catch (error) {
       log.e('get error', key, factory, check, error);

@@ -1,4 +1,4 @@
-import { isArray } from "./isArray";
+import { isArray } from './isArray';
 
 export type Dictionary<T = any> = Record<string, T>;
 

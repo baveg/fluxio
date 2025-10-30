@@ -1,4 +1,4 @@
-import { glb } from "../glb";
+import { glb } from '../glb';
 
 export const getUrlParams = (url?: string): Record<string, string> => {
   if (!url) url = glb.location?.href;

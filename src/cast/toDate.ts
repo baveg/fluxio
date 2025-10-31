@@ -1,4 +1,5 @@
-import { isDate, isPositive } from '../check';
+import { isDate } from '../check/isDate';
+import { isUFloat } from '../check/isNumber';
 
 interface ToDate {
   (v: any): Date;

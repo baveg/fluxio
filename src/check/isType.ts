@@ -1,5 +1,4 @@
 import { isArray } from './isArray';
-import { isItems } from './isArrayOf';
 import { isBoolean } from './isBoolean';
 import { isDate } from './isDate';
 import { isError } from './isError';

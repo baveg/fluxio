@@ -1,4 +1,4 @@
-import { isNumber } from './isNumber';
+import { isFloat } from './isNumber';
 
 export const isBetween = (v: number, min?: number, max?: number): boolean =>
   isFloat(min) && v < min ? false

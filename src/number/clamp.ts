@@ -1,4 +1,4 @@
-import { isNumber } from '../check/isNumber';
+import { isFloat } from '../check/isNumber';
 
 export const clamp = (v: number, min?: number, max?: number): number =>
   isFloat(min) && v < min ? min

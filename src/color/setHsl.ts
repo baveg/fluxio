@@ -1,4 +1,4 @@
-import { isNumber } from '../check/isNumber';
+import { isFloat } from '../check/isNumber';
 import { toHsl } from './toHsl';
 import { toColor } from './toColor';
 import { HslColor } from './types';

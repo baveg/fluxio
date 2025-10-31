@@ -1,4 +1,4 @@
-import { isNumber } from '../check/isNumber';
+import { isFloat } from '../check/isNumber';
 import { toRgb } from './toRgb';
 import { toColor } from './toColor';
 import { RgbColor } from './types';

@@ -49,7 +49,7 @@ export const getCssColors = () => cssColors;
 export const getCssColor = (k: string) => cssColors[k] || k;
 
 type U = number | string | (number | string)[];
-type O = { [prop: string]: string | number };
+type O = { [prop: string]: any };
 
 export type CssOutput = O;
 export type CssOutputs = Dictionary<O | string>;
@@ -119,7 +119,7 @@ const addTransform = (v: string, o: O) => {
   o.transform = o.transform ? `${o.transform} ${v}` : v;
 };
 
-const transformProp = (prop: string) => (v: U, o: O) => addTransform(`${prop}(${g(v)})`, o);
+const transformProp = (prop: string) => (v: U, o: O) => addTransform(`${prop}(${v})`, o);
 
 const g = (v: U): string =>
   typeof v === 'number' ? v + 'rem'
@@ -330,21 +330,33 @@ export const cssFunMap = {
   translateX: transformProp('translateX'),
   translateY: transformProp('translateY'),
 
-  fRow: (v: [] | [FlexAlign] | [FlexAlign, FlexJustify], o: O) => {
+  fRow: (v: 1 | FlexAlign | [FlexAlign, FlexJustify], o: O) => {
+    const a =
+      isArray(v) ? v
+      : isString(v) ? [v]
+      : [];
     o.display = 'flex';
     o[FLEX_DIRECTION] = 'row';
-    o[ALIGN_ITEMS] = toString(v[0], 'center');
-    o['justify-content'] = toString(v[1], 'space-between');
+    o[ALIGN_ITEMS] = toString(a[0], 'center');
+    o[JUSTIFY_CONTENT] = toString(a[1], 'space-between');
   },
-  fCol: (v: [] | [FlexAlign] | [FlexAlign, FlexJustify], o: O) => {
+  fCol: (v: 1 | FlexAlign | [FlexAlign, FlexJustify], o: O) => {
+    const a =
+      isArray(v) ? v
+      : isString(v) ? [v]
+      : [];
     o.display = 'flex';
     o[FLEX_DIRECTION] = 'column';
-    o[ALIGN_ITEMS] = toString(v[0], 'stretch');
-    o[JUSTIFY_CONTENT] = toString(v[1], 'start');
+    o[ALIGN_ITEMS] = toString(a[0], 'stretch');
+    o[JUSTIFY_CONTENT] = toString(a[1], 'start');
   },
-  fCenter: (v: [] | [FlexDirection], o: O) => {
+  fCenter: (v: 1 | FlexDirection, o: O) => {
+    const a =
+      isArray(v) ? v
+      : isString(v) ? [v]
+      : [];
     o.display = 'flex';
-    o[FLEX_DIRECTION] = toString(v[0], 'column');
+    o[FLEX_DIRECTION] = toString(a[0], 'column');
     o[ALIGN_ITEMS] = 'center';
     o[JUSTIFY_CONTENT] = 'center';
   },
@@ -352,11 +364,13 @@ export const cssFunMap = {
 
 type CssFunMap = typeof cssFunMap;
 
-export type CssRecord = CssOutput & {
+export type CssFunRecord = {
   [K in keyof CssFunMap]?: Parameters<CssFunMap[K]>[0];
 };
 
-export type CssInput = CssRecord & { [name: string]: CssInput };
+export type CssRecord = Omit<CssOutput, keyof CssFunRecord> & CssFunRecord;
+
+export type CssInput = CssRecord;
 export type CssInputs = Dictionary<CssInput>;
 
 export const computeCss = (prefix: string, inputs?: CssInputs, outputs: CssOutputs = {}) => {
@@ -365,7 +379,7 @@ export const computeCss = (prefix: string, inputs?: CssInputs, outputs: CssOutpu
     const record = inputs[k];
     const query = k
       .split(',')
-      .map((c) => `${prefix}${c}`)
+      .map((c) => `${prefix}${c.replace(/&/g, prefix)}`)
       .join(',');
     log.d('computeCss query', query);
     const output: O = (outputs[query] as O) || (outputs[query] = {});
@@ -379,7 +393,7 @@ export const computeCss = (prefix: string, inputs?: CssInputs, outputs: CssOutpu
       } else if (isObject(value)) {
         log.d('computeCss obj', prop, value);
         computeCss(query, { '': value }, outputs);
-      } else if (value) {
+      } else {
         const propKebab = pascalToKebabCase(prop);
         log.d('computeCss prop', prop, propKebab);
         output[propKebab] = value;

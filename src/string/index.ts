@@ -10,6 +10,5 @@ export * from './randString';
 export * from './removeAccents';
 export * from './replace';
 export * from './setTemplate';
-export * from './splitWords';
 export * from './truncate';
 export * from './upper';

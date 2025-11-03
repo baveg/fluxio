@@ -8,7 +8,8 @@ import { isString, isStringValid } from '../check/isString';
 import { isItem } from '../check/isItem';
 import { logger } from '../logger';
 import { pascalToKebabCase } from 'fluxio/string/cases';
-import { isFunction, isObject } from 'fluxio/check';
+import { isFunction, isNotEmpty, isObject } from 'fluxio/check';
+import { notImplemented } from 'fluxio/error';
 
 const log = logger('css');
 
@@ -105,7 +106,7 @@ const animToCss = (v: AnimValue, o: O, outputs: CssOutputs) => {
     }
   }
 
-  outputs[`@keyframes ${name}`] = sb.join('\n');
+  outputs[`@keyframes ${name}`] = sb.join('');
 
   o[ANIM_NAME] = name;
   if (duration) o[ANIM_DURATION] = name;
@@ -374,33 +375,31 @@ export type CssInput = CssRecord;
 export type CssInputs = Dictionary<CssInput>;
 
 export const computeCss = (prefix: string, inputs?: CssInputs, outputs: CssOutputs = {}) => {
-  log.d('computeCss outputs', prefix, inputs, outputs);
+  // log.d('computeCss outputs', prefix, inputs, outputs);
   for (const k in inputs) {
     const record = inputs[k];
-    const query = k
-      .split(',')
-      .map((c) => `${prefix}${c.replace(/&/g, prefix)}`)
-      .join(',');
-    log.d('computeCss query', query);
+    const query = `${prefix}${k.replace(/&/g, prefix)}`;
+    // log.d('computeCss query', query);
     const output: O = (outputs[query] as O) || (outputs[query] = {});
 
     for (const prop in record) {
       const value = record[prop];
       const fun = (cssFunMap as any)[prop];
       if (isFunction(fun)) {
-        log.d('computeCss fun', prop, value);
+        // log.d('computeCss fun', query, prop, value);
         fun(value, output, outputs);
       } else if (isObject(value)) {
-        log.d('computeCss obj', prop, value);
-        computeCss(query, { '': value }, outputs);
+        // log.d('computeCss obj', query, prop, value);
+        // computeCss(`${query} ${prefix}${prop.replace(/&/g, prefix)}`, { '': value }, outputs);
+        throw notImplemented(prop);
       } else {
         const propKebab = pascalToKebabCase(prop);
-        log.d('computeCss prop', prop, propKebab);
+        // log.d('computeCss prop', query, prop, propKebab);
         output[propKebab] = value;
       }
     }
 
-    log.d('computeCss output', output);
+    // log.d('computeCss output', output);
   }
   return outputs;
 };
@@ -408,30 +407,31 @@ export const computeCss = (prefix: string, inputs?: CssInputs, outputs: CssOutpu
 export const outputsToCss = (outputs: CssOutputs = {}) => {
   const sb = [];
   for (const query in outputs) {
-    sb.push(`${query} {`);
     const output = outputs[query];
+
     if (isString(output)) {
-      sb.push(`${output}`);
-    } else {
+      sb.push(`${query} { ${output} }`);
+    } else if (isNotEmpty(output)) {
+      sb.push(`${query} {`);
       for (const prop in output) {
         const value = output[prop];
         sb.push(`${prop}:${value};`);
       }
+      sb.push(`}`);
     }
-    sb.push(`}`);
   }
   const css = sb.join('\n');
   return css;
 };
 
 export const formatCss = (prefix: string, inputs?: CssInputs): string => {
-  log.d('formatCss', prefix, inputs);
+  // log.d('formatCss', prefix, inputs);
 
   const outputs = computeCss(prefix, inputs);
-  log.d('formatCss outputs', prefix, inputs, outputs);
+  // log.d('formatCss outputs', prefix, inputs, outputs);
 
   const css = outputsToCss(outputs);
-  log.d('formatCss css', prefix, inputs, outputs, css);
+  // log.d('formatCss css', prefix, inputs, outputs, css);
 
   return css;
 };
@@ -444,18 +444,18 @@ let cssCount = 0;
 
 export const setCss = (key: string, css?: CssValue, order?: number, force?: boolean) => {
   const cache = cssCache[key];
-  log.d('setCss', key, css, order, force, cache);
+  // log.d('setCss', key, css, order, force, cache);
 
   if (cache) {
     if (!force && isDeepEqual(cache[1], css)) return key;
-    log.d('setCss remove', key, css, order, force);
+    // log.d('setCss remove', key, css, order, force);
     cache[0].remove();
     delete cssCache[key];
   }
 
   if (css) {
     const el = createEl('style');
-    log.d('setCss el', key, css, order, force, el);
+    // log.d('setCss el', key, css, order, force, el);
 
     el.textContent =
       isString(css) ? css
@@ -471,7 +471,7 @@ export const setCss = (key: string, css?: CssValue, order?: number, force?: bool
         document.head.appendChild(p[0]);
       });
 
-    log.d('setCss ok', key, css, order, force, el);
+    // log.d('setCss ok', key, css, order, force, el);
   }
 
   return key;
@@ -480,11 +480,11 @@ export const setCss = (key: string, css?: CssValue, order?: number, force?: bool
 export const Css = (key: string, css?: CssValue) => {
   const order = cssCount++;
   let isInit = false;
-  log.d('Css', key, css, order);
+  // log.d('Css', key, css, order);
 
   return (...args: (string | { class?: any } | boolean | number | undefined | null)[]) => {
     if (!isInit) {
-      log.d('Css init', key, css, order);
+      // log.d('Css init', key, css, order);
       setCss(key, css, order);
       isInit = true;
     }
@@ -510,7 +510,7 @@ export const Css = (key: string, css?: CssValue) => {
 };
 
 export const refreshCss = () => {
-  log.d('refreshCss', cssCache);
+  // log.d('refreshCss', cssCache);
   for (const key in cssCache) {
     const r = cssCache[key];
     if (r) {
@@ -521,7 +521,7 @@ export const refreshCss = () => {
 };
 
 export const setCssColors = (next: Dictionary<string>) => {
-  log.d('setCssColors', next);
+  // log.d('setCssColors', next);
   cssColors = next;
   refreshCss();
 };

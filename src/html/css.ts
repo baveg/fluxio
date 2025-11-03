@@ -1,15 +1,17 @@
 import { isFloat } from '../check/isNumber';
 import { isArray } from '../check/isArray';
-import { Dictionary } from '../check/isDictionary';
+import { Dictionary } from '../types/Dictionary';
 import { toString } from '../cast/toString';
 import { isDeepEqual } from '../object/isDeepEqual';
 import { createEl } from './createEl';
 import { isString, isStringValid } from '../check/isString';
 import { isItem } from '../check/isItem';
 import { logger } from '../logger';
-import { pascalToKebabCase } from 'fluxio/string/cases';
-import { isFunction, isNotEmpty, isObject } from 'fluxio/check';
-import { notImplemented } from 'fluxio/error';
+import { pascalToKebabCase } from '../string/cases';
+import { isFunction } from '../check/isFunction';
+import { isNotEmpty } from '../check/isNot';
+import { isObject } from '../check/isObject';
+import { notImplemented } from '../error';
 
 const log = logger('css');
 

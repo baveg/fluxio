@@ -1,4 +1,4 @@
-import { Dictionary } from '../check/isDictionary';
+import { Dictionary } from '../types/Dictionary';
 import { createEl } from './createEl';
 
 const _cssFiles: Dictionary<HTMLLinkElement> = {};

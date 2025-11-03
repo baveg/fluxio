@@ -3,7 +3,9 @@ import { toError } from '../cast/toError';
 import { toMe } from '../cast/toMe';
 import { clear } from '../object/clear';
 import { logger } from '../logger/Logger';
-import { Dictionary, isDefined, isFunction } from 'fluxio/check';
+import { Dictionary } from '../types/Dictionary';
+import { isDefined } from '../check/isDefined';
+import { isFunction } from '../check/isFunction';
 
 export interface IStorage {
   getItem: (key: string) => string | null;

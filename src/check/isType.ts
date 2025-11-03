@@ -7,7 +7,8 @@ import { isFunction } from './isFunction';
 import { isItem } from './isItem';
 import { isFloat, isUFloat, isInt, isUInt } from './isNumber';
 import { isString, isStringValid } from './isString';
-import { Dictionary, isDictionary } from './isDictionary';
+import { isDictionary } from './isDictionary';
+import { Dictionary } from '../types/Dictionary';
 
 const typeMap: Dictionary<(v: any) => boolean> = {
   array: isArray,

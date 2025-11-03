@@ -1,4 +1,4 @@
-import { Dictionary } from '../check/isDictionary';
+import { Dictionary } from '../types/Dictionary';
 
 export type Attributes = Dictionary<any>;
 

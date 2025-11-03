@@ -14,4 +14,5 @@ export * from './object';
 export * from './req';
 export * from './storage';
 export * from './string';
+export * from './types';
 export * from './url';

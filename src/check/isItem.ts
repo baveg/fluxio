@@ -1,4 +1,5 @@
-import { Dictionary, isDictionary } from './isDictionary';
+import { Dictionary } from '../types/Dictionary';
+import { isDictionary } from './isDictionary';
 
 export type Item = Dictionary<any>;
 

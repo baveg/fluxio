@@ -1,4 +1,4 @@
-import { isNumber } from '../check';
+import { isNumber } from '../check/isNumber';
 
 export const getEventXY = (e: any): [number, number] | undefined => {
   if (!e) return undefined;

@@ -1,4 +1,5 @@
-import { Dictionary, isDefined } from 'fluxio/check';
+import { isDefined } from '../check/isDefined';
+import { Dictionary } from '../types/Dictionary';
 
 export const keepIf = <T = any>(
   items: Dictionary<T>,

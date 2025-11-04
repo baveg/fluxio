@@ -1,4 +1,4 @@
-import { Dictionary } from '../check/isDictionary';
+import { Dictionary } from '../types/Dictionary';
 
 interface DeleteKey {
   <T, K1 extends keyof T>(record: T, k1: K1): Omit<T, K1>;

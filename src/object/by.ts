@@ -2,7 +2,7 @@ import { isFunction } from '../check/isFunction';
 import { isNil } from '../check/isNil';
 import { isArray } from '../check/isArray';
 import { isItem } from '../check/isItem';
-import { Dictionary } from '../check/isDictionary';
+import { Dictionary } from '../types/Dictionary';
 
 export type ArRecKey<T> = undefined | null | keyof T | ((item: T, index: number) => any);
 export type ArRecVal<T, U> = undefined | null | keyof T | ((item: T, index: number) => U);

@@ -1,5 +1,5 @@
 import { deepClone } from '../object/deepClone';
-import { Dictionary } from '../check/isDictionary';
+import { Dictionary } from '../types/Dictionary';
 import { flux, Flux, Pipe } from './Flux';
 import { isEmpty } from '../check/isEmpty';
 import { isNil } from '../check/isNil';

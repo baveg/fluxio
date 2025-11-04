@@ -1,4 +1,4 @@
-import { Dictionary } from '../check/isDictionary';
+import { Dictionary } from '../types/Dictionary';
 import { jsonStringify } from '../string/json';
 
 export const uniq = <T>(a: T[], isJson = true): T[] => {

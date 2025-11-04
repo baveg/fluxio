@@ -5,6 +5,7 @@ export * from './autoScrollEnd';
 export * from './cls';
 export * from './createEl';
 export * from './css';
+export * from './cssTypes';
 export * from './getEventXY';
 export * from './htmlToEl';
 export * from './onEvent';

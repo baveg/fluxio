@@ -1,5 +1,5 @@
 import { toString } from '../cast';
-import { isDefined, isString } from '../check';
+import { isString } from '../check';
 
 export const sortItems = <T = any>(
   items: T[],

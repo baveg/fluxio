@@ -1,4 +1,4 @@
-import { isDefined, isString } from '../check';
+import { isDefined } from '../check/isDefined';
 
 export const addItem = <T>(items: T[], item: T, index?: number) => {
   if (isDefined(index)) {

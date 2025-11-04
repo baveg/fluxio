@@ -1,6 +1,4 @@
-import { Dictionary } from '../types/Dictionary';
+import { Item } from '../types/Item';
 import { isDictionary } from './isDictionary';
-
-export type Item = Dictionary<any>;
 
 export const isItem = isDictionary as <T extends Item = Item>(v: any) => v is T;

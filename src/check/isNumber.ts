@@ -1,12 +1,3 @@
-// export const isNumber = (
-//   v: any,
-//   allowNaN = false,
-//   allowInfinity = false
-// ): v is number =>
-//   typeof v === 'number'
-//   && (allowNaN || !Number.isNaN(v))
-//   && (allowInfinity || Number.isFinite(v));
-
 export const isNumber = (v: any): v is number =>
   typeof v === 'number' && !Number.isNaN(v) && Number.isFinite(v);
 

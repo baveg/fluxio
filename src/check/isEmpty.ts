@@ -1,4 +1,4 @@
-import { count } from '../object/count';
-import { isNil } from './isNil';
+import { firstKey } from '../object/first';
 
-export const isEmpty = (v: any): boolean => isNil(v) || count(v) === 0;
+export const isEmpty = (v: any): boolean => firstKey(v) === undefined;
+export const isNotEmpty = <T>(v: T | null | undefined): v is NonNullable<T> => !isEmpty(v)

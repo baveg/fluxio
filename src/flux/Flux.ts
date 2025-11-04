@@ -3,7 +3,6 @@ import { debounce } from '../async/debounce';
 import { isDefined } from '../check/isDefined';
 import { isFunction } from '../check/isFunction';
 import { toVoid } from '../cast/toVoid';
-import { logger } from '../logger/Logger';
 import { removeItem } from '../array/removeItem';
 
 export type FListener<T> = (value: T, error?: any) => void;

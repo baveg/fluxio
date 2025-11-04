@@ -1,6 +1,7 @@
 import { isArray } from '../check/isArray';
 import { isDefined } from '../check/isDefined';
-import { isItem, Item } from '../check/isItem';
+import { Item } from '../types/Item';
+import { isItem } from '../check/isItem';
 import { isNil } from '../check/isNil';
 import { isUndefined } from '../check/isUndefined';
 import { max } from '../number/max';

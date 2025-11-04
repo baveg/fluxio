@@ -6,44 +6,10 @@ import { isDeepEqual } from '../object/isDeepEqual';
 import { createEl } from './createEl';
 import { isString, isStringValid } from '../check/isString';
 import { isItem } from '../check/isItem';
-import { logger } from '../logger';
 import { pascalToKebabCase } from '../string/cases';
 import { isFunction } from '../check/isFunction';
-import { isNotEmpty } from '../check/isNot';
-import { isObject } from '../check/isObject';
-import { notImplemented } from '../error';
-
-const log = logger('css');
-
-const FLEX_DIRECTION = 'flex-direction';
-const ALIGN_ITEMS = 'align-items';
-const JUSTIFY_CONTENT = 'justify-content';
-const MAX_W = 'max-width';
-const MIN_W = 'min-width';
-const MAX_H = 'max-height';
-const MIN_H = 'min-height';
-const M = 'margin';
-const M_TOP = M + '-top';
-const M_RIGHT = M + '-right';
-const M_BOTTOM = M + '-bottom';
-const M_LEFT = M + '-left';
-const P = 'padding';
-const P_TOP = P + '-top';
-const P_RIGHT = P + '-right';
-const P_BOTTOM = P + '-bottom';
-const P_LEFT = P + '-left';
-const OBJECT_FIT = 'object-fit';
-const BG = 'background';
-const BG_COLOR = BG + '-color';
-const BG_IMAGE = BG + '-image';
-const BG_REPEAT = BG + '-repeat';
-const BG_POSITION = BG + '-position';
-const BG_SIZE = BG + '-size';
-const ANIM = 'animation';
-const ANIM_NAME = ANIM + '-name';
-const ANIM_DURATION = ANIM + '-duration';
-const ANIM_COUNT = ANIM + '-iteration-count';
-const ANIM_TIMING = ANIM + '-timing-function';
+import { isEmpty } from '../check/isEmpty';
+import { CssAnimValue, CssStyle } from './cssTypes';
 
 let cssColors: Dictionary<string> = {};
 
@@ -51,36 +17,14 @@ export const getCssColors = () => cssColors;
 
 export const getCssColor = (k: string) => cssColors[k] || k;
 
-type U = number | string | (number | string)[];
-type O = { [prop: string]: any };
-
-export type CssOutput = O;
-export type CssOutputs = Dictionary<O | string>;
-
-type CssTransform =
-  | string
-  | {
-      rotate?: string | number; // 0deg
-      scale?: string | number;
-      translateX?: string | number;
-      translateY?: string | number;
-    };
-
-type AnimValue =
-  | string
-  | {
-      name?: string;
-      count?: string | number;
-      timing?: string | number;
-      duration?: string | number;
-      keyframes?: Record<'from' | 'to' | string, { transform: CssTransform }>;
-    };
+type V = number | string | (number | string)[];
+type S = CssStyle;
 
 let animId = 0;
 
-const animToCss = (v: AnimValue, o: O, outputs: CssOutputs) => {
+const animToCss = (v: CssAnimValue, s: S, styles: Dictionary<CssStyle|string>) => {
   if (isString(v)) {
-    o.animation = v;
+    s.animation = v;
     return;
   }
   const { keyframes, duration, count, timing } = v;
@@ -108,214 +52,206 @@ const animToCss = (v: AnimValue, o: O, outputs: CssOutputs) => {
     }
   }
 
-  outputs[`@keyframes ${name}`] = sb.join('');
+  styles[`@keyframes ${name}`] = sb.join('');
 
-  o[ANIM_NAME] = name;
-  if (duration) o[ANIM_DURATION] = name;
-  if (count) o[ANIM_COUNT] = count;
-  if (timing) o[ANIM_TIMING] = timing;
+  s.animationName = name;
+  if (duration) s.animationDuration = name;
+  if (count) s.animationIterationCount = String(count);
+  if (timing) s.animationTimingFunction = timing;
 
   return;
 };
 
-const addTransform = (v: string, o: O) => {
-  o.transform = o.transform ? `${o.transform} ${v}` : v;
+const addTransform = (v: string, s: S) => {
+  s.transform = s.transform ? `${s.transform} ${v}` : v;
 };
 
-const transformProp = (prop: string) => (v: U, o: O) => addTransform(`${prop}(${v})`, o);
+const transformProp = (prop: string) => (v: V, s: S) => addTransform(`${prop}(${v})`, s);
 
-const g = (v: U): string =>
+const g = (v: V): string =>
   typeof v === 'number' ? v + 'rem'
   : typeof v === 'string' ? v
   : v.map(g).join(' ');
 
-export type FlexDirection = '' | 'row' | 'column' | 'row-reverse' | 'column-reverse';
-export type FlexAlign = '' | 'start' | 'center' | 'end' | 'stretch' | 'baseline';
-export type FlexJustify =
-  | ''
-  | 'start'
-  | 'center'
-  | 'end'
-  | 'evenly'
-  | 'space-between'
-  | 'space-around';
-
 export const cssFunMap = {
-  x: (v: U, o: O) => {
-    o.left = g(v);
+  x: (v: V, s: S) => {
+    s.left = g(v);
   },
-  y: (v: U, o: O) => {
-    o.top = g(v);
+  y: (v: V, s: S) => {
+    s.top = g(v);
   },
-  xy: (v: U, o: O) => {
+  xy: (v: V, s: S) => {
     const u = g(v);
-    o.left = u;
-    o.top = u;
+    s.left = u;
+    s.top = u;
   },
 
-  l: (v: U, o: O) => {
-    o.left = g(v);
+  l: (v: V, s: S) => {
+    s.left = g(v);
   },
-  t: (v: U, o: O) => {
-    o.top = g(v);
+  t: (v: V, s: S) => {
+    s.top = g(v);
   },
-  r: (v: U, o: O) => {
-    o.right = g(v);
+  r: (v: V, s: S) => {
+    s.right = g(v);
   },
-  b: (v: U, o: O) => {
-    o.bottom = g(v);
+  b: (v: V, s: S) => {
+    s.bottom = g(v);
   },
 
-  inset: (v: U, o: O) => {
+  inset: (v: V, s: S) => {
     const u = g(v);
-    o.left = u;
-    o.top = u;
-    o.right = u;
-    o.bottom = u;
+    s.left = u;
+    s.top = u;
+    s.right = u;
+    s.bottom = u;
   },
 
-  w: (v: U, o: O) => {
-    o.width = g(v);
+  w: (v: V, s: S) => {
+    s.width = g(v);
   },
-  h: (v: U, o: O) => {
-    o.height = g(v);
+  h: (v: V, s: S) => {
+    s.height = g(v);
   },
-  wh: (v: U, o: O) => {
+  wh: (v: V, s: S) => {
     const u = g(v);
-    o.width = u;
-    o.height = u;
+    s.width = u;
+    s.height = u;
   },
 
-  wMax: (v: U, o: O) => {
-    o[MAX_W] = g(v);
+  wMax: (v: V, s: S) => {
+    s.maxWidth = g(v);
   },
-  hMax: (v: U, o: O) => {
-    o[MAX_H] = g(v);
+  hMax: (v: V, s: S) => {
+    s.maxHeight = g(v);
   },
-  whMax: (v: U, o: O) => {
+  whMax: (v: V, s: S) => {
     const u = g(v);
-    o[MAX_W] = u;
-    o[MAX_H] = u;
+    s.maxWidth = u;
+    s.maxHeight = u;
   },
 
-  wMin: (v: U, o: O) => {
-    o[MIN_W] = g(v);
+  wMin: (v: V, s: S) => {
+    s.minWidth = g(v);
   },
-  hMin: (v: U, o: O) => {
-    o[MIN_H] = g(v);
+  hMin: (v: V, s: S) => {
+    s.minHeight = g(v);
   },
-  whMin: (v: U, o: O) => {
+  whMin: (v: V, s: S) => {
     const u = g(v);
-    o[MIN_W] = u;
-    o[MIN_H] = u;
+    s.minWidth = u;
+    s.minHeight = u;
   },
 
-  fontSize: (v: U, o: O) => {
-    o['font-size'] = g(v);
+  fontSize: (v: V, s: S) => {
+    s.fontSize = g(v);
   },
 
-  m: (v: U, o: O) => {
-    o.margin = g(v);
+  m: (v: V, s: S) => {
+    s.margin = g(v);
   },
-  mt: (v: U, o: O) => {
-    o[M_TOP] = g(v);
+  mt: (v: V, s: S) => {
+    s.marginTop = g(v);
   },
-  mr: (v: U, o: O) => {
-    o[M_RIGHT] = g(v);
+  mr: (v: V, s: S) => {
+    s.marginRight = g(v);
   },
-  mb: (v: U, o: O) => {
-    o[M_BOTTOM] = g(v);
+  mb: (v: V, s: S) => {
+    s.marginBottom = g(v);
   },
-  ml: (v: U, o: O) => {
-    o[M_LEFT] = g(v);
+  ml: (v: V, s: S) => {
+    s.marginLeft = g(v);
   },
-  mx: (v: U, o: O) => {
+  mx: (v: V, s: S) => {
     const u = g(v);
-    o[M_LEFT] = u;
-    o[M_RIGHT] = u;
+    s.marginLeft = u;
+    s.marginRight = u;
   },
-  my: (v: U, o: O) => {
+  my: (v: V, s: S) => {
     const u = g(v);
-    o[M_TOP] = u;
-    o[M_BOTTOM] = u;
+    s.marginTop = u;
+    s.marginBottom = u;
   },
 
-  p: (v: U, o: O) => {
-    o.padding = g(v);
+  p: (v: V, s: S) => {
+    s.padding = g(v);
   },
-  pt: (v: U, o: O) => {
-    o[P_TOP] = g(v);
+  pt: (v: V, s: S) => {
+    s.paddingTop = g(v);
   },
-  pr: (v: U, o: O) => {
-    o[P_RIGHT] = g(v);
+  pr: (v: V, s: S) => {
+    s.paddingRight = g(v);
   },
-  pb: (v: U, o: O) => {
-    o[P_BOTTOM] = g(v);
+  pb: (v: V, s: S) => {
+    s.paddingBottom = g(v);
   },
-  pl: (v: U, o: O) => {
-    o[P_LEFT] = g(v);
+  pl: (v: V, s: S) => {
+    s.paddingLeft = g(v);
   },
-  px: (v: U, o: O) => {
+  px: (v: V, s: S) => {
     const u = g(v);
-    o[P_LEFT] = u;
-    o[P_RIGHT] = u;
+    s.paddingLeft = u;
+    s.paddingRight = u;
   },
-  py: (v: U, o: O) => {
+  py: (v: V, s: S) => {
     const u = g(v);
-    o[P_TOP] = u;
-    o[P_BOTTOM] = u;
+    s.paddingTop = u;
+    s.paddingBottom = u;
   },
 
-  elevation: (v: number, o: O) => {
-    o['box-shadow'] = `${g(v * 0.1)} ${g(v * 0.2)} ${g(v * 0.25)} 0px ${getCssColor('shadow')}`;
+  elevation: (v: number, s: S) => {
+    s.boxShadow = `${g(v * 0.1)} ${g(v * 0.2)} ${g(v * 0.25)} 0px ${getCssColor('shadow')}`;
   },
 
-  rounded: (v: number, o: O) => {
-    o['border-radius'] = g(v * 0.2);
+  rounded: (v: number, s: S) => {
+    s.borderRadius = g(v * 0.2);
   },
 
-  bold: (v: 1 | 0, o: O) => {
-    o['font-weight'] = v ? 'bold' : 'normal';
+  bold: (v: string | boolean | 1 | 0, s: S) => {
+    s.fontWeight =
+      isString(v) ? (v as S['fontWeight'])
+      : v ? 'bold'
+      : 'regular';
   },
 
-  bg: (v: string, o: O) => {
-    o[BG_COLOR] = getCssColor(v);
+  bg: (v: string, s: S) => {
+    s.backgroundColor = getCssColor(v);
   },
-  fg: (v: string, o: O) => {
-    o.color = getCssColor(v);
+  fg: (v: string, s: S) => {
+    s.color = getCssColor(v);
   },
-  bColor: (v: string, o: O) => {
-    o['border-color'] = getCssColor(v);
+  bColor: (v: string, s: S) => {
+    s.borderColor = getCssColor(v);
   },
-  bgUrl: (v: string, o: O) => {
-    o[BG_IMAGE] = `url("${v}")`;
-  },
-
-  bgMode: (v: 'contain' | 'cover' | 'fill', o: O) => {
-    o[BG_REPEAT] = 'no-repeat';
-    o[BG_POSITION] = 'center';
-    o[BG_SIZE] = v === 'fill' ? '100% 100%' : v;
+  bgUrl: (v: string, s: S) => {
+    s.backgroundImage = `url("${v}")`;
   },
 
-  itemFit: (v: 'contain' | 'cover' | 'fill', o: O) => {
+  bgMode: (v: 'contain' | 'cover' | 'fill', s: S) => {
+    s.backgroundRepeat = 'no-repeat';
+    s.backgroundPosition = 'center';
+    s.backgroundSize = v === 'fill' ? '100% 100%' : v;
+  },
+
+  itemFit: (v: 'contain' | 'cover' | 'fill', s: S) => {
     if (v === 'contain') {
-      o[MAX_W] = '100%';
-      o[MAX_H] = '100%';
-      o[OBJECT_FIT] = v;
+      s.maxWidth = '100%';
+      s.maxHeight = '100%';
+      s.objectFit = v;
       return;
     }
     if (v === 'cover' || v === 'fill') {
-      o[MIN_W] = '100%';
-      o[MIN_H] = '100%';
-      o[OBJECT_FIT] = v;
+      s.minWidth = '100%';
+      s.minHeight = '100%';
+      s.objectFit = v;
       return;
     }
   },
 
   anim: animToCss,
 
-  transition: (v: number | string | boolean, o: O) => {
-    o.transition =
+  transition: (v: number | string | boolean, s: S) => {
+    s.transition =
       isFloat(v) ? `all ${v}s ease;`
       : isString(v) ? v
       : 'all 0.3s ease';
@@ -333,112 +269,95 @@ export const cssFunMap = {
   translateX: transformProp('translateX'),
   translateY: transformProp('translateY'),
 
-  fRow: (v: 1 | FlexAlign | [FlexAlign, FlexJustify], o: O) => {
+  fRow: (v: 1 | S['alignItems'] | [S['alignItems'], S['justifyContent']], s: S) => {
     const a =
       isArray(v) ? v
       : isString(v) ? [v]
       : [];
-    o.display = 'flex';
-    o[FLEX_DIRECTION] = 'row';
-    o[ALIGN_ITEMS] = toString(a[0], 'center');
-    o[JUSTIFY_CONTENT] = toString(a[1], 'space-between');
+    s.display = 'flex';
+    s.flexDirection = 'row';
+    s.alignItems = toString(a[0], 'center');
+    s.justifyContent = toString(a[1], 'space-between');
   },
-  fCol: (v: 1 | FlexAlign | [FlexAlign, FlexJustify], o: O) => {
+  fCol: (v: 1 | S['alignItems'] | [S['alignItems'], S['justifyContent']], s: S) => {
     const a =
       isArray(v) ? v
       : isString(v) ? [v]
       : [];
-    o.display = 'flex';
-    o[FLEX_DIRECTION] = 'column';
-    o[ALIGN_ITEMS] = toString(a[0], 'stretch');
-    o[JUSTIFY_CONTENT] = toString(a[1], 'start');
+    s.display = 'flex';
+    s.flexDirection = 'column';
+    s.alignItems = toString(a[0], 'stretch');
+    s.justifyContent = toString(a[1], 'flex-start');
   },
-  fCenter: (v: 1 | FlexDirection, o: O) => {
+  fCenter: (v: 1 | S['flexDirection'], s: S) => {
     const a =
       isArray(v) ? v
       : isString(v) ? [v]
       : [];
-    o.display = 'flex';
-    o[FLEX_DIRECTION] = toString(a[0], 'column');
-    o[ALIGN_ITEMS] = 'center';
-    o[JUSTIFY_CONTENT] = 'center';
+    s.display = 'flex';
+    s.flexDirection = toString(a[0], 'column');
+    s.alignItems = 'center';
+    s.justifyContent = 'center';
   },
 };
 
 type CssFunMap = typeof cssFunMap;
 
-export type CssFunRecord = {
+export type CssFunProps = {
   [K in keyof CssFunMap]?: Parameters<CssFunMap[K]>[0];
 };
 
-export type CssRecord = Omit<CssOutput, keyof CssFunRecord> & CssFunRecord;
+export type CssRecord = Omit<CssStyle, keyof CssFunProps> & CssFunProps;
 
-export type CssInput = CssRecord;
-export type CssInputs = Dictionary<CssInput>;
+export const computeStyle = (record?: CssRecord, style: CssStyle = {}, styles: Dictionary<CssStyle | string> = {}) => {
+  if (!record) return {};
+  for (const prop in record) {
+    const value = (record as any)[prop];
+    const fun = (cssFunMap as any)[prop];
+    if (isFunction(fun)) {
+      fun(value, style, styles);
+    } else {
+      (style as any)[prop] = value;
+    }
+  }
+  return style;
+};
 
-export const computeCss = (prefix: string, inputs?: CssInputs, outputs: CssOutputs = {}) => {
-  // log.d('computeCss outputs', prefix, inputs, outputs);
+export const computeStyles = (prefix: string, inputs?: Dictionary<CssRecord>, styles: Dictionary<CssStyle | string> = {}) => {
   for (const k in inputs) {
     const record = inputs[k];
     const query = `${prefix}${k.replace(/&/g, prefix)}`;
-    // log.d('computeCss query', query);
-    const output: O = (outputs[query] as O) || (outputs[query] = {});
-
-    for (const prop in record) {
-      const value = record[prop];
-      const fun = (cssFunMap as any)[prop];
-      if (isFunction(fun)) {
-        // log.d('computeCss fun', query, prop, value);
-        fun(value, output, outputs);
-      } else if (isObject(value)) {
-        // log.d('computeCss obj', query, prop, value);
-        // computeCss(`${query} ${prefix}${prop.replace(/&/g, prefix)}`, { '': value }, outputs);
-        throw notImplemented(prop);
-      } else {
-        const propKebab = pascalToKebabCase(prop);
-        // log.d('computeCss prop', query, prop, propKebab);
-        output[propKebab] = value;
-      }
-    }
-
-    // log.d('computeCss output', output);
+    const style: S = (styles[query] as S) || (styles[query] = {});
+    computeStyle(record, style, styles);
   }
-  return outputs;
+  return styles;
 };
 
-export const outputsToCss = (outputs: CssOutputs = {}) => {
+export const styleToCss = (style: string | CssStyle) => {
+  if (isString(style)) return style;
   const sb = [];
-  for (const query in outputs) {
-    const output = outputs[query];
+  for (const prop in style) {
+    const value = (style as any)[prop];
+    const propKebab = pascalToKebabCase(prop);
+    sb.push(`${propKebab}:${value};`);
+  }
+  const css = sb.join('\n');
+  return css;
+};
 
-    if (isString(output)) {
-      sb.push(`${query} { ${output} }`);
-    } else if (isNotEmpty(output)) {
-      sb.push(`${query} {`);
-      for (const prop in output) {
-        const value = output[prop];
-        sb.push(`${prop}:${value};`);
-      }
-      sb.push(`}`);
+export const stylesToCss = (styles: Dictionary<CssStyle | string> = {}) => {
+  const sb = [];
+  for (const query in styles) {
+    const output = styles[query];
+    if (output && !isEmpty(output)) {
+      sb.push(`${query} { ${styleToCss(output)} }`);
     }
   }
   const css = sb.join('\n');
   return css;
 };
 
-export const formatCss = (prefix: string, inputs?: CssInputs): string => {
-  // log.d('formatCss', prefix, inputs);
-
-  const outputs = computeCss(prefix, inputs);
-  // log.d('formatCss outputs', prefix, inputs, outputs);
-
-  const css = outputsToCss(outputs);
-  // log.d('formatCss css', prefix, inputs, outputs, css);
-
-  return css;
-};
-
-export type CssValue = null | string | string[] | CssInputs;
+export type CssValue = null | string | string[] | Dictionary<CssRecord>;
 
 const cssCache: { [key: string]: [HTMLElement, CssValue, number] } = {};
 
@@ -446,23 +365,20 @@ let cssCount = 0;
 
 export const setCss = (key: string, css?: CssValue, order?: number, force?: boolean) => {
   const cache = cssCache[key];
-  // log.d('setCss', key, css, order, force, cache);
 
   if (cache) {
     if (!force && isDeepEqual(cache[1], css)) return key;
-    // log.d('setCss remove', key, css, order, force);
     cache[0].remove();
     delete cssCache[key];
   }
 
   if (css) {
     const el = createEl('style');
-    // log.d('setCss el', key, css, order, force, el);
 
     el.textContent =
       isString(css) ? css
       : isArray(css) ? css.join('\n')
-      : isItem(css) ? formatCss(`.${key}`, css)
+      : isItem(css) ? stylesToCss(computeStyles(`.${key}`, css))
       : '';
 
     cssCache[key] = [el, css, order || cssCount++];
@@ -472,8 +388,6 @@ export const setCss = (key: string, css?: CssValue, order?: number, force?: bool
       .map((p) => {
         document.head.appendChild(p[0]);
       });
-
-    // log.d('setCss ok', key, css, order, force, el);
   }
 
   return key;
@@ -482,11 +396,8 @@ export const setCss = (key: string, css?: CssValue, order?: number, force?: bool
 export const Css = (key: string, css?: CssValue) => {
   const order = cssCount++;
   let isInit = false;
-  // log.d('Css', key, css, order);
-
   return (...args: (string | { class?: any } | boolean | number | undefined | null)[]) => {
     if (!isInit) {
-      // log.d('Css init', key, css, order);
       setCss(key, css, order);
       isInit = true;
     }
@@ -512,7 +423,6 @@ export const Css = (key: string, css?: CssValue) => {
 };
 
 export const refreshCss = () => {
-  // log.d('refreshCss', cssCache);
   for (const key in cssCache) {
     const r = cssCache[key];
     if (r) {
@@ -523,7 +433,6 @@ export const refreshCss = () => {
 };
 
 export const setCssColors = (next: Dictionary<string>) => {
-  // log.d('setCssColors', next);
   cssColors = next;
   refreshCss();
 };

@@ -1,4 +1,4 @@
-import { Item } from '../check/isItem';
+import { Item } from '../types/Item';
 import { isDeepEqual } from './isDeepEqual';
 
 export const getChanges = <T extends Item = Item>(source: T, target: Partial<T>): Partial<T> => {

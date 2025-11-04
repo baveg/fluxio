@@ -30,8 +30,7 @@ export const combineFlux = <const Sources extends readonly Flux[]>(sources: Sour
     (pipe) => {
       pipe.set(sources.map((s) => s.get()) as FUnwrapSources<Sources>);
     },
-    (pipe) => {
-      const values = pipe.get();
+    (values) => {
       if (Array.isArray(values)) values.forEach((v: any, i) => sources[i]!.set(v));
     }
   );

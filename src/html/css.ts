@@ -369,13 +369,17 @@ export const computeStyles = (
   return styles;
 };
 
+const cssPropMap: Dictionary<string> = {};
+export const getCssProp = (prop: string) => (
+  cssPropMap[prop] || (cssPropMap[prop] = pascalToKebabCase(prop))
+)
+
 export const styleToCss = (style: string | CssStyle) => {
   if (isString(style)) return style;
   const sb = [];
   for (const prop in style) {
     const value = (style as any)[prop];
-    const propKebab = pascalToKebabCase(prop);
-    sb.push(`${propKebab}:${value};`);
+    sb.push(`${getCssProp(prop)}:${value};`);
   }
   const css = sb.join('\n');
   return css;

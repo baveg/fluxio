@@ -326,6 +326,11 @@ export interface CssStyle {
   isolation?: 'auto' | 'isolate';
   willChange?: string;
   contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'style' | 'paint' | string;
+
+  // WebKit
+  '-webkit-text-fill-color'?: string,
+  '-webkit-box-shadow'?: string,
+  caretColor?: string,
 }
 
 export type StyleTransform =

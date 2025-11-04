@@ -264,6 +264,18 @@ export interface CssStyle {
     | string;
   pointerEvents?: 'auto' | 'none' | 'visiblePainted' | 'visibleFill' | 'visibleStroke' | 'visible';
   userSelect?: 'auto' | 'none' | 'text' | 'contain' | 'all';
+  touchAction?:
+    | 'auto'
+    | 'none'
+    | 'pan-x'
+    | 'pan-y'
+    | 'pan-left'
+    | 'pan-right'
+    | 'pan-up'
+    | 'pan-down'
+    | 'pinch-zoom'
+    | 'manipulation'
+    | string;
 
   // Content & Counters
   content?: string;

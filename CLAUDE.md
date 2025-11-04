@@ -22,11 +22,12 @@ Fluxio is a lightweight, functional utility library for TypeScript that provides
 - **Source Maps**: Included
 
 **Package Exports**:
+
 ```json
 {
-  "main": "dist/index.js",        // CommonJS
-  "module": "dist/index.mjs",     // ES Module
-  "types": "dist/index.d.ts"      // TypeScript declarations
+  "main": "dist/index.js", // CommonJS
+  "module": "dist/index.mjs", // ES Module
+  "types": "dist/index.d.ts" // TypeScript declarations
 }
 ```
 
@@ -100,16 +101,17 @@ const count$ = flux(0);
 count$.on((value) => console.log('Count:', value));
 
 // Update state
-count$.set(1);                    // Set absolute value
-count$.set(prev => prev + 1);    // Update based on previous
+count$.set(1); // Set absolute value
+count$.set((prev) => prev + 1); // Update based on previous
 
 // Advanced operations
-count$.map(x => x * 2);          // Transform values
-count$.filter(x => x > 0);       // Filter updates
-count$.debounce(300);            // Debounce changes
+count$.map((x) => x * 2); // Transform values
+count$.filter((x) => x > 0); // Filter updates
+count$.debounce(300); // Debounce changes
 ```
 
 **Key Flux Features**:
+
 - **Transformations**: map, mapAsync, filter, scan
 - **Timing**: debounce, throttle, delay
 - **Persistence**: fluxStored for localStorage sync
@@ -118,14 +120,15 @@ count$.debounce(300);            // Debounce changes
 - **Bidirectional pipes**: Pipe class for two-way data binding
 
 **Bidirectional Pipe Example**:
+
 ```typescript
 const celsius$ = flux(0);
 const fahrenheit$ = celsius$.map(
-  c => c * 9/5 + 32,    // Forward transform
-  f => (f - 32) * 5/9   // Reverse transform
+  (c) => (c * 9) / 5 + 32, // Forward transform
+  (f) => ((f - 32) * 5) / 9 // Reverse transform
 );
 
-fahrenheit$.set(100);   // Updates celsius$ to ~37.78
+fahrenheit$.set(100); // Updates celsius$ to ~37.78
 ```
 
 #### 2. CSS-in-JS Pattern
@@ -135,26 +138,27 @@ Fluxio provides a powerful CSS-in-JS system:
 ```typescript
 const css = Css('MyComponent', {
   '': {
-    fCol: 1,              // display: flex; flex-direction: column
-    p: 2,                 // padding: 2rem
-    bg: 'primary',        // background-color: var(--primary-color)
-    elevation: 2,         // box-shadow with depth
-    rounded: 3,           // border-radius: 0.6rem
-    transition: 0.2       // transition: all 0.2s ease
+    fCol: 1, // display: flex; flex-direction: column
+    p: 2, // padding: 2rem
+    bg: 'primary', // background-color: var(--primary-color)
+    elevation: 2, // box-shadow with depth
+    rounded: 3, // border-radius: 0.6rem
+    transition: 0.2, // transition: all 0.2s ease
   },
-  'Header': {
+  Header: {
     fRow: ['center', 'space-between'],
     fontSize: 1.5,
-    bold: 1
-  }
+    bold: 1,
+  },
 });
 
 // Returns class name objects
-css()          // { class: 'MyComponent' }
-css('Header')  // { class: 'MyComponentHeader' }
+css(); // { class: 'MyComponent' }
+css('Header'); // { class: 'MyComponentHeader' }
 ```
 
 **CSS Utility Functions**:
+
 - **Layout**: x, y, xy, l, t, r, b, inset, w, h, wh, wMax, hMax, wMin, hMin
 - **Flexbox**: fRow, fCol, fCenter with alignment/justification
 - **Spacing**: m, mt, mb, ml, mr, mx, my (margins); p, pt, pb, pl, pr, px, py (padding)
@@ -166,6 +170,7 @@ css('Header')  // { class: 'MyComponentHeader' }
 
 **Dynamic CSS Injection**:
 CSS is automatically injected into `<head>` as `<style>` elements:
+
 ```typescript
 // First call creates <style> element
 const css = Css('Button', { '': { bg: 'blue' } });
@@ -184,7 +189,7 @@ const storage = new Storage();
 // Get with factory and validation
 const config = storage.get(
   'config',
-  () => ({ theme: 'dark' }),           // Factory function
+  () => ({ theme: 'dark' }), // Factory function
   (value) => value.theme !== undefined, // Validator
   (value) => ({ ...value, theme: value.theme || 'light' }) // Cleaner
 );
@@ -197,6 +202,7 @@ storage.clear();
 ```
 
 Features:
+
 - JSON serialization/deserialization
 - In-memory fallback when localStorage unavailable
 - Prefix support for namespacing
@@ -211,15 +217,16 @@ const data = await req({
   method: 'POST',
   json: { name: 'John' },
   resType: 'json',
-  retry: 3,                    // Retry failed requests
-  timeout: 5000,              // 5 second timeout
+  retry: 3, // Retry failed requests
+  timeout: 5000, // 5 second timeout
   onError: (error) => console.error(error),
-  cast: (ctx) => ctx.data.users,  // Transform response
-  after: (ctx) => console.log('Done')
+  cast: (ctx) => ctx.data.users, // Transform response
+  after: (ctx) => console.log('Done'),
 });
 ```
 
 Features:
+
 - Automatic retry with exponential backoff
 - Request/response transformation pipelines
 - FormData and JSON body support
@@ -232,14 +239,15 @@ Array utilities support circular/wrap-around indexing:
 
 ```typescript
 // Array: [0, 1, 2, 3]
-normalizeIndex(-1, 4)  // 3 (wraps to end)
-normalizeIndex(5, 4)   // 1 (wraps to start)
+normalizeIndex(-1, 4); // 3 (wraps to end)
+normalizeIndex(5, 4); // 1 (wraps to start)
 
 // Used throughout array utilities
-moveIndex([1, 2, 3], -1, 0)  // Moves last item to first position
+moveIndex([1, 2, 3], -1, 0); // Moves last item to first position
 ```
 
 Functions with circular indexing:
+
 - `normalizeIndex` - Convert any index to valid array index
 - `moveIndex` - Move item with wrap-around support
 - `setItemIndex` - Update item at any index (including negative)
@@ -250,17 +258,18 @@ Functions with circular indexing:
 Tagged logger factory with automatic instance counting:
 
 ```typescript
-const log = logger('api');    // Creates [api]
-const log2 = logger('api');   // Creates [api2]
-const log3 = logger('api');   // Creates [api3]
+const log = logger('api'); // Creates [api]
+const log2 = logger('api'); // Creates [api2]
+const log3 = logger('api'); // Creates [api3]
 
-log.d('Debug message');       // [api] Debug message
-log.i('Info message');        // [api] Info message
-log.w('Warning');            // [api] ⚠️ Warning
-log.e('Error');              // [api] ❌ Error
+log.d('Debug message'); // [api] Debug message
+log.i('Info message'); // [api] Info message
+log.w('Warning'); // [api] ⚠️ Warning
+log.e('Error'); // [api] ❌ Error
 ```
 
 Features:
+
 - Automatic instance counting for same tags
 - Icons for warnings and errors
 - Custom log implementation support
@@ -271,6 +280,7 @@ Features:
 ### Adding New Utility Functions
 
 1. Create function file in appropriate module directory:
+
    ```typescript
    // src/array/myFunction.ts
    export const myFunction = (arr: any[], index: number) => {
@@ -279,6 +289,7 @@ Features:
    ```
 
 2. Export from module's index.ts:
+
    ```typescript
    // src/array/index.ts
    export * from './myFunction';
@@ -307,19 +318,23 @@ Features:
 ## Build & Publishing
 
 **Before Publishing**:
+
 1. Update version in `package.json`
 2. Run `npm run build` to ensure clean build
 3. Test the build in a separate project by installing locally
 
 **Publishing to npm**:
+
 ```bash
 npm publish
 ```
+
 The `prepublishOnly` script automatically runs the build.
 
 ## Browser/Node.js Compatibility
 
 The library works in both environments:
+
 - Uses `glb` for global object detection (window/global)
 - Storage class checks for localStorage availability
 - HTTP client supports both fetch (modern) and XHR (legacy)

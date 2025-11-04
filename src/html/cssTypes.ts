@@ -119,7 +119,7 @@ export interface CssStyle {
   gridAutoColumns?: string;
   gridAutoRows?: string;
   gridAutoFlow?: 'row' | 'column' | 'row dense' | 'column dense';
-  justifyItems?: 'start' | 'end' | 'center' | 'stretch';
+  justifyItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
   placeItems?: string;
 
   // Grid Item
@@ -130,7 +130,7 @@ export interface CssStyle {
   gridColumnEnd?: string;
   gridRowStart?: string;
   gridRowEnd?: string;
-  justifySelf?: 'auto' | 'start' | 'end' | 'center' | 'stretch';
+  justifySelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
   placeSelf?: string;
 
   // Background
@@ -328,7 +328,7 @@ export interface CssStyle {
   contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'style' | 'paint' | string;
 }
 
-export type CssTransform =
+export type StyleTransform =
   | string
   | {
       rotate?: string | number; // 0deg
@@ -337,12 +337,16 @@ export type CssTransform =
       translateY?: string | number;
     };
 
-export type CssAnimValue =
+export type StyleAnim =
   | string
   | {
       name?: CssStyle['animationName'];
       count?: CssStyle['animationIterationCount'] | number;
       timing?: CssStyle['animationTimingFunction'];
       duration?: CssStyle['animationDuration'] | number;
-      keyframes?: Record<'from' | 'to' | string, { transform: CssTransform }>;
+      keyframes?: Record<'from' | 'to' | string, { transform: StyleTransform }>;
     };
+
+export type StyleFlexDirection = CssStyle['flexDirection'];
+export type StyleFlexAlign = 'start' | 'end' | 'center' | 'baseline' | 'stretch';
+export type StyleFlexJustify = 'auto' | 'start' | 'end' | 'center' | 'between' | 'around' | 'space-evenly' | 'baseline' | 'stretch';

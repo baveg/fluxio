@@ -1,4 +1,4 @@
-import { isFloat } from '../check/isNumber';
+import { isFloat, isNumber } from '../check/isNumber';
 import { isArray } from '../check/isArray';
 import { Dictionary } from '../types/Dictionary';
 import { toString } from '../cast/toString';
@@ -9,20 +9,20 @@ import { isItem } from '../check/isItem';
 import { pascalToKebabCase } from '../string/cases';
 import { isFunction } from '../check/isFunction';
 import { isEmpty } from '../check/isEmpty';
-import { CssAnimValue, CssStyle } from './cssTypes';
+import { StyleAnim, CssStyle, StyleFlexAlign, StyleFlexDirection, StyleFlexJustify } from './cssTypes';
 
 let cssColors: Dictionary<string> = {};
 
 export const getCssColors = () => cssColors;
 
-export const getCssColor = (k: string) => cssColors[k] || k;
+export const getCssColor = (k: string, defaultValue: string) => cssColors[k] || defaultValue;
 
 type V = number | string | (number | string)[];
 type S = CssStyle;
 
 let animId = 0;
 
-const animToCss = (v: CssAnimValue, s: S, styles: Dictionary<CssStyle | string>) => {
+const animToCss = (v: StyleAnim, s: S, styles: Dictionary<CssStyle | string>) => {
   if (isString(v)) {
     s.animation = v;
     return;
@@ -72,6 +72,15 @@ const g = (v: V): string =>
   typeof v === 'number' ? v + 'rem'
   : typeof v === 'string' ? v
   : v.map(g).join(' ');
+
+const fConvert = (v: any, defaultValue: string): any => (
+  (!isStringValid(v)) ? defaultValue :
+  (v === 'start') ? 'flex-start' :
+  (v === 'end') ? 'flex-end' :
+  (v === 'between') ? 'space-between' :
+  (v === 'around') ? 'space-around' :
+  v
+);
 
 export const cssFunMap = {
   x: (v: V, s: S) => {
@@ -200,7 +209,7 @@ export const cssFunMap = {
   },
 
   elevation: (v: number, s: S) => {
-    s.boxShadow = `${g(v * 0.1)} ${g(v * 0.2)} ${g(v * 0.25)} 0px ${getCssColor('shadow')}`;
+    s.boxShadow = `${g(v * 0.1)} ${g(v * 0.2)} ${g(v * 0.25)} 0px ${getCssColor('shadow', 'black')}`;
   },
 
   rounded: (v: number, s: S) => {
@@ -215,13 +224,19 @@ export const cssFunMap = {
   },
 
   bg: (v: string, s: S) => {
-    s.backgroundColor = getCssColor(v);
+    s.backgroundColor = getCssColor(v, 'white');
   },
   fg: (v: string, s: S) => {
-    s.color = getCssColor(v);
+    s.color = getCssColor(v, 'black');
+  },
+  border: (v: number | string, s: S) => {
+    s.border =
+      isNumber(v) ? `${v}px solid ${getCssColor('border', 'black')}` :
+      v.includes(' ') ? v :
+      `1px solid ${getCssColor(v, 'black')}`;
   },
   bColor: (v: string, s: S) => {
-    s.borderColor = getCssColor(v);
+    s.borderColor = getCssColor(v, 'black');
   },
   bgUrl: (v: string, s: S) => {
     s.backgroundImage = `url("${v}")`;
@@ -269,27 +284,27 @@ export const cssFunMap = {
   translateX: transformProp('translateX'),
   translateY: transformProp('translateY'),
 
-  fRow: (v: 1 | S['alignItems'] | [S['alignItems'], S['justifyContent']], s: S) => {
+  fRow: (v: 1 | StyleFlexAlign | [StyleFlexAlign, StyleFlexJustify], s: S) => {
     const a =
       isArray(v) ? v
       : isString(v) ? [v]
       : [];
     s.display = 'flex';
     s.flexDirection = 'row';
-    s.alignItems = toString(a[0], 'center');
-    s.justifyContent = toString(a[1], 'space-between');
+    s.alignItems = fConvert(a[0], 'center');
+    s.justifyContent = fConvert(a[1], 'space-between');
   },
-  fCol: (v: 1 | S['alignItems'] | [S['alignItems'], S['justifyContent']], s: S) => {
+  fCol: (v: 1 | StyleFlexAlign | [StyleFlexAlign, StyleFlexJustify], s: S) => {
     const a =
       isArray(v) ? v
       : isString(v) ? [v]
       : [];
     s.display = 'flex';
     s.flexDirection = 'column';
-    s.alignItems = toString(a[0], 'stretch');
-    s.justifyContent = toString(a[1], 'flex-start');
+    s.alignItems = fConvert(a[0], 'stretch');
+    s.justifyContent = fConvert(a[1], 'flex-start');
   },
-  fCenter: (v: 1 | S['flexDirection'], s: S) => {
+  fCenter: (v: 1 | StyleFlexDirection, s: S) => {
     const a =
       isArray(v) ? v
       : isString(v) ? [v]
@@ -298,6 +313,19 @@ export const cssFunMap = {
     s.flexDirection = toString(a[0], 'column');
     s.alignItems = 'center';
     s.justifyContent = 'center';
+  },
+
+  alignItems: (v: 1 | StyleFlexDirection, s: S) => {
+    s.alignItems = fConvert(v, 'center');
+  },
+  justifyContent: (v: 1 | StyleFlexJustify, s: S) => {
+    s.justifyContent = fConvert(v, 'center');
+  },
+  alignContent: (v: 1 | StyleFlexJustify, s: S) => {
+    s.alignContent = fConvert(v, 'center');
+  },
+  alignSelf: (v: 1 | StyleFlexJustify, s: S) => {
+    s.alignSelf = fConvert(v, 'center');
   },
 };
 

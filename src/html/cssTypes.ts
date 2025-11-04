@@ -1,4 +1,6 @@
 export interface CssStyle {
+  [key: string]: any;
+
   // Display & Visibility
   display?:
     | 'none'

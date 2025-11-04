@@ -21,9 +21,6 @@ let cssColors: Dictionary<string> = {};
 
 export const getCssColors = () => cssColors;
 
-export const getCssColor = (k: string, defaultValue: string = 'none') =>
-  cssColors[k] || defaultValue;
-
 type V = number | string | (number | string)[];
 type S = CssStyle;
 
@@ -215,7 +212,7 @@ export const cssFunMap = {
   },
 
   elevation: (v: number, s: S) => {
-    s.boxShadow = `${g(v * 0.1)} ${g(v * 0.2)} ${g(v * 0.25)} 0px ${getCssColor('shadow', 'black')}`;
+    s.boxShadow = `${g(v * 0.1)} ${g(v * 0.2)} ${g(v * 0.25)} 0px ${cssColors.shadow || 'black'}`;
   },
 
   rounded: (v: number, s: S) => {
@@ -230,19 +227,19 @@ export const cssFunMap = {
   },
 
   bg: (v: string, s: S) => {
-    s.backgroundColor = getCssColor(v, 'white');
+    s.backgroundColor = cssColors[v] || v;
   },
   fg: (v: string, s: S) => {
-    s.color = getCssColor(v, 'black');
+    s.color = cssColors[v] || v;
   },
   border: (v: number | string, s: S) => {
     s.border =
-      isNumber(v) ? `${v}px solid ${getCssColor('border', 'black')}`
+      isNumber(v) ? `${v}px solid ${cssColors.border || 'black'}`
       : v.includes(' ') ? v
-      : `1px solid ${getCssColor(v, 'black')}`;
+      : `1px solid ${cssColors[v] || v}`;
   },
   bColor: (v: string, s: S) => {
-    s.borderColor = getCssColor(v, 'black');
+    s.borderColor = cssColors[v] || v;
   },
   bgUrl: (v: string, s: S) => {
     s.backgroundImage = `url("${v}")`;

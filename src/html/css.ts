@@ -22,7 +22,7 @@ type S = CssStyle;
 
 let animId = 0;
 
-const animToCss = (v: CssAnimValue, s: S, styles: Dictionary<CssStyle|string>) => {
+const animToCss = (v: CssAnimValue, s: S, styles: Dictionary<CssStyle | string>) => {
   if (isString(v)) {
     s.animation = v;
     return;
@@ -309,7 +309,11 @@ export type CssFunProps = {
 
 export type CssRecord = Omit<CssStyle, keyof CssFunProps> & CssFunProps;
 
-export const computeStyle = (record?: CssRecord, style: CssStyle = {}, styles: Dictionary<CssStyle | string> = {}) => {
+export const computeStyle = (
+  record?: CssRecord,
+  style: CssStyle = {},
+  styles: Dictionary<CssStyle | string> = {}
+) => {
   if (!record) return {};
   for (const prop in record) {
     const value = (record as any)[prop];
@@ -323,7 +327,11 @@ export const computeStyle = (record?: CssRecord, style: CssStyle = {}, styles: D
   return style;
 };
 
-export const computeStyles = (prefix: string, inputs?: Dictionary<CssRecord>, styles: Dictionary<CssStyle | string> = {}) => {
+export const computeStyles = (
+  prefix: string,
+  inputs?: Dictionary<CssRecord>,
+  styles: Dictionary<CssStyle | string> = {}
+) => {
   for (const k in inputs) {
     const record = inputs[k];
     const query = `${prefix}${k.replace(/&/g, prefix)}`;

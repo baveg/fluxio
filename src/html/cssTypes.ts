@@ -328,9 +328,9 @@ export interface CssStyle {
   contain?: 'none' | 'strict' | 'content' | 'size' | 'layout' | 'style' | 'paint' | string;
 
   // WebKit
-  '-webkit-text-fill-color'?: string,
-  '-webkit-box-shadow'?: string,
-  caretColor?: string,
+  '-webkit-text-fill-color'?: string;
+  '-webkit-box-shadow'?: string;
+  caretColor?: string;
 }
 
 export type StyleTransform =
@@ -354,4 +354,13 @@ export type StyleAnim =
 
 export type StyleFlexDirection = CssStyle['flexDirection'];
 export type StyleFlexAlign = 'start' | 'end' | 'center' | 'baseline' | 'stretch';
-export type StyleFlexJustify = 'auto' | 'start' | 'end' | 'center' | 'between' | 'around' | 'space-evenly' | 'baseline' | 'stretch';
+export type StyleFlexJustify =
+  | 'auto'
+  | 'start'
+  | 'end'
+  | 'center'
+  | 'between'
+  | 'around'
+  | 'space-evenly'
+  | 'baseline'
+  | 'stretch';

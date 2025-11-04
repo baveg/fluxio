@@ -9,13 +9,20 @@ import { isItem } from '../check/isItem';
 import { pascalToKebabCase } from '../string/cases';
 import { isFunction } from '../check/isFunction';
 import { isEmpty } from '../check/isEmpty';
-import { StyleAnim, CssStyle, StyleFlexAlign, StyleFlexDirection, StyleFlexJustify } from './cssTypes';
+import {
+  StyleAnim,
+  CssStyle,
+  StyleFlexAlign,
+  StyleFlexDirection,
+  StyleFlexJustify,
+} from './cssTypes';
 
 let cssColors: Dictionary<string> = {};
 
 export const getCssColors = () => cssColors;
 
-export const getCssColor = (k: string, defaultValue: string) => cssColors[k] || defaultValue;
+export const getCssColor = (k: string, defaultValue: string = 'none') =>
+  cssColors[k] || defaultValue;
 
 type V = number | string | (number | string)[];
 type S = CssStyle;
@@ -73,14 +80,13 @@ const g = (v: V): string =>
   : typeof v === 'string' ? v
   : v.map(g).join(' ');
 
-const fConvert = (v: any, defaultValue: string): any => (
-  (!isStringValid(v)) ? defaultValue :
-  (v === 'start') ? 'flex-start' :
-  (v === 'end') ? 'flex-end' :
-  (v === 'between') ? 'space-between' :
-  (v === 'around') ? 'space-around' :
-  v
-);
+const fConvert = (v: any, defaultValue: string): any =>
+  !isStringValid(v) ? defaultValue
+  : v === 'start' ? 'flex-start'
+  : v === 'end' ? 'flex-end'
+  : v === 'between' ? 'space-between'
+  : v === 'around' ? 'space-around'
+  : v;
 
 export const cssFunMap = {
   x: (v: V, s: S) => {
@@ -231,9 +237,9 @@ export const cssFunMap = {
   },
   border: (v: number | string, s: S) => {
     s.border =
-      isNumber(v) ? `${v}px solid ${getCssColor('border', 'black')}` :
-      v.includes(' ') ? v :
-      `1px solid ${getCssColor(v, 'black')}`;
+      isNumber(v) ? `${v}px solid ${getCssColor('border', 'black')}`
+      : v.includes(' ') ? v
+      : `1px solid ${getCssColor(v, 'black')}`;
   },
   bColor: (v: string, s: S) => {
     s.borderColor = getCssColor(v, 'black');
@@ -370,9 +376,8 @@ export const computeStyles = (
 };
 
 const cssPropMap: Dictionary<string> = {};
-export const getCssProp = (prop: string) => (
-  cssPropMap[prop] || (cssPropMap[prop] = pascalToKebabCase(prop))
-)
+export const getCssProp = (prop: string) =>
+  cssPropMap[prop] || (cssPropMap[prop] = pascalToKebabCase(prop));
 
 export const styleToCss = (style: string | CssStyle) => {
   if (isString(style)) return style;

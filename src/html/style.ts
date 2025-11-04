@@ -1,18 +1,17 @@
 import { setAttributes } from './attributes';
+import { CssStyle } from './cssTypes';
 
-export type Style = Partial<CSSStyleDeclaration>;
-
-export const getStyle = (el: HTMLElement): Style => el.style;
+export const getStyle = (el: HTMLElement): CssStyle => el.style as CssStyle;
 
 export const resetStyle = (el: Element) => {
   setAttributes(el, { style: '' });
 };
 
-export const setStyle = (el: HTMLElement, style: Style) => {
+export const setStyle = (el: HTMLElement, style: CssStyle) => {
   Object.assign(el.style, style);
 };
 
-export const replaceStyle = (el: HTMLElement, style: Style | string) => {
+export const replaceStyle = (el: HTMLElement, style: CssStyle | string) => {
   if (typeof style === 'string') {
     return setAttributes(el, { style });
   }

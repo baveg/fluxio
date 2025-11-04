@@ -301,16 +301,16 @@ export const cssFunMap = {
   },
 };
 
-type CssFunMap = typeof cssFunMap;
+type StyleFunMap = typeof cssFunMap;
 
-export type CssFunProps = {
-  [K in keyof CssFunMap]?: Parameters<CssFunMap[K]>[0];
+export type StyleFunProps = {
+  [K in keyof StyleFunMap]?: Parameters<StyleFunMap[K]>[0];
 };
 
-export type CssRecord = Omit<CssStyle, keyof CssFunProps> & CssFunProps;
+export type Style = Omit<CssStyle, keyof StyleFunProps> & StyleFunProps;
 
 export const computeStyle = (
-  record?: CssRecord,
+  record?: Style,
   style: CssStyle = {},
   styles: Dictionary<CssStyle | string> = {}
 ) => {
@@ -329,7 +329,7 @@ export const computeStyle = (
 
 export const computeStyles = (
   prefix: string,
-  inputs?: Dictionary<CssRecord>,
+  inputs?: Dictionary<Style>,
   styles: Dictionary<CssStyle | string> = {}
 ) => {
   for (const k in inputs) {
@@ -365,13 +365,13 @@ export const stylesToCss = (styles: Dictionary<CssStyle | string> = {}) => {
   return css;
 };
 
-export type CssValue = null | string | string[] | Dictionary<CssRecord>;
+export type StylesValue = null | string | string[] | Dictionary<Style>;
 
-const cssCache: { [key: string]: [HTMLElement, CssValue, number] } = {};
+const cssCache: { [key: string]: [HTMLElement, StylesValue, number] } = {};
 
 let cssCount = 0;
 
-export const setCss = (key: string, css?: CssValue, order?: number, force?: boolean) => {
+export const setCss = (key: string, css?: StylesValue, order?: number, force?: boolean) => {
   const cache = cssCache[key];
 
   if (cache) {
@@ -401,12 +401,12 @@ export const setCss = (key: string, css?: CssValue, order?: number, force?: bool
   return key;
 };
 
-export const Css = (key: string, css?: CssValue) => {
+export const Css = (key: string, styles?: StylesValue) => {
   const order = cssCount++;
   let isInit = false;
   return (...args: (string | { class?: any } | boolean | number | undefined | null)[]) => {
     if (!isInit) {
-      setCss(key, css, order);
+      setCss(key, styles, order);
       isInit = true;
     }
 

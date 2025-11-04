@@ -14,13 +14,13 @@ import { Flux, Pipe, pipe } from './Flux';
  * b$.set(4); // merged$ emits: 4
  */
 export const fluxUnion = <T>(...sources: Flux<T>[]) => {
-  let last: T|undefined = undefined;
-  return pipe<T|undefined>(
+  let last: T | undefined = undefined;
+  return pipe<T | undefined>(
     (listener) => {
       const handle = (value: T) => {
         last = value;
         listener();
-      }
+      };
       const offs = sources.map((source) => source.on(handle));
       return () => {
         for (const off of offs) off();
@@ -31,4 +31,4 @@ export const fluxUnion = <T>(...sources: Flux<T>[]) => {
       pipe.set(last);
     }
   );
-}
+};

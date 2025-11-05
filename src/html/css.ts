@@ -70,12 +70,13 @@ const addTransform = (v: string, s: S) => {
   s.transform = s.transform ? `${s.transform} ${v}` : v;
 };
 
-const transformProp = (prop: string) => (v: V, s: S) => addTransform(`${prop}(${v})`, s);
+const transformProp = (prop: string) => (v: number|string, s: S) => addTransform(`${prop}(${v})`, s);
 
-const g = (v: V): string =>
-  typeof v === 'number' ? v + 'rem'
-  : typeof v === 'string' ? v
-  : v.map(g).join(' ');
+type Rem = string | number;
+const rem = (v: Rem): string => typeof v === 'number' ? `${v}rem` : String(v);
+
+type Px = string | number;
+const px = (v: Px): string => typeof v === 'number' ? `${v}px` : String(v);
 
 const fConvert = (v: any, defaultValue: string): any =>
   !isStringValid(v) ? defaultValue
@@ -85,143 +86,122 @@ const fConvert = (v: any, defaultValue: string): any =>
   : v === 'around' ? 'space-around'
   : v;
 
-const borderConvert = (v: number | string) =>
+const borderPx = (v: number | string) =>
   isNumber(v) ? `${v}px solid ${cssColors.border || 'black'}`
   : v.includes(' ') ? v
   : `1px solid ${cssColors[v] || v}`;
 
 export const cssFunMap = {
-  x: (v: V, s: S) => {
-    s.left = g(v);
+  x: (v: Px, s: S) => {
+    s.left = px(v);
   },
-  y: (v: V, s: S) => {
-    s.top = g(v);
+  y: (v: Px, s: S) => {
+    s.top = px(v);
   },
-  xy: (v: V, s: S) => {
-    const u = g(v);
-    s.left = u;
-    s.top = u;
+  xy: (v: Px, s: S) => {
+    s.left = s.top = px(v);
   },
 
-  t: (v: V, s: S) => {
-    s.top = g(v);
+  t: (v: Px, s: S) => {
+    s.top = px(v);
   },
-  r: (v: V, s: S) => {
-    s.right = g(v);
+  r: (v: Px, s: S) => {
+    s.right = px(v);
   },
-  b: (v: V, s: S) => {
-    s.bottom = g(v);
+  b: (v: Px, s: S) => {
+    s.bottom = px(v);
   },
-  l: (v: V, s: S) => {
-    s.left = g(v);
+  l: (v: Px, s: S) => {
+    s.left = px(v);
   },
-
-  inset: (v: V, s: S) => {
-    const u = g(v);
-    s.top = u;
-    s.right = u;
-    s.bottom = u;
-    s.left = u;
+  inset: (v: Px, s: S) => {
+    s.top = s.right = s.bottom = s.left = px(v);
   },
 
-  w: (v: V, s: S) => {
-    s.width = g(v);
+  w: (v: Px, s: S) => {
+    s.width = px(v);
   },
-  h: (v: V, s: S) => {
-    s.height = g(v);
+  h: (v: Px, s: S) => {
+    s.height = px(v);
   },
-  wh: (v: V, s: S) => {
-    const u = g(v);
-    s.width = u;
-    s.height = u;
+  wh: (v: Px, s: S) => {
+    s.width = s.height = px(v);
   },
 
-  wMax: (v: V, s: S) => {
-    s.maxWidth = g(v);
+  wMax: (v: Px, s: S) => {
+    s.maxWidth = px(v);
   },
-  hMax: (v: V, s: S) => {
-    s.maxHeight = g(v);
+  hMax: (v: Px, s: S) => {
+    s.maxHeight = px(v);
   },
-  whMax: (v: V, s: S) => {
-    const u = g(v);
-    s.maxWidth = u;
-    s.maxHeight = u;
+  whMax: (v: Px, s: S) => {
+    s.maxWidth = s.maxHeight = px(v);
   },
 
-  wMin: (v: V, s: S) => {
-    s.minWidth = g(v);
+  wMin: (v: Px, s: S) => {
+    s.minWidth = px(v);
   },
-  hMin: (v: V, s: S) => {
-    s.minHeight = g(v);
+  hMin: (v: Px, s: S) => {
+    s.minHeight = px(v);
   },
-  whMin: (v: V, s: S) => {
-    const u = g(v);
-    s.minWidth = u;
-    s.minHeight = u;
+  whMin: (v: Px, s: S) => {
+    s.minWidth = s.minHeight = px(v);
   },
 
-  fontSize: (v: V, s: S) => {
-    s.fontSize = g(v);
+  fontSize: (v: Rem, s: S) => {
+    s.fontSize = rem(v);
   },
 
-  m: (v: V, s: S) => {
-    s.margin = g(v);
+  m: (v: Px, s: S) => {
+    s.margin = px(v);
   },
-  mt: (v: V, s: S) => {
-    s.marginTop = g(v);
+  mt: (v: Px, s: S) => {
+    s.marginTop = px(v);
   },
-  mr: (v: V, s: S) => {
-    s.marginRight = g(v);
+  mr: (v: Px, s: S) => {
+    s.marginRight = px(v);
   },
-  mb: (v: V, s: S) => {
-    s.marginBottom = g(v);
+  mb: (v: Px, s: S) => {
+    s.marginBottom = px(v);
   },
-  ml: (v: V, s: S) => {
-    s.marginLeft = g(v);
+  ml: (v: Px, s: S) => {
+    s.marginLeft = px(v);
   },
-  mx: (v: V, s: S) => {
-    const u = g(v);
-    s.marginLeft = u;
-    s.marginRight = u;
+  mx: (v: Px, s: S) => {
+    s.marginLeft = s.marginRight = px(v);
   },
-  my: (v: V, s: S) => {
-    const u = g(v);
-    s.marginTop = u;
-    s.marginBottom = u;
+  my: (v: Px, s: S) => {
+    s.marginTop = s.marginBottom = px(v);
   },
 
-  p: (v: V, s: S) => {
-    s.padding = g(v);
+  p: (v: Px, s: S) => {
+    s.padding = px(v);
   },
-  pt: (v: V, s: S) => {
-    s.paddingTop = g(v);
+  pt: (v: Px, s: S) => {
+    s.paddingTop = px(v);
   },
-  pr: (v: V, s: S) => {
-    s.paddingRight = g(v);
+  pr: (v: Px, s: S) => {
+    s.paddingRight = px(v);
   },
-  pb: (v: V, s: S) => {
-    s.paddingBottom = g(v);
+  pb: (v: Px, s: S) => {
+    s.paddingBottom = px(v);
   },
-  pl: (v: V, s: S) => {
-    s.paddingLeft = g(v);
+  pl: (v: Px, s: S) => {
+    s.paddingLeft = px(v);
   },
-  px: (v: V, s: S) => {
-    const u = g(v);
-    s.paddingLeft = u;
-    s.paddingRight = u;
+  px: (v: Px, s: S) => {
+    s.paddingLeft = s.paddingRight = px(v);
   },
-  py: (v: V, s: S) => {
-    const u = g(v);
-    s.paddingTop = u;
-    s.paddingBottom = u;
+  py: (v: Px, s: S) => {
+    s.paddingTop = s.paddingBottom = px(v);
   },
 
   elevation: (v: number, s: S) => {
-    s.boxShadow = `${g(v * 0.1)} ${g(v * 0.2)} ${g(v * 0.25)} 0px ${cssColors.shadow || 'black'}`;
+    s.boxShadow = `${px(v * 1)} ${px(v * 2)} ${px(v * 3)} 0px ${cssColors.shadow || 'black'}`;
   },
 
-  rounded: (v: number, s: S) => {
-    s.borderRadius = g(v * 0.2);
+  rounded: (v: Px, s: S) => {
+    s.borderRadius = px(v);
   },
 
   bold: (v: string | boolean | 1 | 0, s: S) => {
@@ -237,20 +217,26 @@ export const cssFunMap = {
   fg: (v: string, s: S) => {
     s.color = cssColors[v] || v;
   },
-  border: (v: number | string, s: S) => {
-    s.border = borderConvert(v);
+  border: (v: Px, s: S) => {
+    s.border = borderPx(v);
   },
-  borderLeft: (v: number | string, s: S) => {
-    s.borderLeft = borderConvert(v);
+  bl: (v: number | string, s: S) => {
+    s.borderLeft = borderPx(v);
   },
-  borderRight: (v: number | string, s: S) => {
-    s.borderRight = borderConvert(v);
+  br: (v: number | string, s: S) => {
+    s.borderRight = borderPx(v);
   },
-  borderTop: (v: number | string, s: S) => {
-    s.borderTop = borderConvert(v);
+  bt: (v: number | string, s: S) => {
+    s.borderTop = borderPx(v);
   },
-  borderBottom: (v: number | string, s: S) => {
-    s.borderBottom = borderConvert(v);
+  bb: (v: number | string, s: S) => {
+    s.borderBottom = borderPx(v);
+  },
+  bx: (v: Px, s: S) => {
+    s.borderLeft = s.borderRight = borderPx(v);
+  },
+  by: (v: Px, s: S) => {
+    s.borderTop = s.borderBottom = borderPx(v);
   },
   borderColor: (v: string, s: S) => {
     s.borderColor = cssColors[v] || v;
@@ -267,14 +253,12 @@ export const cssFunMap = {
 
   itemFit: (v: 'contain' | 'cover' | 'fill', s: S) => {
     if (v === 'contain') {
-      s.maxWidth = '100%';
-      s.maxHeight = '100%';
+      s.maxWidth = s.maxHeight = '100%';
       s.objectFit = v;
       return;
     }
     if (v === 'cover' || v === 'fill') {
-      s.minWidth = '100%';
-      s.minHeight = '100%';
+      s.minWidth = s.minHeight = '100%';
       s.objectFit = v;
       return;
     }
@@ -301,7 +285,7 @@ export const cssFunMap = {
   translateX: transformProp('translateX'),
   translateY: transformProp('translateY'),
 
-  fRow: (v: 1 | StyleFlexAlign | [StyleFlexAlign, StyleFlexJustify], s: S) => {
+  row: (v: 1 | StyleFlexAlign | [StyleFlexAlign, StyleFlexJustify], s: S) => {
     const a =
       isArray(v) ? v
       : isString(v) ? [v]
@@ -311,7 +295,7 @@ export const cssFunMap = {
     s.alignItems = fConvert(a[0], 'center');
     s.justifyContent = fConvert(a[1], 'space-between');
   },
-  fCol: (v: 1 | StyleFlexAlign | [StyleFlexAlign, StyleFlexJustify], s: S) => {
+  col: (v: 1 | StyleFlexAlign | [StyleFlexAlign, StyleFlexJustify], s: S) => {
     const a =
       isArray(v) ? v
       : isString(v) ? [v]
@@ -321,7 +305,7 @@ export const cssFunMap = {
     s.alignItems = fConvert(a[0], 'stretch');
     s.justifyContent = fConvert(a[1], 'flex-start');
   },
-  fCenter: (v: 1 | StyleFlexDirection, s: S) => {
+  center: (v: 1 | StyleFlexDirection, s: S) => {
     const a =
       isArray(v) ? v
       : isString(v) ? [v]
@@ -330,6 +314,7 @@ export const cssFunMap = {
     s.flexDirection = toString(a[0], 'column');
     s.alignItems = 'center';
     s.justifyContent = 'center';
+    s.textAlign = 'center';
   },
 
   alignItems: (v: 1 | StyleFlexDirection, s: S) => {

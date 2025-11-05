@@ -51,7 +51,7 @@ The library is organized into 19 specialized modules, all exported from `src/ind
 2. **html/css.ts** - CSS-in-JS system with utility functions
    - `Css()` - Type-safe CSS-in-JS with powerful utilities
    - `setCss()` - Dynamic stylesheet injection
-   - Utility functions: fRow, fCol, fCenter, elevation, rounded, transitions, transforms, animations
+   - Utility functions: row, col, center, elevation, rounded, transitions, transforms, animations
 
 3. **html/** - DOM manipulation and utilities
    - Element creation: createEl, setEl, htmlToEl
@@ -138,7 +138,7 @@ Fluxio provides a powerful CSS-in-JS system:
 ```typescript
 const css = Css('MyComponent', {
   '': {
-    fCol: 1, // display: flex; flex-direction: column
+    col: 1, // display: flex; flex-direction: column
     p: 2, // padding: 2rem
     bg: 'primary', // background-color: var(--primary-color)
     elevation: 2, // box-shadow with depth
@@ -146,7 +146,7 @@ const css = Css('MyComponent', {
     transition: 0.2, // transition: all 0.2s ease
   },
   Header: {
-    fRow: ['center', 'space-between'],
+    row: ['center', 'space-between'],
     fontSize: 1.5,
     bold: 1,
   },
@@ -160,7 +160,7 @@ css('Header'); // { class: 'MyComponentHeader' }
 **CSS Utility Functions**:
 
 - **Layout**: x, y, xy, l, t, r, b, inset, w, h, wh, wMax, hMax, wMin, hMin
-- **Flexbox**: fRow, fCol, fCenter with alignment/justification
+- **Flexbox**: row, col, center with alignment/justification
 - **Spacing**: m, mt, mb, ml, mr, mx, my (margins); p, pt, pb, pl, pr, px, py (padding)
 - **Visual**: bg, fg, bColor, elevation, rounded, bold, fontSize
 - **Background**: bgUrl, bgMode, itemFit

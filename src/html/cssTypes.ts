@@ -23,41 +23,41 @@ export interface CssStyle {
 
   // Position & Layout
   position?: 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
-  top?: string;
-  right?: string;
-  bottom?: string;
-  left?: string;
+  top?: string | number;
+  right?: string | number;
+  bottom?: string | number;
+  left?: string | number;
   zIndex?: string | number;
 
   // Box Model - Dimensions
-  width?: string;
-  height?: string;
-  minWidth?: string;
-  minHeight?: string;
-  maxWidth?: string;
-  maxHeight?: string;
+  width?: string | number;
+  height?: string | number;
+  minWidth?: string | number;
+  minHeight?: string | number;
+  maxWidth?: string | number;
+  maxHeight?: string | number;
 
   // Box Model - Margin
-  margin?: string;
-  marginTop?: string;
-  marginRight?: string;
-  marginBottom?: string;
-  marginLeft?: string;
+  margin?: string | number;
+  marginTop?: string | number;
+  marginRight?: string | number;
+  marginBottom?: string | number;
+  marginLeft?: string | number;
 
   // Box Model - Padding
-  padding?: string;
-  paddingTop?: string;
-  paddingRight?: string;
-  paddingBottom?: string;
-  paddingLeft?: string;
+  padding?: string | number;
+  paddingTop?: string | number;
+  paddingRight?: string | number;
+  paddingBottom?: string | number;
+  paddingLeft?: string | number;
 
   // Box Model - Border
-  border?: string;
-  borderTop?: string;
-  borderRight?: string;
-  borderBottom?: string;
-  borderLeft?: string;
-  borderWidth?: string;
+  border?: string | number;
+  borderTop?: string | number;
+  borderRight?: string | number;
+  borderBottom?: string | number;
+  borderLeft?: string | number;
+  borderWidth?: string | number;
   borderStyle?:
     | 'none'
     | 'hidden'
@@ -70,11 +70,11 @@ export interface CssStyle {
     | 'inset'
     | 'outset';
   borderColor?: string;
-  borderRadius?: string;
-  borderTopLeftRadius?: string;
-  borderTopRightRadius?: string;
-  borderBottomLeftRadius?: string;
-  borderBottomRightRadius?: string;
+  borderRadius?: string | number;
+  borderTopLeftRadius?: string | number;
+  borderTopRightRadius?: string | number;
+  borderBottomLeftRadius?: string | number;
+  borderBottomRightRadius?: string | number;
 
   // Box Model - Box Sizing
   boxSizing?: 'content-box' | 'border-box';

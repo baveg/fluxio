@@ -70,13 +70,17 @@ const addTransform = (v: string, s: S) => {
   s.transform = s.transform ? `${s.transform} ${v}` : v;
 };
 
-const transformProp = (prop: string) => (v: number|string, s: S) => addTransform(`${prop}(${v})`, s);
+const transformProp = (prop: string) => (v: number | string, s: S) =>
+  addTransform(`${prop}(${v})`, s);
 
 type Rem = string | number;
-const rem = (v: Rem): string => typeof v === 'number' ? `${v}rem` : String(v);
+const rem = (v: Rem): string => (typeof v === 'number' ? `${v}rem` : String(v));
 
 type Px = string | number;
-const px = (v: Px): string => typeof v === 'number' ? `${v}px` : String(v);
+const px = (v: Px | Px[]): string =>
+  typeof v === 'number' ? `${v}px`
+  : isArray(v) ? v.map(px).join(' ')
+  : String(v);
 
 const fConvert = (v: any, defaultValue: string): any =>
   !isStringValid(v) ? defaultValue
@@ -200,7 +204,7 @@ export const cssFunMap = {
     s.boxShadow = `${px(v * 1)} ${px(v * 2)} ${px(v * 3)} 0px ${cssColors.shadow || 'black'}`;
   },
 
-  rounded: (v: Px, s: S) => {
+  rounded: (v: Px | Px[], s: S) => {
     s.borderRadius = px(v);
   },
 

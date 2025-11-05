@@ -85,6 +85,11 @@ const fConvert = (v: any, defaultValue: string): any =>
   : v === 'around' ? 'space-around'
   : v;
 
+const borderConvert = (v: number | string) =>
+  isNumber(v) ? `${v}px solid ${cssColors.border || 'black'}`
+  : v.includes(' ') ? v
+  : `1px solid ${cssColors[v] || v}`;
+
 export const cssFunMap = {
   x: (v: V, s: S) => {
     s.left = g(v);
@@ -98,9 +103,6 @@ export const cssFunMap = {
     s.top = u;
   },
 
-  l: (v: V, s: S) => {
-    s.left = g(v);
-  },
   t: (v: V, s: S) => {
     s.top = g(v);
   },
@@ -110,13 +112,16 @@ export const cssFunMap = {
   b: (v: V, s: S) => {
     s.bottom = g(v);
   },
+  l: (v: V, s: S) => {
+    s.left = g(v);
+  },
 
   inset: (v: V, s: S) => {
     const u = g(v);
-    s.left = u;
     s.top = u;
     s.right = u;
     s.bottom = u;
+    s.left = u;
   },
 
   w: (v: V, s: S) => {
@@ -233,12 +238,21 @@ export const cssFunMap = {
     s.color = cssColors[v] || v;
   },
   border: (v: number | string, s: S) => {
-    s.border =
-      isNumber(v) ? `${v}px solid ${cssColors.border || 'black'}`
-      : v.includes(' ') ? v
-      : `1px solid ${cssColors[v] || v}`;
+    s.border = borderConvert(v);
   },
-  bColor: (v: string, s: S) => {
+  borderLeft: (v: number | string, s: S) => {
+    s.borderLeft = borderConvert(v);
+  },
+  borderRight: (v: number | string, s: S) => {
+    s.borderRight = borderConvert(v);
+  },
+  borderTop: (v: number | string, s: S) => {
+    s.borderTop = borderConvert(v);
+  },
+  borderBottom: (v: number | string, s: S) => {
+    s.borderBottom = borderConvert(v);
+  },
+  borderColor: (v: string, s: S) => {
     s.borderColor = cssColors[v] || v;
   },
   bgUrl: (v: string, s: S) => {

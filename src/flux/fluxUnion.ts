@@ -1,4 +1,4 @@
-import { Flux, Pipe, pipe } from './Flux';
+import { Flux, pipe } from './Flux';
 
 /**
  * Merge multiple Flux instances into a single Pipe that emits the latest value from any source.

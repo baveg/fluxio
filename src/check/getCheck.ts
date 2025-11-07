@@ -1,10 +1,9 @@
+import { Check } from '../types/Check';
 import { isArray } from './isArray';
 import { isBoolean } from './isBoolean';
 import { isDictionary } from './isDictionary';
 import { isFloat } from './isNumber';
 import { isString } from './isString';
-
-export type Check = (v: any) => boolean;
 
 export const getCheck = (v: any): Check =>
   isString(v) ? isString

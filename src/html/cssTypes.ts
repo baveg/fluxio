@@ -1,6 +1,4 @@
 export interface CssStyle {
-  [key: string]: any;
-
   // Display & Visibility
   display?:
     | 'none'
@@ -264,7 +262,7 @@ export interface CssStyle {
     | 'zoom-in'
     | 'zoom-out'
     | string;
-  pointerEvents?: 'auto' | 'none' | 'visiblePainted' | 'visibleFill' | 'visibleStroke' | 'visible';
+  pointerEvents?: 'auto' | 'none' | 'visiblePainted' | 'visibleFill' | 'visibleStroke' | 'visible' | 'all';
   userSelect?: 'auto' | 'none' | 'text' | 'contain' | 'all';
   touchAction?:
     | 'auto'

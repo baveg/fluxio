@@ -4,12 +4,12 @@ import { isDefined } from '../check/isDefined';
 import { isFunction } from '../check/isFunction';
 import { toVoid } from '../cast/toVoid';
 import { removeItem } from '../array/removeItem';
+import { Unsubscribe } from '../types/Unsubscribe';
+import { Listener } from '../types/Listener';
+import { SetState } from '../types/SetState';
+import { NextState } from 'fluxio/types';
 
-export type FListener<T> = (value: T, error?: any) => void;
-export type FUnsubscribe = () => void;
-export type FNext<T> = T | ((prev: T) => T);
-
-export type PipeSource<T, U> = Flux<U> | ((listener: () => void) => FUnsubscribe);
+export type PipeSource<T, U> = Flux<U> | ((listener: () => void) => Unsubscribe);
 export type PipeOnSync<T, U> = (pipe: Pipe<T, U>) => void;
 export type PipeOnSet<T, U> = (value: T, pipe: Pipe<T, U>) => void;
 export type PipeOnInit<T, U> = (pipe: Pipe<T, U>) => void;
@@ -19,11 +19,13 @@ export type PipeOnInit<T, U> = (pipe: Pipe<T, U>) => void;
  * Supports subscriptions, transformations, and persistence.
  */
 export class Flux<T = any> {
-  public readonly listeners: FListener<T>[] = [];
+  public readonly thens: Listener<T>[] = [];
+  public readonly catches: Listener<Error>[] = [];
   public key?: string;
-  public v: T;
-  private _get?: typeof this.get;
-  private _set?: typeof this.set;
+  private v: T;
+  private e?: Error;
+  private g?: typeof this.get;
+  private s?: typeof this.set;
 
   constructor(init: T) {
     this.v = init;
@@ -77,18 +79,22 @@ export class Flux<T = any> {
    * @param next New value or updater function
    * @param force Force notification even if value hasn't changed
    */
-  set(next: FNext<T>, force?: boolean) {
+  set(next: NextState<T>, force?: boolean) {
     const value = isFunction(next) ? next(this.get()) : next;
     if (!force && this.isEqual(this.v, value)) {
       return;
     }
     this.v = value;
-    for (const listener of this.listeners) listener(value);
+    for (const t of this.thens) t(value);
   }
 
-  error(error: any) {
-    const value = this.v;
-    for (const listener of this.listeners) listener(value, error);
+  setError(error: any) {
+    this.e = error;
+    for (const c of this.catches) c(error);
+  }
+
+  getError() {
+    return this.e;
   }
 
   /**
@@ -104,7 +110,7 @@ export class Flux<T = any> {
    * @returns Bound get method
    */
   public getter() {
-    return this._get || (this._get = this.get.bind(this));
+    return this.g || (this.g = this.get.bind(this));
   }
 
   /**
@@ -112,7 +118,7 @@ export class Flux<T = any> {
    * @returns Bound set method
    */
   public setter() {
-    return this._set || (this._set = this.get.bind(this));
+    return this.s || (this.s = this.set.bind(this));
   }
 
   /**
@@ -121,10 +127,13 @@ export class Flux<T = any> {
    * @param isRepeat If true, immediately call listener with current value
    * @returns Unsubscribe function
    */
-  on(listener: FListener<T>, isRepeat?: boolean): FUnsubscribe {
-    if (isRepeat) listener(this.get());
-    this.listeners.push(listener);
-    return () => this.off(listener);
+  on(onValue?: Listener<T>, onError?: Listener<Error>, isRepeat?: boolean): Unsubscribe {
+    if (onValue) {
+      if (isRepeat) onValue(this.get());
+      this.thens.push(onValue);
+    }
+    if (onError) this.catches.push(onError);
+    return () => this.off(onValue, onError);
   }
 
   /**
@@ -132,18 +141,18 @@ export class Flux<T = any> {
    * @param listener Listener function to remove
    * @returns This instance for chaining
    */
-  off(listener: FListener<T>) {
-    if (removeItem(this.listeners, listener).length === 0) {
-      this.clear();
-    }
-    return this;
+  off(onValue?: Listener<T>, onError?: Listener<Error>) {
+    if (onValue) removeItem(this.thens, onValue);
+    if (onError) removeItem(this.catches, onError);
+    if (this.thens.length === 0 && this.catches.length === 0) this.clear();
   }
 
   /**
    * Remove all listeners.
    */
   clear() {
-    this.listeners.length = 0;
+    this.thens.length = 0;
+    this.catches.length = 0;
   }
 
   /**
@@ -154,18 +163,26 @@ export class Flux<T = any> {
    * const user$ = flux(null);
    * const user = await user$.wait(); // Waits for non-null value
    */
-  async wait(filter: (value: T, error: any) => boolean = isDefined) {
+  async wait(filter: (value: T) => boolean = isDefined, isRepeat?: boolean) {
     return new Promise<T>((resolve, reject) => {
-      const off = this.on((value, error) => {
-        try {
-          if (filter(value, error)) {
+      const off = this.on(
+        (value) => {
+          try {
+            if (filter(value)) {
+              off();
+              resolve(value);
+            }
+          } catch (error) {
             off();
-            resolve(value);
+            reject(error);
           }
-        } catch (e) {
-          reject(e);
-        }
-      });
+        },
+        (error) => {
+          off();
+          reject(error);
+        },
+        isRepeat
+      );
     });
   }
 
@@ -199,7 +216,7 @@ export class Flux<T = any> {
         try {
           pipe.set(convert(this.get()));
         } catch (e) {
-          pipe.error(e);
+          pipe.setError(e);
         }
       },
       reverse ?
@@ -224,13 +241,13 @@ export class Flux<T = any> {
       (pipe) => {
         convert(this.get())
           .then((value) => pipe.set(value))
-          .catch((error) => pipe.error(error));
+          .catch((error) => pipe.setError(error));
       },
       reverse ?
         (value) => {
           reverse(value)
             .then(this.setter())
-            .catch((error) => this.error(error));
+            .catch((error) => this.setError(error));
         }
       : undefined
     );
@@ -340,14 +357,14 @@ export class Pipe<T = any, U = T> extends Flux<T> {
     return super.get();
   }
 
-  set(next: FNext<T>, force?: boolean) {
+  set(next: NextState<T>, force?: boolean) {
     if (isFunction(next)) next = next(this.get());
     super.set(next, force);
     this.onSet(next, this);
   }
 
-  on(listener: FListener<T>, isRepeat?: boolean) {
-    const off = super.on(listener, isRepeat);
+  on(onValue?: Listener<T>, onError?: Listener<Error>, isRepeat?: boolean) {
+    const off = super.on(onValue, onError, isRepeat);
 
     if (!this.sourceOff) {
       const listener = () => {

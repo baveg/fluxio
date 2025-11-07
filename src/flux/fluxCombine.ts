@@ -1,4 +1,5 @@
-import { Flux, pipe, FUnsubscribe } from './Flux';
+import { Unsubscribe } from '../types/Unsubscribe';
+import { Flux, pipe } from './Flux';
 
 // Type utilities for Flux tuples
 type FUnwrapSources<T extends readonly Flux<any>[]> = {
@@ -19,7 +20,7 @@ type FUnwrapSources<T extends readonly Flux<any>[]> = {
 export const fluxCombine = <const Sources extends readonly Flux[]>(...sources: Sources) =>
   pipe<FUnwrapSources<Sources>>(
     (listener) => {
-      const offs: FUnsubscribe[] = [];
+      const offs: Unsubscribe[] = [];
       for (const source of sources) offs.push(source.on(listener));
       return () => {
         for (const off of offs) off();

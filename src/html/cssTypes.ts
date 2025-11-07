@@ -1,3 +1,5 @@
+type CssNumber = string | number;
+
 export interface CssStyle {
   // Display & Visibility
   display?:
@@ -14,48 +16,48 @@ export interface CssStyle {
     | 'table-cell'
     | 'contents';
   visibility?: 'visible' | 'hidden' | 'collapse';
-  opacity?: string | number;
+  opacity?: CssNumber;
   overflow?: 'visible' | 'hidden' | 'scroll' | 'auto';
   overflowX?: 'visible' | 'hidden' | 'scroll' | 'auto';
   overflowY?: 'visible' | 'hidden' | 'scroll' | 'auto';
 
   // Position & Layout
   position?: 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky';
-  top?: string | number;
-  right?: string | number;
-  bottom?: string | number;
-  left?: string | number;
-  zIndex?: string | number;
+  top?: CssNumber;
+  right?: CssNumber;
+  bottom?: CssNumber;
+  left?: CssNumber;
+  zIndex?: CssNumber;
 
   // Box Model - Dimensions
-  width?: string | number;
-  height?: string | number;
-  minWidth?: string | number;
-  minHeight?: string | number;
-  maxWidth?: string | number;
-  maxHeight?: string | number;
+  width?: CssNumber;
+  height?: CssNumber;
+  minWidth?: CssNumber;
+  minHeight?: CssNumber;
+  maxWidth?: CssNumber;
+  maxHeight?: CssNumber;
 
   // Box Model - Margin
-  margin?: string | number;
-  marginTop?: string | number;
-  marginRight?: string | number;
-  marginBottom?: string | number;
-  marginLeft?: string | number;
+  margin?: CssNumber;
+  marginTop?: CssNumber;
+  marginRight?: CssNumber;
+  marginBottom?: CssNumber;
+  marginLeft?: CssNumber;
 
   // Box Model - Padding
-  padding?: string | number;
-  paddingTop?: string | number;
-  paddingRight?: string | number;
-  paddingBottom?: string | number;
-  paddingLeft?: string | number;
+  padding?: CssNumber;
+  paddingTop?: CssNumber;
+  paddingRight?: CssNumber;
+  paddingBottom?: CssNumber;
+  paddingLeft?: CssNumber;
 
   // Box Model - Border
-  border?: string | number;
-  borderTop?: string | number;
-  borderRight?: string | number;
-  borderBottom?: string | number;
-  borderLeft?: string | number;
-  borderWidth?: string | number;
+  border?: CssNumber;
+  borderTop?: CssNumber;
+  borderRight?: CssNumber;
+  borderBottom?: CssNumber;
+  borderLeft?: CssNumber;
+  borderWidth?: CssNumber;
   borderStyle?:
     | 'none'
     | 'hidden'
@@ -68,11 +70,11 @@ export interface CssStyle {
     | 'inset'
     | 'outset';
   borderColor?: string;
-  borderRadius?: string | number;
-  borderTopLeftRadius?: string | number;
-  borderTopRightRadius?: string | number;
-  borderBottomLeftRadius?: string | number;
-  borderBottomRightRadius?: string | number;
+  borderRadius?: CssNumber;
+  borderTopLeftRadius?: CssNumber;
+  borderTopRightRadius?: CssNumber;
+  borderBottomLeftRadius?: CssNumber;
+  borderBottomRightRadius?: CssNumber;
 
   // Box Model - Box Sizing
   boxSizing?: 'content-box' | 'border-box';
@@ -81,7 +83,7 @@ export interface CssStyle {
   // Flexbox Container
   flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
-  flexFlow?: string;
+  flexFlow?: CssNumber;
   justifyContent?:
     | 'flex-start'
     | 'flex-end'
@@ -100,47 +102,47 @@ export interface CssStyle {
     | 'space-around'
     | 'space-evenly'
     | 'stretch';
-  gap?: string;
-  rowGap?: string;
-  columnGap?: string;
+  gap?: CssNumber;
+  rowGap?: CssNumber;
+  columnGap?: CssNumber;
 
   // Flexbox Item
-  flex?: string | number;
-  flexGrow?: string | number;
-  flexShrink?: string | number;
+  flex?: CssNumber;
+  flexGrow?: CssNumber;
+  flexShrink?: CssNumber;
   flexBasis?: string;
   alignSelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch';
-  order?: string | number;
+  order?: CssNumber;
 
   // Grid Container
-  gridTemplateColumns?: string;
-  gridTemplateRows?: string;
-  gridTemplateAreas?: string;
-  gridAutoColumns?: string;
-  gridAutoRows?: string;
+  gridTemplateColumns?: CssNumber;
+  gridTemplateRows?: CssNumber;
+  gridTemplateAreas?: CssNumber;
+  gridAutoColumns?: CssNumber;
+  gridAutoRows?: CssNumber;
   gridAutoFlow?: 'row' | 'column' | 'row dense' | 'column dense';
   justifyItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
-  placeItems?: string;
+  placeItems?: CssNumber;
 
   // Grid Item
-  gridColumn?: string;
-  gridRow?: string;
-  gridArea?: string;
-  gridColumnStart?: string;
-  gridColumnEnd?: string;
-  gridRowStart?: string;
-  gridRowEnd?: string;
+  gridColumn?: CssNumber;
+  gridRow?: CssNumber;
+  gridArea?: CssNumber;
+  gridColumnStart?: CssNumber;
+  gridColumnEnd?: CssNumber;
+  gridRowStart?: CssNumber;
+  gridRowEnd?: CssNumber;
   justifySelf?: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'stretch';
-  placeSelf?: string;
+  placeSelf?: CssNumber;
 
   // Background
   background?: string;
   backgroundColor?: string;
   backgroundImage?: string;
-  backgroundPosition?: string;
-  backgroundPositionX?: 'left' | 'center' | 'right' | string;
-  backgroundPositionY?: 'top' | 'center' | 'bottom' | string;
-  backgroundSize?: 'auto' | 'cover' | 'contain' | '100% 100%' | string;
+  backgroundPosition?: CssNumber;
+  backgroundPositionX?: 'left' | 'center' | 'right' | CssNumber;
+  backgroundPositionY?: 'top' | 'center' | 'bottom' | CssNumber;
+  backgroundSize?: 'auto' | 'cover' | 'contain' | '100% 100%' | CssNumber;
   backgroundRepeat?: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat' | 'space' | 'round';
   backgroundAttachment?: 'scroll' | 'fixed' | 'local';
   backgroundClip?: 'border-box' | 'padding-box' | 'content-box' | 'text';
@@ -149,7 +151,7 @@ export interface CssStyle {
   // Typography - Font
   color?: string;
   fontFamily?: string;
-  fontSize?: string;
+  fontSize?: CssNumber;
   fontWeight?:
     | 'normal'
     | 'bold'
@@ -171,9 +173,9 @@ export interface CssStyle {
     | number;
   fontStyle?: 'normal' | 'italic' | 'oblique';
   fontVariant?: 'normal' | 'small-caps';
-  lineHeight?: string | number;
-  letterSpacing?: string;
-  wordSpacing?: string;
+  lineHeight?: CssNumber;
+  letterSpacing?: CssNumber;
+  wordSpacing?: CssNumber;
 
   // Typography - Text
   textAlign?: 'left' | 'right' | 'center' | 'justify' | 'start' | 'end';
@@ -206,18 +208,18 @@ export interface CssStyle {
 
   // Transform & Transition
   transform?: string;
-  transformOrigin?: string;
+  transformOrigin?: CssNumber;
   transformStyle?: 'flat' | 'preserve-3d';
-  transition?: string;
+  transition?: CssNumber;
   transitionProperty?: string;
-  transitionDuration?: string;
+  transitionDuration?: CssNumber;
   transitionTimingFunction?: string;
-  transitionDelay?: string;
+  transitionDelay?: CssNumber;
 
   // Animation
   animation?: string;
   animationName?: string;
-  animationDuration?: string;
+  animationDuration?: CssNumber;
   animationTimingFunction?:
     | 'linear'
     | 'ease'
@@ -227,8 +229,8 @@ export interface CssStyle {
     | 'step-start'
     | 'step-end'
     | string;
-  animationDelay?: string;
-  animationIterationCount?: 'infinite' | string | number;
+  animationDelay?: CssNumber;
+  animationIterationCount?: 'infinite' | CssNumber;
   animationDirection?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
   animationFillMode?: 'none' | 'forwards' | 'backwards' | 'both';
   animationPlayState?: 'running' | 'paused';
@@ -242,7 +244,7 @@ export interface CssStyle {
   // Table
   tableLayout?: 'auto' | 'fixed';
   borderCollapse?: 'collapse' | 'separate';
-  borderSpacing?: string;
+  borderSpacing?: CssNumber;
   captionSide?: 'top' | 'bottom';
   emptyCells?: 'show' | 'hide';
 
@@ -343,10 +345,10 @@ export interface CssStyle {
 export type StyleTransform =
   | string
   | {
-      rotate?: string | number; // 0deg
-      scale?: string | number;
-      translateX?: string | number;
-      translateY?: string | number;
+      rotate?: CssNumber; // 0deg
+      scale?: CssNumber;
+      translateX?: CssNumber;
+      translateY?: CssNumber;
     };
 
 export type StyleAnim =

@@ -6,7 +6,6 @@ import { toVoid } from '../cast/toVoid';
 import { removeItem } from '../array/removeItem';
 import { Unsubscribe } from '../types/Unsubscribe';
 import { Listener } from '../types/Listener';
-import { SetState } from '../types/SetState';
 import { NextState } from 'fluxio/types';
 
 export type PipeSource<T, U> = Flux<U> | ((listener: () => void) => Unsubscribe);
@@ -210,7 +209,7 @@ export class Flux<T = any> {
    * const doubled$ = count$.map(n => n * 2, n => n / 2);
    * doubled$.get() // 10
    */
-  map<U>(convert: (value: T) => U, reverse?: (value: U) => T) {
+  map<U>(convert: (value: T) => U, reverse?: (value: U, pipe: Pipe<U, T>) => T) {
     return this.pipe<U>(
       (pipe) => {
         try {
@@ -220,8 +219,8 @@ export class Flux<T = any> {
         }
       },
       reverse ?
-        (value) => {
-          this.set(reverse(value));
+        (value, pipe) => {
+          this.set(reverse(value, pipe));
         }
       : undefined
     );

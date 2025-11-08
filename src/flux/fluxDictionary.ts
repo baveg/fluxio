@@ -4,6 +4,7 @@ import { flux, Flux, Pipe } from './Flux';
 import { isEmpty } from '../check/isEmpty';
 import { isNil } from '../check/isNil';
 import { merge } from '../object/merge';
+import { isDefined } from 'fluxio/check';
 
 export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
   constructor(source: Flux<Dictionary<T>>) {
@@ -28,7 +29,7 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
 
   merge(changes: Record<string, Partial<T>>, isReplace?: boolean) {
     const prev = this.get();
-    if (!prev) return this;
+    if (!prev) return;
 
     for (const key in changes) {
       if (changes[key] === prev[key]) {
@@ -36,7 +37,7 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
       }
     }
 
-    if (isEmpty(changes)) return this;
+    if (isEmpty(changes)) return;
 
     const next = { ...prev };
 
@@ -50,31 +51,31 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
       }
     }
 
-    return this.set(next);
+    this.set(next);
   }
 
   update(changes: Record<string, T>) {
-    return this.merge(changes, true);
+    this.merge(changes, true);
   }
 
   getItem(id: string): T | undefined {
     return this.get()[id];
   }
 
-  setItem(id: string, item: T | undefined) {
-    return this.update({ [id]: item as T });
+  setItem(id: string, item?: T | undefined) {
+    this.update({ [id]: item as T });
   }
 
   delete(id: string) {
-    return this.update({ [id]: null as T });
+    this.update({ [id]: null as T });
   }
 
   getItems() {
     return Object.values(this.get());
   }
 
-  getItem$(id: string) {
-    return this.map((d) => d[id]);
+  getItem$(id?: string) {
+    return this.map((d) => (id ? d[id] : undefined));
   }
 }
 

@@ -297,7 +297,7 @@ export const cssFunMap = {
     s.display = 'flex';
     s.flexDirection = 'row';
     s.alignItems = fConvert(a[0], 'center');
-    s.justifyContent = fConvert(a[1], 'space-between');
+    s.justifyContent = fConvert(a[1], 'between');
   },
   col: (v: 1 | StyleFlexAlign | [StyleFlexAlign, StyleFlexJustify], s: S) => {
     const a =
@@ -307,7 +307,7 @@ export const cssFunMap = {
     s.display = 'flex';
     s.flexDirection = 'column';
     s.alignItems = fConvert(a[0], 'stretch');
-    s.justifyContent = fConvert(a[1], 'flex-start');
+    s.justifyContent = fConvert(a[1], 'start');
   },
   center: (v: 1 | StyleFlexDirection, s: S) => {
     const a =

@@ -6,4 +6,5 @@ export * from './Listener';
 export * from './NextState';
 export * from './SetState';
 export * from './Unsubscribe';
+export * from './Writable';
 export * from './XY';

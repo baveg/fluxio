@@ -348,7 +348,7 @@ export const computeStyle = (
   record?: Style,
   style: CssStyle = {},
   styles: Dictionary<CssStyle | string> = {}
-) => {
+): CssStyle => {
   if (!record) return {};
   for (const prop in record) {
     const value = (record as any)[prop];
@@ -359,7 +359,7 @@ export const computeStyle = (
       (style as any)[prop] = value;
     }
   }
-  return style;
+  return style as CssStyle;
 };
 
 export const computeStyles = (
@@ -370,7 +370,7 @@ export const computeStyles = (
   for (const k in inputs) {
     const record = inputs[k];
     const query = `${prefix}${k.replace(/, ?&?/g, `,${prefix}`).replace(/&/g, prefix)}`;
-    const style: S = (styles[query] as S) || (styles[query] = {});
+    const style: CssStyle = (styles[query] as CssStyle) || (styles[query] = {});
     computeStyle(record, style, styles);
   }
   return styles;

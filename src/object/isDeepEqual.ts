@@ -10,6 +10,10 @@ export const isDeepEqual = (a: any, b: any): boolean => {
       for (let i = 0, l = a.length; i < l; i++) if (!isDeepEqual(a[i], b[i])) return false;
       return true;
     }
+    if (a instanceof Error) {
+      if (!(b instanceof Error)) return false;
+      return a.name === b.name && a.message === b.message;
+    }
     if (count(a) !== count(b)) return false;
     for (const p in a) if (!isDeepEqual(a[p], b[p])) return false;
     return true;

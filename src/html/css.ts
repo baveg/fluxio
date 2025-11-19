@@ -92,7 +92,7 @@ const fConvert = (v: any, defaultValue: string): any =>
 
 const borderPx = (v: number | string) =>
   isNumber(v) ? `${v}px solid ${cssColors.border || 'black'}`
-  : v.includes(' ') ? v
+  : isString(v) && v.includes(' ') ? v
   : `1px solid ${cssColors[v] || v}`;
 
 export const cssFunMap = {

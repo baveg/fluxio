@@ -1,7 +1,7 @@
 import { isFloat } from 'fluxio/check/isNumber';
 import { isStringValid } from 'fluxio/check/isString';
 
-export const parseSeconds = (value: string | number): number | null => {
+export const parseSeconds = (value: string | number | undefined): number | undefined => {
   if (isStringValid(value)) {
     let [h, m, s] = value
       .replace(/[^\d]+/g, ' ')

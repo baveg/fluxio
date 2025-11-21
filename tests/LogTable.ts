@@ -65,10 +65,10 @@ export class LogTable {
   }
 }
 
-export const fluxLogTable = (flux: Flux, table: LogTable, name: string) => {
+export const fluxLogTable = (flux: Flux<any>, table: LogTable, name: string) => {
   const rowIndex = table.addRow(name);
-  flux.on((value, error) => {
-    table.setCellTime(rowIndex, error ? 'E:' + toError(error).message : value);
-  });
+  // flux.on((value: any, error: any) => {
+  //   table.setCellTime(rowIndex, error ? 'E:' + toError(error).message : value);
+  // });
   return flux;
 };

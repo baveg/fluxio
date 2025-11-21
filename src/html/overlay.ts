@@ -1,11 +1,11 @@
 import { sleep } from '../async/sleep';
 import { logger } from '../logger/Logger';
-import { CssValue, setCss } from './css';
+import { setCss } from './css';
 import { setEl } from './setEl';
 
 const log = logger('Overlay');
 
-const overlayCss: CssValue = {
+const overlayCss: any = {
   '': {
     position: 'fixed',
     xy: 0,

@@ -2,7 +2,8 @@ import { glb } from '../glb';
 import { Attributes, resetAttributes, setAttributes } from './attributes';
 import { Cls, setCls } from './cls';
 import { createEl } from './createEl';
-import { setStyle, Style } from './style';
+import { CssStyle } from './cssTypes';
+import { setStyle } from './style';
 
 type HTMLAllElement = HTMLDivElement &
   HTMLInputElement &
@@ -13,7 +14,7 @@ type HTMLAllElement = HTMLDivElement &
 export type ElOptions = Omit<Omit<Partial<HTMLAllElement>, 'children'>, 'style'> & {
   readonly reset?: boolean;
   readonly cls?: Cls | string;
-  readonly style?: Style;
+  readonly style?: CssStyle;
   readonly attributes?: Attributes;
   readonly children?: HTMLElement[];
   readonly ctn?: string;

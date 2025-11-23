@@ -16,5 +16,11 @@ export const getUrlParams = (url?: string): Record<string, string> => {
       params[decode(key)] = decode(value);
     }
   }
+  if (!params.path) {
+    const pathMatch = url.match(/(?:#|:\/\/[^/]+)(\/.+?)(?:\?|$)/);
+    if (pathMatch) {
+      params.path = pathMatch[1] || '';
+    }
+  }
   return params;
 };

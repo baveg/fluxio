@@ -12,6 +12,7 @@ export const setUrlParams = (url: string, changes?: Record<string, any> | null):
   const hash = parts[1];
   const path = baseUrl.split('?', 1)[0];
   const params = getUrlParams(url);
+  delete params.path;
 
   for (const key in changes) {
     const value = changes[key];

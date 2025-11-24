@@ -201,8 +201,7 @@ export const cssFunMap = {
   },
 
   elevation: (v: number, s: S) => {
-    s.boxShadow = `${px(v * 1)} ${px(v * 2)} ${px(v * 3)} 0px ${cssColors.shadow || 'black'}`;
-    s.border = `1px solid ${cssColors.shadow || 'black'}`;
+    s.boxShadow = `${px(1 * v)} ${px(2 * v)} ${px(4 * v + 2)} 0px ${cssColors.shadow || 'black'}`;
   },
 
   rounded: (v: Px | Px[], s: S) => {

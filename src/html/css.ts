@@ -82,8 +82,8 @@ const px = (v: Px | Px[]): string =>
   : isArray(v) ? v.map(px).join(' ')
   : String(v);
 
-const fConvert = (v: any, defaultValue: string): any =>
-  !isStringValid(v) ? defaultValue
+const fConvert = (v: any, defaultValue?: string): any =>
+  (!isStringValid(v) && defaultValue) ? fConvert(defaultValue)
   : v === 'start' ? 'flex-start'
   : v === 'end' ? 'flex-end'
   : v === 'between' ? 'space-between'
@@ -299,6 +299,14 @@ export const cssFunMap = {
     s.alignItems = fConvert(a[0], 'center');
     s.justifyContent = fConvert(a[1], 'between');
   },
+  rowWrap: (v: 1, s: S) => {
+    s.display = 'flex';
+    s.flexDirection = 'row';
+    s.flexWrap = 'wrap';
+    s.alignItems = fConvert('center');
+    s.justifyContent = fConvert('around');
+    s.alignContent = fConvert('around');
+  },
   col: (v: 1 | StyleFlexAlign | [StyleFlexAlign, StyleFlexJustify], s: S) => {
     const a =
       isArray(v) ? v
@@ -446,11 +454,7 @@ export const Css = (key: string, styles?: StylesValue) => {
       setCss(key, styles, order);
       isInit = true;
     }
-
-    if (args.length === 0) {
-      return { class: key };
-    }
-
+    
     const sb = [];
 
     for (const arg of args) {

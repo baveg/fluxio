@@ -351,6 +351,14 @@ export type StyleTransform =
       translateY?: CssNumber;
     };
 
+export interface StyleKeyframe {
+  rotate?: CssNumber; // 0deg
+  scale?: CssNumber;
+  x?: CssNumber;
+  y?: CssNumber;
+  opacity?: number;
+};
+
 export type StyleAnim =
   | string
   | {
@@ -358,7 +366,7 @@ export type StyleAnim =
       count?: CssStyle['animationIterationCount'] | number;
       timing?: CssStyle['animationTimingFunction'];
       duration?: CssStyle['animationDuration'] | number;
-      keyframes?: Record<'from' | 'to' | string, { transform: StyleTransform }>;
+      keyframes?: Record<'from' | 'to' | number | string, StyleKeyframe>;
     };
 
 export type StyleFlexDirection = CssStyle['flexDirection'];

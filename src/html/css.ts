@@ -16,6 +16,8 @@ import {
   StyleFlexDirection,
   StyleFlexJustify,
 } from './cssTypes';
+import { isDefined } from 'fluxio/check';
+import { toNumber } from 'fluxio/cast';
 
 let cssColors: Dictionary<string> = {};
 
@@ -39,20 +41,25 @@ const animToCss = (v: StyleAnim, s: S, styles: Dictionary<CssStyle | string>) =>
   for (const key in keyframes) {
     const keyframe = keyframes[key];
     if (keyframe) {
-      sb.push(`${key} { transform: `);
+      const k = toNumber(key, null);
+      sb.push(isFloat(k) ? `${k}% { ` : `${key} { `);
 
-      const { transform } = keyframe;
-      if (isString(transform)) {
-        sb.push(`${transform};`);
-      } else {
-        const { rotate: r, scale: s, translateX: x, translateY: y } = transform;
-        if (r) sb.push(`rotate(${isFloat(r) ? `${r}deg` : r});`);
-        if (s) sb.push(`scale(${s});`);
-        if (x) sb.push(`translateX(${isFloat(x) ? `${x}%` : x});`);
-        if (y) sb.push(`translateY(${isFloat(y) ? `${y}%` : y});`);
+      const { rotate: r, scale: s, x, y, opacity } = keyframe;
+
+      if (isDefined(r) || isDefined(s) || isDefined(x) || isDefined(y)) {
+        sb.push(`transform: `);
+        if (isDefined(r)) sb.push(`rotate(${isFloat(r) ? `${r}deg` : r}) `);
+        if (isDefined(s)) sb.push(`scale(${s}) `);
+        if (isDefined(x)) sb.push(`translateX(${isFloat(x) ? `${x}%` : x}) `);
+        if (isDefined(y)) sb.push(`translateY(${isFloat(y) ? `${y}%` : y}) `);
+        sb.push(`; `);
       }
 
-      sb.push(` }`);
+      if (isDefined(opacity)) {
+        sb.push(`opacity: ${opacity}; `);
+      }
+
+      sb.push(`}`);
     }
   }
 

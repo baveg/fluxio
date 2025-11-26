@@ -66,7 +66,7 @@ const animToCss = (v: StyleAnim, s: S, styles: Dictionary<CssStyle | string>) =>
   styles[`@keyframes ${name}`] = sb.join('');
 
   s.animationName = name;
-  if (duration) s.animationDuration = name;
+  if (duration) s.animationDuration = isFloat(duration) ? `${duration}s` : duration;
   if (count) s.animationIterationCount = String(count);
   if (timing) s.animationTimingFunction = timing;
 

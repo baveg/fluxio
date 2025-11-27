@@ -383,7 +383,7 @@ export const computeStyles = (
 ) => {
   for (const k in inputs) {
     const record = inputs[k];
-    const query = `${prefix}${k.replace(/, ?&?/g, `,${prefix}`).replace(/&/g, prefix)}`;
+    const query = `${prefix}${k.replace(/,&?/g, `,${prefix}`).replace(/&/g, prefix)}`;
     const style: CssStyle = (styles[query] as CssStyle) || (styles[query] = {});
     computeStyle(record, style, styles);
   }

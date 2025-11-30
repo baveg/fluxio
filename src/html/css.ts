@@ -219,7 +219,7 @@ export const cssFunMap = {
     s.fontWeight =
       isString(v) ? (v as S['fontWeight'])
       : v ? 'bold'
-      : 'regular';
+      : 'normal';
   },
 
   bg: (v: string, s: S) => {

@@ -90,7 +90,7 @@ const px = (v: Px | Px[]): string =>
   : String(v);
 
 const fConvert = (v: any, defaultValue?: string): any =>
-  (!isStringValid(v) && defaultValue) ? fConvert(defaultValue)
+  !isStringValid(v) && defaultValue ? fConvert(defaultValue)
   : v === 'start' ? 'flex-start'
   : v === 'end' ? 'flex-end'
   : v === 'between' ? 'space-between'
@@ -461,7 +461,7 @@ export const Css = (key: string, styles?: StylesValue) => {
       setCss(key, styles, order);
       isInit = true;
     }
-    
+
     const sb = [];
 
     for (const arg of args) {

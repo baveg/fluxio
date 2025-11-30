@@ -357,7 +357,7 @@ export interface StyleKeyframe {
   x?: CssNumber;
   y?: CssNumber;
   opacity?: number;
-};
+}
 
 export type StyleAnim =
   | string

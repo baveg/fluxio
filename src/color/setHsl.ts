@@ -11,3 +11,8 @@ export const setHsl = (color: any, values: Partial<HslColor>) => {
   if (isFloat(values.a)) color.a = values.a;
   return toColor(color);
 };
+
+export const setHue = (color: any, h: HslColor['h']) => setHsl(color, { h });
+export const setSaturation = (color: any, s: HslColor['s']) => setHsl(color, { s });
+export const setLight = (color: any, l: HslColor['l']) => setHsl(color, { l });
+export const setAlpha = (color: any, a: HslColor['a']) => setHsl(color, { a });

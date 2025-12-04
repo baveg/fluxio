@@ -11,3 +11,7 @@ export const addHsl = (color: any, values: Partial<HslColor>) => {
   if (isFloat(values.a)) color.a += values.a;
   return toColor(color);
 };
+
+export const addHue = (color: any, h: HslColor['h']) => addHsl(color, { h });
+export const addSaturation = (color: any, s: HslColor['s']) => addHsl(color, { s });
+export const addLight = (color: any, l: HslColor['l']) => addHsl(color, { l });

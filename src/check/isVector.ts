@@ -1,5 +1,5 @@
-import { Vector, Vector1, Vector2, Vector3, Vector4, Vector5 } from "fluxio/types/Vector";
-import { isArrayOfNumber } from "./isArrayOf";
+import { Vector, Vector1, Vector2, Vector3, Vector4, Vector5 } from 'fluxio/types/Vector';
+import { isArrayOfNumber } from './isArrayOf';
 
 export const isVector = (v: any): v is Vector => isArrayOfNumber(v);
 export const isVector1 = (v: any): v is Vector1 => isVector(v) && v.length === 1;

@@ -8,7 +8,9 @@ export const humanize = (a: any, indent = 0): string => {
   const nextIndent = indent + 1;
 
   if (isArray(a)) {
-    return a.map(v => isObject(v) || isArray(v) ? '\n' + humanize(v, nextIndent) : humanize(v, 0)).join('\n' + sp);
+    return a
+      .map((v) => (isObject(v) || isArray(v) ? '\n' + humanize(v, nextIndent) : humanize(v, 0)))
+      .join('\n' + sp);
   }
 
   if (isError(a)) return sp + toError(a).toString();

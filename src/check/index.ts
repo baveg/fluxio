@@ -21,4 +21,5 @@ export * from './isString';
 export * from './isType';
 export * from './isUndefined';
 export * from './isUuid';
+export * from './isVector';
 export * from './must';

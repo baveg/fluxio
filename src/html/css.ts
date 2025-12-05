@@ -310,7 +310,7 @@ export const cssFunMap = {
     s.display = 'flex';
     s.flexDirection = 'row';
     s.flexWrap = 'wrap';
-    s.alignItems = fConvert('center');
+    s.alignItems = fConvert('stretch');
     s.justifyContent = fConvert('around');
     s.alignContent = fConvert('around');
   },
@@ -336,7 +336,7 @@ export const cssFunMap = {
     s.textAlign = 'center';
   },
 
-  alignItems: (v: 1 | StyleFlexDirection, s: S) => {
+  alignItems: (v: 1 | StyleFlexAlign, s: S) => {
     s.alignItems = fConvert(v, 'center');
   },
   justifyContent: (v: 1 | StyleFlexJustify, s: S) => {

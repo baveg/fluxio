@@ -9,24 +9,34 @@ export type ArRecVal<T, U> = undefined | null | keyof T | ((item: T, index: numb
 export type RecKey<T> = undefined | null | keyof T | ((item: T, key: string) => any);
 export type RecVal<T, U> = undefined | null | keyof T | ((item: T, key: string) => U);
 
-const _groupBy = (items: any, key: any, val: any, add: any) => {
+export const byGetId = (v: any) => v.id;
+export const byGetKey = (v: any) => v.key;
+export const byGetValue = (v: any) => v;
+export const byGetIndex = (_: any, i: any) => i;
+
+export const byForEach = (items: any, key: any, val: any, callback: any) => {
   const getK: (item: any, index: any) => any =
     isFunction(key) ? key
-    : isNil(key) ? (i: any) => i
+    : isNil(key) ? byGetValue
     : (i: any) => i[key];
+
   const getV: (item: any, index: any) => any =
     isFunction(val) ? val
-    : isNil(val) ? (i: any) => i
+    : isNil(val) ? byGetValue
     : (i: any) => i[val];
+
   if (isArray(items)) {
-    items.forEach((item, index) => {
-      add(getK(item, index), getV(item, index));
-    });
+    for (let i = 0, l = items.length; i < l; i++) {
+      const item = items[i];
+      callback(getK(item, i), getV(item, i));
+    }
   }
+
   if (isItem(items)) {
-    Object.entries(items).forEach(([key, val]) => {
-      add(getK(val, key), getV(val, key));
-    });
+    for (const key in items) {
+      const val = items[key];
+      callback(getK(val, key), getV(val, key));
+    }
   }
 };
 
@@ -47,7 +57,7 @@ interface GroupBy {
  */
 export const groupBy = ((items: any, key?: any, val?: any): Dictionary<any[]> => {
   const r: Dictionary<any[]> = {};
-  _groupBy(items, key, val, (k: any, v: any) => {
+  byForEach(items, key, val, (k: any, v: any) => {
     (r[k] || (r[k] = [])).push(v);
   });
   return r;
@@ -70,7 +80,7 @@ interface By {
  */
 export const by = ((items: any, key?: any, val?: any): Dictionary<any> => {
   const r: Dictionary<any> = {};
-  _groupBy(items, key, val, (k: any, v: any) => {
+  byForEach(items, key, val, (k: any, v: any) => {
     r[k] = v;
   });
   return r;
@@ -82,7 +92,7 @@ interface ById {
   <T extends { id?: string }>(items: Dictionary<T>): Dictionary<T>;
   <T extends { id?: string }, U>(items: Dictionary<T>, val: RecVal<T, U>): Dictionary<U>;
 }
-export const byId = ((items: any, val?: any) => by(items, (i: any) => i.id, val)) as ById;
+export const byId = ((items: any, val?: any) => by(items, byGetId, val)) as ById;
 
 interface ByKey {
   <T extends { key?: string }>(items: T[]): Dictionary<T>;
@@ -90,4 +100,10 @@ interface ByKey {
   <T extends { key?: string }>(items: Dictionary<T>): Dictionary<T>;
   <T extends { key?: string }, U>(items: Dictionary<T>, val: RecVal<T, U>): Dictionary<U>;
 }
-export const byKey = ((items: any, val?: any) => by(items, (i: any) => i.key, val)) as ByKey;
+export const byKey = ((items: any, val?: any) => by(items, byGetKey, val)) as ByKey;
+
+interface IndexBy {
+  <T>(items: T[], key?: ArRecKey<T>): Dictionary<number>;
+  <T>(items: Dictionary<T>, key?: RecKey<T>): Dictionary<number>;
+}
+export const indexBy = ((items: any, key?: any) => by(items, key, byGetIndex)) as IndexBy;

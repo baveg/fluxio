@@ -4,7 +4,7 @@ export * from './async';
 export * from './cast';
 export * from './check';
 export * from './color';
-export * from './datetime';
+export * from './date';
 export * from './error';
 export * from './flux';
 export * from './html';

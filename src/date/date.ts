@@ -3,7 +3,8 @@ import { indexBy } from "fluxio/object/by";
 import { toDate } from "fluxio/cast/toDate";
 import { firstUpper } from "fluxio/string/upper";
 import { padStart } from 'fluxio/string/pad';
-import { isUInt } from "fluxio/check/isNumber";
+import { isFloat, isUInt } from "fluxio/check/isNumber";
+import { fluxStored } from "fluxio/flux/fluxStored";
 
 ///// CONSTANTS /////
 
@@ -15,6 +16,35 @@ export const HOUR = 60 * MINUTE;
 export const DAY = 24 * HOUR;
 export const WEEK = 7 * DAY;
 export const YEAR = 365 * DAY;
+
+///// NOW /////
+
+export const timeOffset$ = fluxStored<number>('timeOffset$', 0, isFloat);
+
+if (!Date.now) Date.now = () => new Date().getTime();
+
+export const syncServerTime = (getServerTime: () => Promise<number>) => {
+  const startTime = Date.now();
+  return getServerTime().then(serverTime => {
+    const endTime = Date.now();
+    const localTime = (startTime + endTime) / 2;
+    const timeOffset = serverTime - localTime;
+    timeOffset$.set(timeOffset);
+  });
+}
+
+/**
+ * Get the current server time estimate
+ * Triggers initial sync in background if not yet synced, but returns immediately
+ * @returns Current server time in milliseconds (may be inaccurate before first sync completes)
+ */
+export const serverTime = () => timeOffset$.get() + Date.now();
+
+/**
+ * Get the current server time as a Date object
+ * @returns Date object representing server time
+ */
+export const serverDate = () => new Date(serverTime());
 
 ///// SECONDS /////
 
@@ -153,11 +183,7 @@ export const formatShortDateTime = (d: any) => `${formatShortDate(d = toDate(d))
 ///// HELPERS /////
 
 /** Check if date is expired (date + delay < now) */
-export const isExpired = (date: any, delayMs: number = 0): boolean => {
-  const d = toDate(date);
-  if (!d) return true;
-  return d.getTime() + delayMs < Date.now();
-};
+export const isExpired = (d: any, ms: number = 0, now = serverTime()): boolean => getTime(d) + ms < now;
 
 /** Parse flexible date/time string: DD/MM, DD/MM/YY, DD/MM/YYYY HH:MM:SS, HH:MM, etc. */
 export const parseDate = (str: string): Date | null => {

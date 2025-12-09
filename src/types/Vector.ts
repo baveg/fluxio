@@ -8,7 +8,16 @@ export type Vector7<T = number> = Readonly<[T, T, T, T, T, T, T]>;
 export type Vector8<T = number> = Readonly<[T, T, T, T, T, T, T, T]>;
 export type Vector9<T = number> = Readonly<[T, T, T, T, T, T, T, T, T]>;
 
-export type Vector<T = number> = Vector1<T> | Vector2<T> | Vector3<T> | Vector4<T> | Vector5<T> | Vector6<T> | Vector7<T> | Vector8<T> | Vector9<T>;
+export type Vector<T = number> =
+  | Vector1<T>
+  | Vector2<T>
+  | Vector3<T>
+  | Vector4<T>
+  | Vector5<T>
+  | Vector6<T>
+  | Vector7<T>
+  | Vector8<T>
+  | Vector9<T>;
 
 export type PosXY = Vector2;
 export type SizeWH = Vector2;

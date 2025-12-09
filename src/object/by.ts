@@ -45,7 +45,7 @@ interface GroupBy {
  * isDeepEqual( groupBy({ a, b, c }, null, v => v.x), { a: [5], b: [6], c: [6] } );
  * isDeepEqual( groupBy([ a, b, c ]), groupBy({ 0:a, 1:b, 2:c }) );
  */
-export const groupBy = ((items: any, key: any, val?: any): Dictionary<any[]> => {
+export const groupBy = ((items: any, key?: any, val?: any): Dictionary<any[]> => {
   const r: Dictionary<any[]> = {};
   _groupBy(items, key, val, (k: any, v: any) => {
     (r[k] || (r[k] = [])).push(v);
@@ -68,7 +68,7 @@ interface By {
  * isDeepEqual( by({ a, b, c }, null, v => v.x), { a: 5, b: 6, c: 6 } );
  * isDeepEqual( by([ a, b, c ]), valueBy({ 0:a, 1:b, 2:c }) );
  */
-export const by = ((items: any, key: any, val?: any): Dictionary<any> => {
+export const by = ((items: any, key?: any, val?: any): Dictionary<any> => {
   const r: Dictionary<any> = {};
   _groupBy(items, key, val, (k: any, v: any) => {
     r[k] = v;

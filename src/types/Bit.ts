@@ -1,4 +1,4 @@
-export type Bit = 0|1;
+export type Bit = boolean;
 export type Bits = number;
 
 // export type Bits<N extends number, Acc extends Bit[] = []> =

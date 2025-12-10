@@ -1,20 +1,20 @@
-import { Bit, Bits } from "fluxio/types";
+import { Bits } from "fluxio/types";
 
-export const setBit = (bits: Bits, index: number, value: Bit): Bits => value ? bits | (1 << index) : bits & ~(1 << index);
+export const setBit = (bits: Bits, index: number, value: boolean): Bits => value ? bits | (1 << index) : bits & ~(1 << index);
 
-export const getBit = (bits: Bits, index: number): Bit => (bits & (1 << index)) !== 0 ? 1 : 0;
+export const getBit = (bits: Bits, index: number): boolean => (bits & (1 << index)) !== 0;
 
 export const toggleBit = (bits: Bits, index: number): Bits => bits ^ (1 << index);
 
-export const bitsToArray = (bits: Bits, length: number = 32): Bit[] => {
-  const result: Bit[] = [];
+export const bitsToArray = (bits: Bits, length: number = 32): boolean[] => {
+  const result: boolean[] = [];
   for (let i = 0; i < length; i++) {
-    result[i] = (bits & (1 << i)) !== 0 ? 1 : 0;
+    result[i] = (bits & (1 << i)) !== 0;
   }
   return result;
 };
 
-export const arrayToBits = (bits: Bit[]): Bits => {
+export const arrayToBits = (bits: boolean[]): Bits => {
   let result = 0;
   for (let i = 0; i < bits.length; i++) {
     if (bits[i]) {

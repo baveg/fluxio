@@ -1,3 +1,4 @@
+export * from './Bit';
 export * from './Callback';
 export * from './Check';
 export * from './Dictionary';

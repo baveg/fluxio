@@ -1,19 +1,27 @@
-import { Vector1, Vector2, Vector3, Vector4, Vector5, Vector } from '../types/Vector';
+import { Vector1, Vector2, Vector3, Vector4, Vector5, Vector6, Vector7, Vector8, Vector9, Vector, WVector } from '../types/Vector';
 import { clamp } from './clamp';
 import { isDefined } from '../check/isDefined';
 
-export const VECTOR1_ZERO: Vector1 = [0];
-export const VECTOR2_ZERO: Vector2 = [0, 0];
-export const VECTOR3_ZERO: Vector3 = [0, 0, 0];
-export const VECTOR4_ZERO: Vector4 = [0, 0, 0, 0];
-export const VECTOR5_ZERO: Vector5 = [0, 0, 0, 0, 0];
+export const VECTOR1_ZERO: Vector1<number> = [0];
+export const VECTOR2_ZERO: Vector2<number> = [0, 0];
+export const VECTOR3_ZERO: Vector3<number> = [0, 0, 0];
+export const VECTOR4_ZERO: Vector4<number> = [0, 0, 0, 0];
+export const VECTOR5_ZERO: Vector5<number> = [0, 0, 0, 0, 0];
+export const VECTOR6_ZERO: Vector6<number> = [0, 0, 0, 0, 0, 0];
+export const VECTOR7_ZERO: Vector7<number> = [0, 0, 0, 0, 0, 0, 0];
+export const VECTOR8_ZERO: Vector8<number> = [0, 0, 0, 0, 0, 0, 0, 0];
+export const VECTOR9_ZERO: Vector9<number> = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-const MAX = Number.MAX_VALUE;
-export const VECTOR1_MAX: Vector1 = [MAX];
-export const VECTOR2_MAX: Vector2 = [MAX, MAX];
-export const VECTOR3_MAX: Vector3 = [MAX, MAX, MAX];
-export const VECTOR4_MAX: Vector4 = [MAX, MAX, MAX, MAX];
-export const VECTOR5_MAX: Vector5 = [MAX, MAX, MAX, MAX, MAX];
+const M = Number.MAX_VALUE;
+export const VECTOR1_MAX: Vector1 = [M];
+export const VECTOR2_MAX: Vector2 = [M, M];
+export const VECTOR3_MAX: Vector3 = [M, M, M];
+export const VECTOR4_MAX: Vector4 = [M, M, M, M];
+export const VECTOR5_MAX: Vector5 = [M, M, M, M, M];
+export const VECTOR6_MAX: Vector6 = [M, M, M, M, M, M];
+export const VECTOR7_MAX: Vector7 = [M, M, M, M, M, M, M];
+export const VECTOR8_MAX: Vector8 = [M, M, M, M, M, M, M, M];
+export const VECTOR9_MAX: Vector9 = [M, M, M, M, M, M, M, M, M];
 
 export const vectorError = (prop: string) => new Error(`VectorError (${prop})`);
 
@@ -62,3 +70,5 @@ export const mulVector = <V extends Vector>(a: V, b: V) => opVector<V>(a, b, (a,
 
 export const mergeVector = <V extends Vector>(a: V, b: Vector<V[0] | undefined>) =>
   opVector<V>(a, b as V, (a, b) => (isDefined(b) ? b : a));
+
+export const cloneVector = <T>(vector: Vector<T>) => [...vector] as WVector<T>;

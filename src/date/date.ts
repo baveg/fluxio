@@ -5,6 +5,7 @@ import { firstUpper } from 'fluxio/string/upper';
 import { padStart } from 'fluxio/string/pad';
 import { isFloat, isUInt } from 'fluxio/check/isNumber';
 import { fluxStored } from 'fluxio/flux/fluxStored';
+import { lower } from 'fluxio/string';
 
 export type DateLike = Readonly<Date> | string | number | null | undefined;
 
@@ -166,60 +167,63 @@ export const addYear = (d: DateLike, v: number = 1) => setYear((d = toDate(d)), 
 
 ///// DAY NAME /////
 
-export const DAY_NAMES = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-export const DAY_SHORTS = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'];
+export const DAY_NAMES = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+export const DAY_SHORTS = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
 
-/** 0 -> "dimanche", 1 -> "lundi", 2 -> "mardi", ... */
+/** 0 -> "Dimanche", 1 -> "Lundi", 2 -> "Mardi", ... */
 export const dayIndexToName = (i: number | null | undefined) =>
   isUInt(i) ? DAY_NAMES[i] || '' : '';
 
-/** 0 -> "dim", 1 -> "lun", 2 -> "mar", ... */
+/** 0 -> "Dim", 1 -> "Lun", 2 -> "Mar", ... */
 export const dayIndexToShort = (i: number | null | undefined) =>
   isUInt(i) ? DAY_SHORTS[i] || '' : '';
 
 let _parseDay: Dictionary<number> | undefined;
 
-/** "dim" -> 0, "lundi" -> 1, "MarDi" -> 2, ... */
+/** "Dim" -> 0, "lundi" -> 1, "MarDi" -> 2, ... */
 export const dayToIndex = (day: string) => {
-  const map = _parseDay || (_parseDay = { ...indexBy(DAY_NAMES), ...indexBy(DAY_SHORTS) });
-  return map[String(day).toLowerCase()];
+  const map = _parseDay || (_parseDay = {
+    ...indexBy(DAY_NAMES, lower),
+    ...indexBy(DAY_SHORTS, lower),
+  });
+  return map[lower(day)];
 };
 
 /** Format date as Mardi */
-export const formatDay = (d: DateLike) => firstUpper(dayIndexToName(getWeekDay(d)));
+export const formatDay = (d: DateLike) => dayIndexToName(getWeekDay(d));
 
 /** Format date as Mar */
-export const formatDayShort = (d: DateLike) => firstUpper(dayIndexToShort(getWeekDay(d)));
+export const formatDayShort = (d: DateLike) => dayIndexToShort(getWeekDay(d));
 
 ///// MONTH NAME /////
 
 export const MONTH_NAMES = [
-  'janvier',
-  'février',
-  'mars',
-  'avril',
-  'mai',
-  'juin',
-  'juillet',
-  'août',
-  'septembre',
-  'octobre',
-  'novembre',
-  'décembre',
+  'Janvier',
+  'Février',
+  'Mars',
+  'Avril',
+  'Mai',
+  'Juin',
+  'Juillet',
+  'Août',
+  'Septembre',
+  'Octobre',
+  'Novembre',
+  'Décembre',
 ];
 export const MONTH_SHORTS = [
-  'jan',
-  'fév',
-  'mars',
-  'avr',
-  'mai',
-  'juin',
-  'juil',
-  'août',
-  'sept',
-  'oct',
-  'nov',
-  'déc',
+  'Jan',
+  'Fév',
+  'Mars',
+  'Avr',
+  'Mai',
+  'Juin',
+  'Juil',
+  'Août',
+  'Sept',
+  'Oct',
+  'Nov',
+  'Déc',
 ];
 
 /** 0 -> "janvier", 1 -> "février", 2 -> "mars", ... */
@@ -234,15 +238,18 @@ let _parseMonth: Dictionary<number> | undefined;
 
 /** "jan" -> 0, "février" -> 1, "MarS" -> 2, ... */
 export const monthToIndex = (month: string) => {
-  const map = _parseMonth || (_parseMonth = { ...indexBy(MONTH_NAMES), ...indexBy(MONTH_SHORTS) });
-  return map[String(month).toLowerCase()];
+  const map = _parseMonth || (_parseMonth = {
+    ...indexBy(MONTH_NAMES, lower),
+    ...indexBy(MONTH_SHORTS, lower),
+  });
+  return map[lower(month)];
 };
 
 /** Format date as Février */
-export const formatMonth = (d: DateLike) => firstUpper(monthIndexToName(getMonth(d)));
+export const formatMonth = (d: DateLike) => monthIndexToName(getMonth(d));
 
 /** Format date as Fév */
-export const formatShortMonth = (d: DateLike) => firstUpper(monthIndexToShort(getMonth(d)));
+export const formatShortMonth = (d: DateLike) => monthIndexToShort(getMonth(d));
 
 ///// FORMAT /////
 

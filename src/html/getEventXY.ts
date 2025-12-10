@@ -1,7 +1,7 @@
-import { PosXY } from 'fluxio/types';
+import { Vector2 } from 'fluxio/types';
 import { isNumber } from '../check/isNumber';
 
-export const getEventXY = (e: any): PosXY | undefined => {
+export const getEventXY = (e: any): Vector2 | undefined => {
   if (!e) return undefined;
 
   const x = e.clientX;

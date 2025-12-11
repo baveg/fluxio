@@ -1,4 +1,5 @@
-import { Bits } from "fluxio/types";
+import { toNumber } from "fluxio/cast";
+import { Bits, Dictionary } from "fluxio/types";
 
 export const setBit = (bits: Bits, index: number, value: boolean): Bits => value ? bits | (1 << index) : bits & ~(1 << index);
 
@@ -14,10 +15,31 @@ export const bitsToArray = (bits: Bits, length: number = 32): boolean[] => {
   return result;
 };
 
-export const arrayToBits = (bits: boolean[]): Bits => {
+export const arrayToBits = (bits: (0|1|boolean)[]): Bits => {
   let result = 0;
   for (let i = 0; i < bits.length; i++) {
     if (bits[i]) {
+      result |= 1 << i;
+    }
+  }
+  return result;
+};
+
+export const bitsToRecord = (bits: Bits, length: number = 32): Record<number, boolean> => {
+  const result: Dictionary<true> = {};
+  for (let i = 0; i < length; i++) {
+    if((bits & (1 << i)) !== 0) {
+      result[i] = true;
+    }
+  }
+  return result;
+};
+
+export const recordToBits = (record: Record<number, 0|1|boolean>): Bits => {
+  let result = 0;
+  for (const key in record) {
+    const i = parseInt(key);
+    if (record[key]) {
       result |= 1 << i;
     }
   }

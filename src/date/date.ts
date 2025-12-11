@@ -1,12 +1,14 @@
 import { Dictionary } from 'fluxio/types/Dictionary';
 import { indexBy } from 'fluxio/object/by';
 import { toDate } from 'fluxio/cast/toDate';
-import { firstUpper } from 'fluxio/string/upper';
 import { padStart } from 'fluxio/string/pad';
-import { isFloat, isUInt } from 'fluxio/check/isNumber';
+import { isFloat, isNumber, isUInt } from 'fluxio/check/isNumber';
 import { fluxStored } from 'fluxio/flux/fluxStored';
 import { lower } from 'fluxio/string';
 import { normalizeIndex } from 'fluxio/array/normalizeIndex';
+import { pInt } from 'fluxio/cast/toNumber';
+import { floor } from 'fluxio/number/floor';
+import { isDate } from 'fluxio/check/isDate';
 
 export type DateLike = Readonly<Date> | string | number | null | undefined;
 
@@ -88,17 +90,11 @@ export const getMs = (d: DateLike) => toDate(d).getMilliseconds();
 
 export const setMs = (d: DateLike, v: number) => updateDate(d, (d) => d.setMilliseconds(v));
 
-/** Format date as "001" */
-export const formatMs = (d: DateLike) => padStart(getMs(d), 3);
-
 ///// SECOND /////
 
 export const getSeconds = (d: DateLike) => toDate(d).getSeconds();
 
 export const setSeconds = (d: DateLike, v: number) => updateDate(d, (d) => d.setSeconds(v));
-
-/** Format date as "05" */
-export const formatSeconds = (d: DateLike) => padStart(getSeconds(d), 2);
 
 ///// MINUTE /////
 
@@ -106,17 +102,11 @@ export const getMinutes = (d: DateLike) => toDate(d).getMinutes();
 
 export const setMinutes = (d: DateLike, v: number) => updateDate(d, (d) => d.setMinutes(v));
 
-/** Format date as "04" */
-export const formatMinutes = (d: DateLike) => padStart(getMinutes(d), 2);
-
 ///// HOUR /////
 
 export const getHours = (d: DateLike) => toDate(d).getHours();
 
 export const setHours = (d: DateLike, v: number) => updateDate(d, (d) => d.setHours(v));
-
-/** Format date as "03" */
-export const formatHours = (d: DateLike) => padStart(getHours(d), 2);
 
 ///// MONTH DAY /////
 
@@ -154,6 +144,8 @@ export const setYear = (d: DateLike, v: number) => updateDate(d, (d) => d.setFul
 ///// TIME /////
 
 export const getTime = (d: DateLike) => toDate(d).getTime();
+
+export const getDayTime = (d: DateLike) => (d=toDate(d)).getTime() - startOfDay(d).getTime();
 
 ///// ADD /////
 
@@ -262,20 +254,29 @@ export const formatDate = (d: DateLike) =>
 export const formatShortDate = (d: DateLike) =>
   `${getMonthDay((d = toDate(d)))} ${formatShortMonth(d)} ${getYear(d)}`;
 
-/** Format date as "15:04:05" */
-export const formatTime = (d: DateLike) =>
-  `${formatHours((d = toDate(d)))}:${formatMinutes(d)}:${formatSeconds(d)}`;
-
-/** Format date as "15:04" */
-export const formatShortTime = (d: DateLike) =>
-  `${formatHours((d = toDate(d)))}:${formatMinutes(d)}`;
+/** Format milliseconds as "15:04" ou "15:04:05" without timezone conversion */
+export const formatTime = (d: Date | number | null | undefined, seconds=false) => {
+  const ms = isDate(d) ? getDayTime(d) : isNumber(d) ? d : 0;
+  const t = floor(ms / SECOND);
+  const h = padStart(floor(t / 3600), 2);
+  const m = padStart(floor((t % 3600) / 60), 2);
+  const s = padStart(t % 60, 2);
+  return seconds ? `${h}:${m}:${s}` : `${h}:${m}`;
+}
 
 /** Format date as "Mardi, 9 Février 2025 15:04:05" */
 export const formatDateTime = (d: DateLike) => `${formatDate((d = toDate(d)))} ${formatTime(d)}`;
 
 /** Format date as "9 Fév 2025 15:04" */
 export const formatShortDateTime = (d: DateLike) =>
-  `${formatShortDate((d = toDate(d)))} ${formatShortTime(d)}`;
+  `${formatShortDate((d = toDate(d)))} ${formatTime(d)}`;
+
+///// PARSE /////
+
+export const parseTime = (v: string) => {
+  const a = v.match(/(\d{2}):(\d{2})(?::(\d{2}))?/);
+  if (a) return (pInt(a[1])||0)*HOUR + (pInt(a[2])||0)*MINUTE + (pInt(a[3])||0)*SECOND;
+}
 
 ///// COMPARAISONS /////
 

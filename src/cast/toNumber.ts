@@ -10,3 +10,7 @@ export const toNumber = (<D>(v: any, defaultValue?: D): number | D | undefined =
   const nbr = clean !== '' ? Number(clean) : Number.NaN;
   return Number.isNaN(nbr) || !Number.isFinite(nbr) ? defaultValue : nbr;
 }) as ToNumber;
+
+export const pInt = (v: any): number | undefined => Number.isNaN(v=parseInt(v)) || !Number.isFinite(v) ? undefined : v;
+
+export const pFloat = (v: any): number | undefined => Number.isNaN(v=parseFloat(v)) || !Number.isFinite(v) ? undefined : v;

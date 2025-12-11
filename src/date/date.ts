@@ -6,6 +6,7 @@ import { padStart } from 'fluxio/string/pad';
 import { isFloat, isUInt } from 'fluxio/check/isNumber';
 import { fluxStored } from 'fluxio/flux/fluxStored';
 import { lower } from 'fluxio/string';
+import { normalizeIndex } from 'fluxio/array/normalizeIndex';
 
 export type DateLike = Readonly<Date> | string | number | null | undefined;
 
@@ -156,7 +157,7 @@ export const getTime = (d: DateLike) => toDate(d).getTime();
 
 ///// ADD /////
 
-export const addMs = (a: any, b: any) => toDate(getTime(a) + getTime(b));
+export const addMs = (d: DateLike, ms: number) => new Date(getTime(d) + ms);
 export const addSecond = (d: DateLike, v: number = 1) => addMs(d, v * SECOND);
 export const addMinute = (d: DateLike, v: number = 1) => addMs(d, v * MINUTE);
 export const addHour = (d: DateLike, v: number = 1) => addMs(d, v * HOUR);
@@ -302,6 +303,8 @@ export const isFuture = (d: DateLike): boolean => getTime(d) > serverTime();
 
 ///// HELPERS /////
 
+export const cloneDate = (d: DateLike) => new Date(toDate(d));
+
 export const updateDate = (d: DateLike, update: (date: Date) => void) => {
   const r = new Date(toDate(d));
   update(r);
@@ -313,6 +316,12 @@ export const startOfDay = (d: DateLike): Date => updateDate(d, (d) => d.setHours
 
 // Fin de journée
 export const endOfDay = (d: DateLike): Date => updateDate(d, (d) => d.setHours(23, 59, 59, 999));
+
+export const startOfWeek = (d: DateLike, startDay = 1): Date => 
+  addDay(d = startOfDay(d), normalizeIndex(startDay - getWeekDay(d), 7) - 7);
+
+export const endOfWeek = (d: DateLike, startDay = 1): Date => 
+  addDay(d = startOfDay(d), normalizeIndex(startDay + 6 - getWeekDay(d), 7));
 
 export const startOfMonth = (d: DateLike): Date =>
   new Date(getYear((d = toDate(d))), getMonth(d), 1, 0, 0, 0, 0);

@@ -1,4 +1,16 @@
-import { Vector1, Vector2, Vector3, Vector4, Vector5, Vector6, Vector7, Vector8, Vector9, Vector, WVector } from '../types/Vector';
+import {
+  Vector1,
+  Vector2,
+  Vector3,
+  Vector4,
+  Vector5,
+  Vector6,
+  Vector7,
+  Vector8,
+  Vector9,
+  Vector,
+  WVector,
+} from '../types/Vector';
 import { clamp } from './clamp';
 import { isDefined } from '../check/isDefined';
 

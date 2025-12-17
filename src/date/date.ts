@@ -145,7 +145,7 @@ export const setYear = (d: DateLike, v: number) => updateDate(d, (d) => d.setFul
 
 export const getTime = (d: DateLike) => toDate(d).getTime();
 
-export const getDayTime = (d: DateLike) => (d=toDate(d)).getTime() - startOfDay(d).getTime();
+export const getDayTime = (d: DateLike) => (d = toDate(d)).getTime() - startOfDay(d).getTime();
 
 ///// ADD /////
 
@@ -175,10 +175,12 @@ let _parseDay: Dictionary<number> | undefined;
 
 /** "Dim" -> 0, "lundi" -> 1, "MarDi" -> 2, ... */
 export const dayToIndex = (day: string) => {
-  const map = _parseDay || (_parseDay = {
-    ...indexBy(DAY_NAMES, lower),
-    ...indexBy(DAY_SHORTS, lower),
-  });
+  const map =
+    _parseDay ||
+    (_parseDay = {
+      ...indexBy(DAY_NAMES, lower),
+      ...indexBy(DAY_SHORTS, lower),
+    });
   return map[lower(day)];
 };
 
@@ -231,10 +233,12 @@ let _parseMonth: Dictionary<number> | undefined;
 
 /** "jan" -> 0, "février" -> 1, "MarS" -> 2, ... */
 export const monthToIndex = (month: string) => {
-  const map = _parseMonth || (_parseMonth = {
-    ...indexBy(MONTH_NAMES, lower),
-    ...indexBy(MONTH_SHORTS, lower),
-  });
+  const map =
+    _parseMonth ||
+    (_parseMonth = {
+      ...indexBy(MONTH_NAMES, lower),
+      ...indexBy(MONTH_SHORTS, lower),
+    });
   return map[lower(month)];
 };
 
@@ -255,14 +259,17 @@ export const formatShortDate = (d: DateLike) =>
   `${getMonthDay((d = toDate(d)))} ${formatShortMonth(d)} ${getYear(d)}`;
 
 /** Format milliseconds as "15:04" ou "15:04:05" without timezone conversion */
-export const formatTime = (d: Date | number | null | undefined, seconds=false) => {
-  const ms = isDate(d) ? getDayTime(d) : isNumber(d) ? d : 0;
+export const formatTime = (d: Date | number | null | undefined, seconds = false) => {
+  const ms =
+    isDate(d) ? getDayTime(d)
+    : isNumber(d) ? d
+    : 0;
   const t = floor(ms / SECOND);
   const h = padStart(floor(t / 3600), 2);
   const m = padStart(floor((t % 3600) / 60), 2);
   const s = padStart(t % 60, 2);
   return seconds ? `${h}:${m}:${s}` : `${h}:${m}`;
-}
+};
 
 /** Format date as "Mardi, 9 Février 2025 15:04:05" */
 export const formatDateTime = (d: DateLike) => `${formatDate((d = toDate(d)))} ${formatTime(d)}`;
@@ -275,8 +282,8 @@ export const formatShortDateTime = (d: DateLike) =>
 
 export const parseTime = (v: string) => {
   const a = v.match(/(\d{2}):(\d{2})(?::(\d{2}))?/);
-  if (a) return (pInt(a[1])||0)*HOUR + (pInt(a[2])||0)*MINUTE + (pInt(a[3])||0)*SECOND;
-}
+  if (a) return (pInt(a[1]) || 0) * HOUR + (pInt(a[2]) || 0) * MINUTE + (pInt(a[3]) || 0) * SECOND;
+};
 
 ///// COMPARAISONS /////
 
@@ -318,11 +325,11 @@ export const startOfDay = (d: DateLike): Date => updateDate(d, (d) => d.setHours
 // Fin de journée
 export const endOfDay = (d: DateLike): Date => updateDate(d, (d) => d.setHours(23, 59, 59, 999));
 
-export const startOfWeek = (d: DateLike, startDay = 1): Date => 
-  addDay(d = startOfDay(d), normalizeIndex(startDay - getWeekDay(d), 7) - 7);
+export const startOfWeek = (d: DateLike, startDay = 1): Date =>
+  addDay((d = startOfDay(d)), normalizeIndex(startDay - getWeekDay(d), 7) - 7);
 
-export const endOfWeek = (d: DateLike, startDay = 1): Date => 
-  addDay(d = startOfDay(d), normalizeIndex(startDay + 6 - getWeekDay(d), 7));
+export const endOfWeek = (d: DateLike, startDay = 1): Date =>
+  addDay((d = startOfDay(d)), normalizeIndex(startDay + 6 - getWeekDay(d), 7));
 
 export const startOfMonth = (d: DateLike): Date =>
   new Date(getYear((d = toDate(d))), getMonth(d), 1, 0, 0, 0, 0);

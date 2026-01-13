@@ -9,6 +9,7 @@ import { normalizeIndex } from 'fluxio/array/normalizeIndex';
 import { pInt } from 'fluxio/cast/toNumber';
 import { floor } from 'fluxio/number/floor';
 import { isDate } from 'fluxio/check/isDate';
+import { round } from 'fluxio/number/round';
 
 export type DateLike = Readonly<Date> | string | number | null | undefined;
 
@@ -54,7 +55,7 @@ export const syncServerTime = (
       const end = Date.now();
 
       const localTime = (start + end) / 2;
-      const offset = serverTime - localTime;
+      const offset = round(serverTime - localTime);
 
       const syncDelay = end - start;
 

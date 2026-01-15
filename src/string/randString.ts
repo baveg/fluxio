@@ -32,14 +32,3 @@ export const randString = (
  * @returns
  */
 export const randHex = (count: number) => randString(count, '0123456789abcdef');
-
-/**
- * Create random UUID V4
- * @returns
- */
-export const uuid = (): string => {
-  if (typeof crypto === 'object' && crypto.randomUUID) {
-    return crypto.randomUUID();
-  }
-  return `${randHex(8)}-${randHex(4)}-4${randHex(3)}-8${randHex(3)}-${randHex(12)}`;
-};

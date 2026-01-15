@@ -1,16 +1,14 @@
 {
   "name": "fluxio",
   "version": "0.1.0",
+  "type": "module",
   "description": "Functional utility library for TypeScript",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    }
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
   },
   "files": [
     "dist",

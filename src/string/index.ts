@@ -1,4 +1,5 @@
 export * from './base64toBlob';
+export * from './base64Url';
 export * from './cases';
 export * from './humanize';
 export * from './isSearched';
@@ -12,3 +13,4 @@ export * from './replace';
 export * from './setTemplate';
 export * from './truncate';
 export * from './upper';
+export * from './uuid';

@@ -1,5 +1,5 @@
-import { isUuid } from "fluxio/check";
-import { randHex } from "./randString";
+import { isUuid } from 'fluxio/check';
+import { randHex } from './randString';
 
 /**
  * Create random UUID V4
@@ -13,9 +13,9 @@ export const uuid = (): string => {
 };
 
 export const minifyUuid = (uuid: string) => {
-    if (!isUuid(uuid)) return '';
-    return uuid.replace(/-/g, '');
-}
+  if (!isUuid(uuid)) return '';
+  return uuid.replace(/-/g, '');
+};
 
 export const prettifyUuid = (uuid: string) => {
   const h = minifyUuid(uuid);

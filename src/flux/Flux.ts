@@ -120,6 +120,8 @@ export class Flux<T = any> {
     return this.s || (this.s = this.set.bind(this));
   }
 
+  onListeners(thens: Listener<T>[], catches: Listener<Error>[]) {}
+
   /**
    * Subscribe to value changes.
    * @param listener Callback function to receive new values
@@ -132,6 +134,7 @@ export class Flux<T = any> {
       this.thens.push(onValue);
     }
     if (onError) this.catches.push(onError);
+    this.onListeners(this.thens, this.catches);
     return () => this.off(onValue, onError);
   }
 
@@ -144,6 +147,7 @@ export class Flux<T = any> {
     if (onValue) removeItem(this.thens, onValue);
     if (onError) removeItem(this.catches, onError);
     if (this.thens.length === 0 && this.catches.length === 0) this.clear();
+    else this.onListeners(this.thens, this.catches);
   }
 
   /**
@@ -152,6 +156,7 @@ export class Flux<T = any> {
   clear() {
     this.thens.length = 0;
     this.catches.length = 0;
+    this.onListeners(this.thens, this.catches);
   }
 
   /**

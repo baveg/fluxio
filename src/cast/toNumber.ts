@@ -16,3 +16,6 @@ export const pInt = (v: any): number | undefined =>
 
 export const pFloat = (v: any): number | undefined =>
   Number.isNaN((v = parseFloat(v))) || !Number.isFinite(v) ? undefined : v;
+
+export const toInt = pInt;
+export const toFloat = pFloat;

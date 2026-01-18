@@ -20,7 +20,7 @@ export const jsonParse = (
   reviver?: ((this: any, key: string, value: any) => any) | undefined
 ): any => {
   try {
-    return JSON.parse(text, reviver);
+    return text ? JSON.parse(text, reviver) : null;
   } catch (e) {
     jsonLog.e('parse', e);
     return null;

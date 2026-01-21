@@ -14,4 +14,4 @@ export const fluxProp = <T extends {}, P extends keyof T>(source: Flux<T>, prop:
       source.set({ ...item, [prop]: value } as T);
     }
   );
-}
+} 

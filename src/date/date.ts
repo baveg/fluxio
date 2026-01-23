@@ -253,7 +253,7 @@ export const formatShortMonth = (d: DateLike) => monthIndexToShort(getMonth(d));
 
 /** Format date as "Mardi, 9 Février 2025" */
 export const formatDate = (d: DateLike) =>
-  `${formatDay((d = toDate(d)))}, ${getMonthDay(d)} ${formatMonth(d)} ${getYear(d)}`;
+  d ? `${formatDay((d = toDate(d)))}, ${getMonthDay(d)} ${formatMonth(d)} ${getYear(d)}` : '';
 
 /** Format date as "9 Fév 2025" */
 export const formatShortDate = (d: DateLike) =>

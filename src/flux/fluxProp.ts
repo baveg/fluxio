@@ -1,7 +1,10 @@
-import { Flux, Pipe } from "./Flux";
-import { isItem } from "fluxio/check/isItem";
+import { Flux, Pipe } from './Flux';
+import { isItem } from 'fluxio/check/isItem';
 
-export const fluxProp = <T extends {}, P extends keyof T>(source: Flux<T>, prop: P): Pipe<T[P], T[P]> => {
+export const fluxProp = <T extends {}, P extends keyof T>(
+  source: Flux<T>,
+  prop: P
+): Pipe<T[P], T[P]> => {
   return new Pipe<T[P], T[P]>(
     source as any,
     (pipe) => {
@@ -15,4 +18,4 @@ export const fluxProp = <T extends {}, P extends keyof T>(source: Flux<T>, prop:
       source.set({ ...item, [prop]: value } as T);
     }
   );
-} 
+};

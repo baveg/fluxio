@@ -1,9 +1,11 @@
-import { Css, Dictionary, isDictionary } from 'fluxio';
-import { Button } from 'fluxio/ui/components/Button';
-import { isArray } from 'fluxio';
-import { useFieldController, useFieldState } from '@/components/fields/hooks';
-import { FieldProps } from '@/components/fields/types';
-import { comp } from '@/utils/comp';
+import { Button } from '../../Button';
+import { isArray } from '../../../../check/isArray';
+import { useFieldController, useFieldState } from '../hooks';
+import { FieldProps } from '../types';
+import { comp } from '../../../utils/comp';
+import { Css } from '../../../../html/css';
+import { Dictionary } from '../../../../types/Dictionary';
+import { isDictionary } from '../../../../check/isDictionary';
 
 const c = Css('Picker', {
   '': { w: '100%', rowWrap: 1 },

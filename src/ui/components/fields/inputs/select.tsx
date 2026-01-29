@@ -1,11 +1,11 @@
 import { ComponentChildren } from 'preact';
 import { useState, useRef, useEffect } from 'preact/hooks';
-import { Css } from 'fluxio';
-import { isArray } from 'fluxio';
-import { isSearched } from 'fluxio';
 import { ChevronDownIcon } from 'lucide-react';
-import { FieldProps } from '@/components/fields/types';
-import { useFieldController, useFieldState } from '@/components/fields/hooks';
+import { FieldProps } from '../types';
+import { useFieldController, useFieldState } from '../hooks';
+import { Css } from '../../../../html/css';
+import { isArray } from '../../../../check/isArray';
+import { isSearched } from '../../../../string/isSearched';
 
 const FIELD_HEIGHT = 22;
 

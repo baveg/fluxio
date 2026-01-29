@@ -1,4 +1,4 @@
-import { Css } from 'fluxio';
+import { Css } from '../../html/css';
 import type { JSX } from 'preact/jsx-runtime';
 
 const c = Css('Form', {

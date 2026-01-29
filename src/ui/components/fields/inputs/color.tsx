@@ -1,11 +1,17 @@
-import { FieldProps } from '@/components/fields/types';
-import { useInputProps } from '@/components/fields/hooks';
-import { addHsl, Css, isFloat, round, setHsl, setRgb, toHsl, toRgb, isLight } from 'fluxio';
+import { FieldProps } from '../types';
+import { useInputProps } from '../hooks';
 import { useState, useRef } from 'preact/hooks';
-import { Field } from '@/components/fields/Field';
-import { theme$ } from '@/utils/theme';
-import { createWindow } from 'fluxio/ui/components/Window';
-import { Button } from 'fluxio/ui/components/Button';
+import { Field } from '../Field';
+import { createWindow } from '../../Window';
+import { Button } from '../../Button';
+import { Css } from '../../../../html/css';
+import { toHsl } from '../../../../color/toHsl';
+import { toRgb } from '../../../../color/toRgb';
+import { setHsl } from '../../../../color/setHsl';
+import { round } from '../../../../number/round';
+import { setRgb } from '../../../../color/setRgb';
+import { isFloat } from '../../../../check/isNumber';
+import { isLight } from '../../../../color/isLight';
 
 const c = Css('ColorPicker', {
   '': {
@@ -48,14 +54,13 @@ const ColorPickerContent = ({ value, onChange }: ColorPickerProps) => {
   const hsl = toHsl(color);
   const rgb = toRgb(color);
 
-  const theme = theme$.get();
-  const p = theme.primary || '#28A8D9';
-  const s = theme.secondary || addHsl(p, { h: 360 / 3 });
+  // const p = theme.primary || '#28A8D9';
+  // const s = theme.secondary || addHsl(p, { h: 360 / 3 });
 
   const ls = [10, 20, 40, 60, 80, 90];
 
   const variations = [
-    [p, s, ...[0, 50, 100].map((l) => setHsl(color, { l })), undefined],
+    // [p, s, ...[0, 50, 100].map((l) => setHsl(color, { l })), undefined],
     ['#e20000ff', '#ffa600ff', '#fffb00ff', '#07db00ff', '#0063f7ff', '#a300e4ff'],
     ls.map((l) => setHsl(color, { l })),
   ];
@@ -150,7 +155,7 @@ const ColorButton = () => {
     createWindow({
       title: 'Couleur',
       content: () => <ColorPickerContent value={value} onChange={onChange} />,
-      pos: ref.current,
+      // pos: ref.current,
       size: [300, 400],
       min: [250, 300],
     });

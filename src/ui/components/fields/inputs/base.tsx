@@ -1,11 +1,13 @@
 import { useState } from 'preact/hooks';
-import { useInputProps } from '@/components/fields/hooks';
-import { FieldProps } from '@/components/fields/types';
-import { Button } from 'fluxio/ui/components/Button';
+import { useInputProps } from '../hooks';
+import { FieldProps } from '../types';
+import { Button } from '../../Button';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
-import { formatTime, isNumber, parseTime, SECOND, toDate, toNumber, toString } from 'fluxio';
+import { toNumber } from '../../../../cast/toNumber';
+import { formatTime, parseTime, SECOND } from '../../../../date/date';
+import { isNumber } from '../../../../check/isNumber';
 
-const getInput = <V = string,>(type: string): FieldProps<V, string> => ({
+const getInput = <V=string>(type: string): FieldProps<V, string> => ({
   input: () => {
     const props = useInputProps();
     return <input {...props} type={type} />;

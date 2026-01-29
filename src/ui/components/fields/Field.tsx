@@ -1,14 +1,16 @@
-import { Css, isDefined, isNotEmpty } from 'fluxio';
-import { DivProps } from 'fluxio/ui/components/types';
-import { Tr } from 'fluxio/ui/components/Tr';
+import { DivProps } from '../types';
+import { Tr } from '../Tr';
 import { FieldProps } from './types';
 import { FieldController, FieldProvider } from './FieldController';
 import { FIELD_HEIGHT, LABEL_WIDTH } from './constants';
-import { Button } from 'fluxio/ui/components/Button';
+import { Button } from '../Button';
 import { XIcon } from 'lucide-react';
 import { useFieldController, useFieldState } from './hooks';
-import { useConstant } from 'fluxio/ui/hooks/useConstant';
-import { tooltipProps } from '../../../fluxio/src/ui/components/Tooltip';
+import { useConstant } from '../../hooks/useConstant';
+import { tooltipProps } from '../Tooltip';
+import { Css } from '../../../html/css';
+import { isDefined } from '../../../check/isDefined';
+import { isNotEmpty } from '../../../check/isEmpty';
 
 export const c = Css('Field', {
   '': {

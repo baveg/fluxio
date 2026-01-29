@@ -1,5 +1,5 @@
 import type { ComponentChildren } from 'preact';
-import type { DivProps } from 'fluxio/ui/components/types';
+import type { DivProps } from '../types';
 
 export type SelectItems<V> = ([V, ComponentChildren] | false | null | undefined)[];
 

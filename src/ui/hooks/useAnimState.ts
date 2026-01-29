@@ -1,4 +1,4 @@
-import { onTimeout } from 'fluxio';
+import { onTimeout } from '../../async/onTimeout';
 import { useEffect, useState } from 'preact/hooks';
 
 export type AnimState = 'unmounted' | 'mounted' | 'entering' | 'entered' | 'exiting';

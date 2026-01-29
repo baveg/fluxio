@@ -1,30 +1,25 @@
-import {
-  computeStyle,
-  Css,
-  stopEvent,
-  Vector2,
-  Vector4,
-  Flux,
-  onHtmlEvent,
-  Unsubscribe,
-  VECTOR2_ZERO,
-  getEventXY,
-  clamp,
-  VECTOR4_ZERO,
-  mustExist,
-  clampVector,
-  VECTOR4_MAX,
-  toVoid,
-} from 'fluxio';
-import { useFlux } from 'fluxio/ui/hooks/useFlux';
+
+import { computeStyle, Css } from '../../html/css';
+import { stopEvent } from '../../html/stopEvent';
+import { Vector2 } from '../../types/Vector';
+import { Vector4 } from '../../types/Vector';
+import { Flux } from '../../flux/Flux';
+import { onHtmlEvent } from '../../html/onEvent';
+import { Unsubscribe } from '../../types/Unsubscribe';
+import { getEventXY } from '../../html/getEventXY';
+import { clamp } from '../../number/clamp';
+import { toVoid } from '../../cast/toVoid';
+import { useFlux } from '../hooks/useFlux';
 import { portal } from './Portal';
-import { comp } from '@/utils/comp';
+import { comp } from '../utils/comp';
 import { useMemo } from 'preact/hooks';
 import { XIcon, CheckIcon, XCircleIcon, BanIcon } from 'lucide-react';
 import { Button } from './Button';
 import { useContext } from 'preact/hooks';
 import { ComponentChildren, createContext } from 'preact';
-import { Comp } from '@/utils/comp';
+import { Comp } from '../utils/comp';
+import { clampVector, VECTOR2_ZERO, VECTOR4_MAX, VECTOR4_ZERO } from '../../number/vector';
+import { mustExist } from '../../check/must';
 
 export interface WindowFooterProps {
   yes?: (controller: WindowController) => void;

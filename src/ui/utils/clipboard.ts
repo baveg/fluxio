@@ -1,5 +1,6 @@
-import { getStorage, logger } from 'fluxio';
-import { jsonStringify, jsonParse } from 'fluxio';
+import { getStorage } from '../../storage/getStorage';
+import { logger } from '../../logger/Logger';
+import { jsonStringify, jsonParse } from '../../string/json';
 
 const log = logger('clipboard');
 

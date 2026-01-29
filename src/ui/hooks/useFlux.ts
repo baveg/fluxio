@@ -1,5 +1,6 @@
-import { Flux, FluxDictionary, isFlux } from 'fluxio';
 import { Inputs, useEffect, useMemo, useState } from 'preact/hooks';
+import { FluxDictionary } from '../../flux/fluxDictionary';
+import { Flux, isFlux } from '../../flux/Flux';
 
 type NFlux<T> = Flux<T> | string | number | boolean | false | null | undefined;
 type NFluxDictionary<T> = FluxDictionary<T> | null | undefined;

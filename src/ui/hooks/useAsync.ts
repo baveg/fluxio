@@ -1,7 +1,8 @@
 import { useMemo, useEffect } from 'preact/hooks';
-import { flux, Flux, fluxStored } from 'fluxio';
+import { flux, Flux } from '../../flux/Flux';
+import { fluxStored } from '../../flux/fluxStored';
 import { useFlux } from './useFlux';
-import { toError } from 'fluxio';
+import { toError } from '../../cast/toError';
 
 export const useAsync = <T>(
   initValue: T,

@@ -1,20 +1,18 @@
-import {
-  getChanges,
-  getStorage,
-  isDeepEqual,
-  isDefined,
-  isFunction,
-  isNotEmpty,
-  isNumber,
-  Listener,
-  logger,
-  NextState,
-  removeItem,
-  toError,
-  toMe,
-  toNumber,
-  Unsubscribe,
-} from 'fluxio';
+import { getChanges } from '../../../object/getChanges';
+import { getStorage } from '../../../storage/getStorage';
+import { isDeepEqual } from '../../../object/isDeepEqual';
+import { isDefined } from '../../../check/isDefined';
+import { isFunction } from '../../../check/isFunction';
+import { isNotEmpty } from '../../../check/isEmpty';
+import { isNumber } from '../../../check/isNumber';
+import { Listener } from '../../../types/Listener';
+import { logger } from '../../../logger';
+import { NextState } from '../../../types/NextState';
+import { removeItem } from '../../../array/removeItem';
+import { toError } from '../../../cast/toError';
+import { toMe } from '../../../cast/toMe';
+import { toNumber } from '../../../cast/toNumber';
+import { Unsubscribe } from '../../../types/Unsubscribe';
 import { FieldProps, FieldState } from './types';
 import { inputRegistry } from './inputRegistry';
 import { createContext } from 'preact';

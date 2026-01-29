@@ -4,7 +4,6 @@ import { flux, Flux, Pipe } from './Flux';
 import { isEmpty } from '../check/isEmpty';
 import { isNil } from '../check/isNil';
 import { merge } from '../object/merge';
-import { isDefined } from 'fluxio/check';
 
 export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
   constructor(source: Flux<Dictionary<T>>) {

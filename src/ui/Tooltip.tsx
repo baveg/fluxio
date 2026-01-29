@@ -1,7 +1,8 @@
-import { onHtmlEvent, Unsubscribe } from 'fluxio';
-import { Css } from 'fluxio';
-import { DivProps } from './types';
-import { comp, Comp } from '@/utils/comp';
+import { onHtmlEvent } from '../html/onEvent';
+import { Unsubscribe } from '../types/Unsubscribe';
+import { Css } from '../html/css';
+import { DivProps } from './components/types';
+import { comp, Comp } from './utils/comp';
 import { portal } from './components/Portal';
 
 const c = Css('Tooltip', {

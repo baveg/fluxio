@@ -1,6 +1,6 @@
 import { JSX } from 'preact';
 import { useState } from 'preact/hooks';
-import { Css } from 'fluxio';
+import { Css } from '../html/css';
 import { Button } from './components/Button';
 
 const c = Css('TabPanel', {

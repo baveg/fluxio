@@ -1,7 +1,8 @@
-import { Css } from 'fluxio';
+import { Css } from '../../html/css';
 import { DivProps } from './types';
-import { clamp, round } from 'fluxio';
-import { toNumber } from 'fluxio';
+import { clamp } from '../../number/clamp';
+import { round } from '../../number/round';
+import { toNumber } from '../../cast/toNumber';
 
 import { ComponentChildren } from 'preact';
 

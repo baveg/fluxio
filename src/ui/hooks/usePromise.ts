@@ -1,4 +1,4 @@
-import { toVoid } from 'fluxio';
+import { toVoid } from '../../cast/toVoid';
 import { useEffect, useState } from 'preact/hooks';
 
 export interface IPromise<T> {

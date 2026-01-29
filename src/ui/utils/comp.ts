@@ -1,4 +1,4 @@
-import { isFunction } from 'fluxio';
+import { isFunction } from '../../check/isFunction';
 import { ComponentChildren, ComponentType, createElement } from 'preact';
 
 export type Comp<P = {}> = null | undefined | ComponentChildren | ComponentType<P>;

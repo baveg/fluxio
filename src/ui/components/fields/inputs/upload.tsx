@@ -1,4 +1,4 @@
-import { Css } from 'fluxio';
+import { Css } from '../../../../html/css';
 import { FieldProps } from '../types';
 import { useInputProps } from '../hooks';
 

@@ -1,6 +1,7 @@
-import { fluxDictionary, setTemplate } from 'fluxio';
+import { fluxDictionary } from '../../flux/fluxDictionary';
+import { setTemplate } from '../../string/setTemplate';
 import { useFlux } from './useFlux';
-import { Dictionary } from 'fluxio';
+import { Dictionary } from '../../types/Dictionary';
 
 export const tr$ = fluxDictionary<string>();
 

@@ -1,4 +1,4 @@
-import { setCss } from 'fluxio';
+import { setCss } from '../../html/css';
 
 /**
  * Auto-hide UI elements based on user interaction

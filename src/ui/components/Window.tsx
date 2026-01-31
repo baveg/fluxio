@@ -1,4 +1,3 @@
-
 import { computeStyle, Css } from '../../html/css';
 import { stopEvent } from '../../html/stopEvent';
 import { Vector2 } from '../../types/Vector';

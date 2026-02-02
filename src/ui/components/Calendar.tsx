@@ -1,4 +1,19 @@
-import { DAY, endOfMonth, endOfWeek, getMonth, getMonthDay, getTime, getYear, MONTH_NAMES, serverDate, setMonth, setMonthDay, setYear, startOfMonth, startOfWeek } from '../../date/date';
+import {
+  DAY,
+  endOfMonth,
+  endOfWeek,
+  getMonth,
+  getMonthDay,
+  getTime,
+  getYear,
+  MONTH_NAMES,
+  serverDate,
+  setMonth,
+  setMonthDay,
+  setYear,
+  startOfMonth,
+  startOfWeek,
+} from '../../date/date';
 import { Css } from '../../html/css';
 import { useState } from 'preact/hooks';
 import { floor } from '../../number/floor';

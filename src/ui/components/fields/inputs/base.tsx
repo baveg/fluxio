@@ -10,7 +10,7 @@ import { isNumber } from '../../../../check/isNumber';
 const inputFactory = (type: string) => () => {
   const props = useInputProps();
   return <input {...props} type={type} />;
-}
+};
 
 const getStringInput = (type: string): FieldProps<string, string> => ({
   input: inputFactory(type),

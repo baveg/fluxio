@@ -1,5 +1,5 @@
-import { Dictionary } from "../../types/Dictionary";
-import { Css } from "../../html/css";
+import { Dictionary } from '../../types/Dictionary';
+import { Css } from '../../html/css';
 
 const c = Css('Flag', {
   '': {

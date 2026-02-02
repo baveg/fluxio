@@ -1,9 +1,11 @@
+import { NotImplemented } from 'fluxio/error';
 import type { Dictionary } from '../types/Dictionary';
+import { isString } from 'fluxio/check';
 
-type Class<T = any> = new (...args: any[]) => T;
+type Class<T = any> = (new (...args: any[]) => T)|string;
 type Factory<T = any> = () => T;
 
-class Ioc {
+class IoC {
   private instances: Dictionary<any> = {};
   private factories: Dictionary<Factory> = {};
 
@@ -11,10 +13,10 @@ class Ioc {
    * Register a class or factory in the container
    */
   register<T>(clazz: Class<T>, factory?: Factory<T>): void {
-    const key = clazz.name;
+    const key = isString(clazz) ? clazz : clazz.name;
     if (factory) {
       this.factories[key] = factory;
-    } else {
+    } else if (!isString(clazz)) {
       this.factories[key] = () => new clazz();
     }
   }
@@ -23,7 +25,7 @@ class Ioc {
    * Get or create singleton instance
    */
   get<T>(clazz: Class<T>): T {
-    const key = clazz.name;
+    const key = isString(clazz) ? clazz : clazz.name;
 
     // Return existing instance
     if (this.instances[key]) {
@@ -31,7 +33,11 @@ class Ioc {
     }
 
     // Create new instance
-    const factory = this.factories[key] || (this.factories[key] = () => new clazz());
+    let factory = this.factories[key];
+    if (!factory) {
+      if (isString(clazz)) throw new NotImplemented(clazz);
+      factory = this.factories[key] = () => new clazz();
+    }
 
     const instance = factory();
     this.instances[key] = instance;
@@ -42,15 +48,17 @@ class Ioc {
    * Check if a class is registered
    */
   has<T>(clazz: Class<T>): boolean {
-    return !!this.factories[clazz.name];
+    const key = isString(clazz) ? clazz : clazz.name;
+    return !!this.factories[key];
   }
 
   /**
    * Clear all instances or a specific instance
    */
   clear(clazz?: Class<any>): void {
-    if (clazz) {
-      delete this.instances[clazz.name];
+    const key = isString(clazz) ? clazz : clazz.name;
+    if (key) {
+      delete this.instances[key];
       return;
     }
     this.instances = {};
@@ -58,7 +66,7 @@ class Ioc {
 }
 
 // Global container instance
-export const ioc = new Ioc();
+export const ioc = new IoC();
 
 /**
  * Register a class or factory in the IoC container

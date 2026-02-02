@@ -2,7 +2,7 @@ import { NotImplemented } from 'fluxio/error';
 import type { Dictionary } from '../types/Dictionary';
 import { isString } from 'fluxio/check';
 
-type Class<T = any> = (new (...args: any[]) => T)|string;
+type Class<T = any> = (new (...args: any[]) => T) | string;
 type Factory<T = any> = () => T;
 
 class IoC {

@@ -7,17 +7,23 @@ import { toNumber } from '../../../../cast/toNumber';
 import { formatTime, parseTime, SECOND } from '../../../../date/date';
 import { isNumber } from '../../../../check/isNumber';
 
-const getInput = <V=string>(type: string): FieldProps<V, string> => ({
-  input: () => {
-    const props = useInputProps();
-    return <input {...props} type={type} />;
-  },
+const inputFactory = (type: string) => () => {
+  const props = useInputProps();
+  return <input {...props} type={type} />;
+}
+
+const getStringInput = (type: string): FieldProps<string, string> => ({
+  input: inputFactory(type),
 });
 
-const email = getInput('email');
-const text = getInput('text');
-const number = getInput<number>('text');
-const date = getInput('date');
+const getNumberInput = (type: string): FieldProps<number, string> => ({
+  input: inputFactory(type),
+});
+
+const email = getStringInput('email');
+const text = getStringInput('text');
+const number = getNumberInput('text');
+const date = getStringInput('date');
 
 number.toRaw = toString;
 number.toValue = toNumber;

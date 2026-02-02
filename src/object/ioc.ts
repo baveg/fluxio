@@ -1,4 +1,4 @@
-import type { Dictionary } from '../../types/Dictionary';
+import type { Dictionary } from '../types/Dictionary';
 
 type Class<T = any> = new (...args: any[]) => T;
 type Factory<T = any> = () => T;

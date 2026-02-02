@@ -9,6 +9,7 @@ export * from './deleteUndef';
 export * from './first';
 export * from './getChanges';
 export * from './getPath';
+export * from './ioc';
 export * from './isDeepEqual';
 export * from './keepIf';
 export * from './last';

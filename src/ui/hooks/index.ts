@@ -6,7 +6,6 @@ export * from './useFlux';
 export * from './useInterval';
 export * from './useOver';
 export * from './usePromise';
-export * from './useRoute';
 export * from './useSingleton';
 export * from './useTimeout';
 export * from './useTr';

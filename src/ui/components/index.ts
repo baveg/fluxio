@@ -8,6 +8,7 @@ export * from './Grid';
 export * from './Iframe';
 export * from './Img';
 export * from './Loading';
+export * from './PanZoom';
 export * from './Portal';
 export * from './Progress';
 export * from './TabPanel';

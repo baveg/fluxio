@@ -1,6 +1,6 @@
 import { useRef } from 'preact/hooks';
 import { Props } from './types';
-import { tooltipProps } from '../Tooltip';
+import { tooltipProps } from './Tooltip';
 import { comp, Comp } from '../utils/comp';
 import { Dictionary } from '../../types/Dictionary';
 import { Css, Style } from '../../html/css';

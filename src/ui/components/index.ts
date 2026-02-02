@@ -4,6 +4,8 @@ export * from './BackButton';
 export * from './Button';
 export * from './Calendar';
 export * from './Form';
+export * from './Grid';
+export * from './Iframe';
 export * from './Img';
 export * from './Loading';
 export * from './Portal';

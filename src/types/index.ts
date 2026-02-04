@@ -2,6 +2,7 @@ export * from './Bit';
 export * from './Callback';
 export * from './Check';
 export * from './Dictionary';
+export * from './Eq';
 export * from './Item';
 export * from './Listener';
 export * from './NextState';

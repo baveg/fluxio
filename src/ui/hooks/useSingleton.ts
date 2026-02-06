@@ -1,5 +1,5 @@
+import { ioc } from '../../object/ioc';
 import { useMemo } from 'preact/hooks';
-import { ioc } from '@/utils/ioc';
 
 type Class<T = any> = new (...args: any[]) => T;
 

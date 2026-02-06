@@ -1,12 +1,13 @@
-import { JSX } from 'preact';
 import { useTr } from '../hooks/useTr';
 import { isString } from '../../check/isString';
 
-export interface TrProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export interface TrProps {
+  ns?: string;
+  key?: string;
   children?: any;
 }
 
-export const Tr = ({ children }: TrProps) => {
-  const tr = useTr();
-  return isString(children) ? tr(children) : children;
+export const Tr = ({ ns, key, children }: TrProps) => {
+  const tr = useTr(ns || 'default');
+  return key ? tr(key) : isString(children) ? tr(children) : children;
 };

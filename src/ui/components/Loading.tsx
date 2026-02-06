@@ -1,7 +1,7 @@
 import { Css } from '../../html/css';
 import { DivProps } from './types';
 import { Tr } from './Tr';
-import { addTr } from '../hooks/useTr';
+import { useTr } from '../hooks/useTr';
 
 const c = Css('Loading', {
   '': {
@@ -45,10 +45,6 @@ const c = Css('Loading', {
   },
 });
 
-addTr({
-  loading: 'Chargement...',
-});
-
 export const LoadingSpinner = (props: DivProps) => (
   <div {...props} {...c('Spinner', props)}>
     <div {...props} {...c('SpinnerCircle', props)}>
@@ -58,12 +54,13 @@ export const LoadingSpinner = (props: DivProps) => (
 );
 
 export const Loading = ({ content, children, ...props }: DivProps & { content?: string }) => {
+  const tr = useTr('loading');
   return (
     <div {...props} {...c('', props)}>
       <LoadingSpinner />
       {content !== '' && (
         <div {...c('Content')}>
-          <Tr>{content || 'loading'}</Tr>
+          {tr(content || 'Chargement...')}
         </div>
       )}
       {children}

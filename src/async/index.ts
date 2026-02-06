@@ -1,4 +1,5 @@
 export * from './debounce';
+export * from './defer';
 export * from './onInterval';
 export * from './onTimeout';
 export * from './retry';

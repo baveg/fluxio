@@ -15,4 +15,5 @@ export * from './keepIf';
 export * from './last';
 export * from './merge';
 export * from './setKey';
+export * from './singleton';
 export * from './sortKey';

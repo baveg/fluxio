@@ -3,7 +3,7 @@ import { ReqContext } from './types';
 
 export const reqFetch = async <T = any>(ctx: ReqContext<T>): Promise<void> => {
   try {
-    ctx.log.d('reqFetch', ctx);
+    // ctx.log.d('reqFetch', ctx);
 
     const o = ctx.options;
 

@@ -14,7 +14,6 @@ export const singleton = <T>(clazz: { prototype: T, name: string }): {
   const get = () => {
     let singleton = singletons[name];
     if (!singleton) {
-      log.d('create', name, singletons);
       singleton = new (clazz as unknown as new () => T)()
       singletons[name] = singleton;
     }

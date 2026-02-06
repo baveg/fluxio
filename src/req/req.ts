@@ -24,7 +24,7 @@ const acceptMap: Partial<Record<ReqResponseType, string>> = {
 
 export const req = async <T>(options: ReqOptions<T>): Promise<T> => {
   const log = options.log || reqLog;
-  log.d('req', options);
+  // log.d('req', options);
 
   const o = { ...options };
 

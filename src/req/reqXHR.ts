@@ -3,7 +3,7 @@ import { ReqContext } from './types';
 
 export const reqXHR = async <T = any>(ctx: ReqContext<T>): Promise<void> => {
   try {
-    ctx.log.d('reqXHR', ctx);
+    // ctx.log.d('reqXHR', ctx);
 
     const o = ctx.options;
     const xhr: XMLHttpRequest = ctx.xhr || (ctx.xhr = new XMLHttpRequest());

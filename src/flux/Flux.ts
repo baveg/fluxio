@@ -7,6 +7,7 @@ import { removeItem } from '../array/removeItem';
 import { Unsubscribe } from '../types/Unsubscribe';
 import { Listener } from '../types/Listener';
 import { NextState } from 'fluxio/types';
+import { toError } from 'fluxio/cast';
 
 export type PipeSource<T, U> = Flux<U> | ((listener: () => void) => Unsubscribe);
 export type PipeOnSync<T, U> = (pipe: Pipe<T, U>) => void;
@@ -19,7 +20,7 @@ export type PipeOnInit<T, U> = (pipe: Pipe<T, U>) => void;
  */
 export class Flux<T = any> {
   public readonly thens: Listener<T>[] = [];
-  public readonly catches: Listener<Error>[] = [];
+  public readonly catches: Listener<Error|undefined>[] = [];
   public key?: string;
   private v: T;
   private e?: Error;
@@ -88,8 +89,8 @@ export class Flux<T = any> {
   }
 
   setError(error: any) {
-    this.e = error;
-    for (const c of this.catches) c(error);
+    const e = this.e = error ? toError(error) : undefined;
+    for (const c of this.catches) c(e);
   }
 
   getError() {
@@ -128,14 +129,19 @@ export class Flux<T = any> {
    * @param isRepeat If true, immediately call listener with current value
    * @returns Unsubscribe function
    */
-  on(onValue?: Listener<T>, onError?: Listener<Error>, isRepeat?: boolean): Unsubscribe {
-    if (onValue) {
-      if (isRepeat) onValue(this.get());
-      this.thens.push(onValue);
-    }
+  on(onValue?: Listener<T>, onError?: Listener<Error|undefined>, isRepeat?: boolean): Unsubscribe {
+    if (onValue) this.thens.push(onValue);
     if (onError) this.catches.push(onError);
     this.onListeners(this.thens, this.catches);
+    if (isRepeat) {
+      if (onValue) onValue(this.get());
+      if (onError) onError(this.getError());
+    }
     return () => this.off(onValue, onError);
+  }
+
+  onRepeat(onValue?: Listener<T>, onError?: Listener<Error|undefined>): Unsubscribe {
+    return this.on(onValue, onError, true);
   }
 
   /**
@@ -367,7 +373,7 @@ export class Pipe<T = any, U = T> extends Flux<T> {
     this.onSet(next, this);
   }
 
-  on(onValue?: Listener<T>, onError?: Listener<Error>, isRepeat?: boolean) {
+  on(onValue?: Listener<T>, onError?: Listener<Error|undefined>, isRepeat?: boolean) {
     const off = super.on(onValue, onError, isRepeat);
 
     if (!this.sourceOff) {

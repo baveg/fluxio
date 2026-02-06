@@ -15,21 +15,23 @@ const c = Css('Loading', {
 
   Spinner: {
     center: 1,
+    whMin: 50,
   },
   SpinnerCircle: {
-    w: 5,
-    h: 5,
-    bg: 'primary',
-    rounded: 50,
+    w: 50,
+    h: 50,
+    bg: 'bg',
+    rounded: 999,
     center: 1,
   },
   SpinnerIcon: {
-    w: 2.5,
-    h: 2.5,
-    border: 3,
-    borderColor: 'handle',
+    w: 35,
+    h: 35,
+    border: 5,
+    borderColor: 'primary',
     borderTop: 'transparent',
-    rounded: 50,
+    borderBottom: 'transparent',
+    rounded: 999,
     anim: {
       name: 'spin',
       duration: '1s',

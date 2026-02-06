@@ -129,7 +129,7 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
           <ClearButton />
           {error ?
             <div {...c('Error')}>
-              <Tr>{error}</Tr>
+              <Tr ns="error" key={error} />
             </div>
           : helper ?
             <div {...c('Helper')}>{helper}</div>

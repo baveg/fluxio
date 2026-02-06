@@ -6,12 +6,17 @@ export type Tr = ReturnType<typeof newTr>;
 
 export const trs: Dictionary<Tr> = {};
 
+export interface TrUpdate {
+    <T extends string>(changes: { [K in T]: string }): void;
+    (changes: Dictionary<string>, replace?: boolean): void;
+}
+
 const newTr = (namespace: string) => {
     const translates: Dictionary<string> = {};
     const _changed$ = flux(Date.now());
     const changed$ = _changed$.debounce(10);
 
-    const update = (changes: Dictionary<string>, replace = false) => {
+    const update: TrUpdate = (changes: Dictionary<string>, replace = false) => {
         if (replace) {
             for (const key in translates) {
                 delete translates[key];
@@ -19,6 +24,17 @@ const newTr = (namespace: string) => {
         }
         Object.assign(translates, changes);
         _changed$.set(Date.now());
+    }
+
+    const defaults: TrUpdate = (changes: Dictionary<string>) => {
+        let changed = false;
+        for (const key in changes) {
+            if (!(key in translates)) {
+                translates[key] = changes[key]!;
+                changed = true;
+            }
+        }
+        if (changed) _changed$.set(Date.now());
     }
 
     const set = (key: string, value: string) => {
@@ -34,14 +50,14 @@ const newTr = (namespace: string) => {
         return template.replace(/\{\}/g, () => String(values[i++]));
     }
 
-    return {
-        namespace,
-        set,
-        update,
-        translates,
-        changed$,
-        tr,
-    };
+    tr.namespace = namespace;
+    tr.translates = translates;
+    tr.update = update;
+    tr.defaults = defaults;
+    tr.set = set;
+    tr.changed$ = changed$;
+
+    return tr;
 }
 
 export const getTr = (namespace: string) => (

@@ -1,10 +1,10 @@
 import { createUrl, Dictionary, flux, glb, logger, onEvent, singleton, defer, removeIndex, ReadonlyFlux, isString, isArray, notImplemented } from 'fluxio';
 
-const getBaseUrl = (url: string) => (
+export const getBaseUrl = (url: string) => (
   (url.replace('://', ':$$').split('/', 1)[0] || '').replace(':$$', '://')
 );
 
-const getUrlPath = (url: string) => (
+export const getUrlPath = (url: string) => (
   removeIndex(url.replace('://', '').split('/'), 0)
 );
 

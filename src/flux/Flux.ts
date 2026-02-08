@@ -13,6 +13,7 @@ export type PipeSource<T, U> = Flux<U> | ((listener: () => void) => Unsubscribe)
 export type PipeOnSync<T, U> = (pipe: Pipe<T, U>) => void;
 export type PipeOnSet<T, U> = (value: T, pipe: Pipe<T, U>) => void;
 export type PipeOnInit<T, U> = (pipe: Pipe<T, U>) => void;
+export type ReadonlyFlux<T> = Omit<Flux<T>, 'set'|'setError'|'notify'|'setter'|'clear'>;
 
 /**
  * Reactive state container with observable pattern.

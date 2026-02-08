@@ -107,3 +107,9 @@ interface IndexBy {
   <T>(items: Dictionary<T>, key?: RecKey<T>): Dictionary<number>;
 }
 export const indexBy = ((items: any, key?: any) => by(items, key, byGetIndex)) as IndexBy;
+
+export const keyByValue = (dico: Dictionary<string>) => {
+  const result: Dictionary<string> = {};
+  for (const key in dico) result[dico[key]||''] = key;
+  return result;
+};

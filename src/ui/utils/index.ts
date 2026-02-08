@@ -5,3 +5,4 @@ export * from './comp';
 export * from './getDatasetValue';
 export * from './responsive';
 export * from './startDownload';
+export * from './tr';

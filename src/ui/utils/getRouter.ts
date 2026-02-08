@@ -8,7 +8,7 @@ export const getUrlPath = (url: string) => (
   removeIndex(url.replace('://', '').split('/'), 0)
 );
 
-class Router {
+export class Router {
   static get = singleton(Router);
   
   log = logger('Router');
@@ -57,6 +57,7 @@ class Router {
     const pathTr = path.map(p => ts[p] || p).join('/');
 
     const nextUrl = createUrl(baseUrl, pathTr, query);
+    this.url$.set(nextUrl);
     this.history?.pushState(null, '', nextUrl);
   }
 

@@ -11,6 +11,7 @@ export * from './setHsl';
 export * from './setRgb';
 export * from './stringToColor';
 export * from './toColor';
+export * from './toHexColor';
 export * from './toHsl';
 export * from './toHslString';
 export * from './toRgb';

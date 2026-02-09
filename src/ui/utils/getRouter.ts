@@ -1,30 +1,41 @@
-import { createUrl, Dictionary, flux, glb, logger, onEvent, singleton, defer, removeIndex, ReadonlyFlux, isString, isArray, notImplemented } from 'fluxio';
+import {
+  createUrl,
+  Dictionary,
+  flux,
+  glb,
+  logger,
+  onEvent,
+  singleton,
+  defer,
+  removeIndex,
+  ReadonlyFlux,
+  isString,
+  isArray,
+  notImplemented,
+} from 'fluxio';
 
-export const getBaseUrl = (url: string) => (
-  (url.replace('://', '::').split('/', 1)[0] || '').replace('::', '://')
-);
+export const getBaseUrl = (url: string) =>
+  (url.replace('://', '::').split('/', 1)[0] || '').replace('::', '://');
 
-export const getUrlPath = (url: string) => (
-  removeIndex(url.replace('://', '').split('/'), 0)
-);
+export const getUrlPath = (url: string) => removeIndex(url.replace('://', '').split('/'), 0);
 
 export class Router {
   static get = singleton(Router);
-  
+
   log = logger('Router');
   history = glb.history;
   location = glb.location;
   url$ = flux('');
   baseUrl$ = this.url$.map(getBaseUrl);
   path$ = this.url$.map(getUrlPath);
-  
+
   translates: Dictionary<string> = {};
   untranslates: Dictionary<string> = {};
 
-  private _p$: Dictionary<ReadonlyFlux<string|undefined>> = {}
+  private _p$: Dictionary<ReadonlyFlux<string | undefined>> = {};
 
   p$(index: number) {
-    return this._p$[index] || (this._p$[index] = this.path$.map(p => p[0]));
+    return this._p$[index] || (this._p$[index] = this.path$.map((p) => p[0]));
   }
 
   private constructor() {
@@ -54,7 +65,7 @@ export class Router {
 
     const path = isArray(url) ? url : getUrlPath(url);
     const ts = this.translates;
-    const pathTr = path.map(p => ts[p] || p).join('/');
+    const pathTr = path.map((p) => ts[p] || p).join('/');
 
     const nextUrl = createUrl(baseUrl, pathTr, query);
     this.url$.set(nextUrl);

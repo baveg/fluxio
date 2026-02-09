@@ -58,11 +58,7 @@ export const Loading = ({ content, children, ...props }: DivProps & { content?: 
   return (
     <div {...props} {...c('', props)}>
       <LoadingSpinner />
-      {content !== '' && (
-        <div {...c('Content')}>
-          {tr(content || 'Chargement...')}
-        </div>
-      )}
+      {content !== '' && <div {...c('Content')}>{tr(content || 'Chargement...')}</div>}
       {children}
     </div>
   );

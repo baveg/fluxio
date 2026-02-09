@@ -13,7 +13,7 @@ export type PipeSource<T, U> = Flux<U> | ((listener: () => void) => Unsubscribe)
 export type PipeOnSync<T, U> = (pipe: Pipe<T, U>) => void;
 export type PipeOnSet<T, U> = (value: T, pipe: Pipe<T, U>) => void;
 export type PipeOnInit<T, U> = (pipe: Pipe<T, U>) => void;
-export type ReadonlyFlux<T> = Omit<Flux<T>, 'set'|'setError'|'notify'|'setter'|'clear'>;
+export type ReadonlyFlux<T> = Omit<Flux<T>, 'set' | 'setError' | 'notify' | 'setter' | 'clear'>;
 
 /**
  * Reactive state container with observable pattern.
@@ -21,7 +21,7 @@ export type ReadonlyFlux<T> = Omit<Flux<T>, 'set'|'setError'|'notify'|'setter'|'
  */
 export class Flux<T = any> {
   public readonly thens: Listener<T>[] = [];
-  public readonly catches: Listener<Error|undefined>[] = [];
+  public readonly catches: Listener<Error | undefined>[] = [];
   public key?: string;
   private v: T;
   private e?: Error;
@@ -90,7 +90,7 @@ export class Flux<T = any> {
   }
 
   setError(error: any) {
-    const e = this.e = error ? toError(error) : undefined;
+    const e = (this.e = error ? toError(error) : undefined);
     for (const c of this.catches) c(e);
   }
 
@@ -130,7 +130,11 @@ export class Flux<T = any> {
    * @param isRepeat If true, immediately call listener with current value
    * @returns Unsubscribe function
    */
-  on(onValue?: Listener<T>, onError?: Listener<Error|undefined>, isRepeat?: boolean): Unsubscribe {
+  on(
+    onValue?: Listener<T>,
+    onError?: Listener<Error | undefined>,
+    isRepeat?: boolean
+  ): Unsubscribe {
     if (onValue) this.thens.push(onValue);
     if (onError) this.catches.push(onError);
     this.onListeners(this.thens, this.catches);
@@ -141,7 +145,7 @@ export class Flux<T = any> {
     return () => this.off(onValue, onError);
   }
 
-  onRepeat(onValue?: Listener<T>, onError?: Listener<Error|undefined>): Unsubscribe {
+  onRepeat(onValue?: Listener<T>, onError?: Listener<Error | undefined>): Unsubscribe {
     return this.on(onValue, onError, true);
   }
 
@@ -374,7 +378,7 @@ export class Pipe<T = any, U = T> extends Flux<T> {
     this.onSet(next, this);
   }
 
-  on(onValue?: Listener<T>, onError?: Listener<Error|undefined>, isRepeat?: boolean) {
+  on(onValue?: Listener<T>, onError?: Listener<Error | undefined>, isRepeat?: boolean) {
     const off = super.on(onValue, onError, isRepeat);
 
     if (!this.sourceOff) {

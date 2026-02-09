@@ -9,5 +9,9 @@ export interface TrProps {
 
 export const Tr = ({ ns, key, children }: TrProps) => {
   const tr = useTr(ns || 'default');
-  return key ? tr(key) : isString(children) ? tr(children) : children;
+  return (
+    key ? tr(key)
+    : isString(children) ? tr(children)
+    : children
+  );
 };

@@ -110,6 +110,6 @@ export const indexBy = ((items: any, key?: any) => by(items, key, byGetIndex)) a
 
 export const keyByValue = (dico: Dictionary<string>) => {
   const result: Dictionary<string> = {};
-  for (const key in dico) result[dico[key]||''] = key;
+  for (const key in dico) result[dico[key] || ''] = key;
   return result;
 };

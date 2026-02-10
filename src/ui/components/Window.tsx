@@ -266,8 +266,8 @@ const c = Css('Window', {
     rounded: 7,
     bg: 'bg',
     fg: 'fg',
-    resize: 'both',
-    scale: 0.9,
+    resize: 'none',
+    scale: 0.5,
     opacity: 0,
     transition: 0.1,
     overflow: 'hidden',
@@ -422,7 +422,7 @@ const WindowRender = (props: WindowProps) => {
   const open = useFlux(controller.open$);
   const [x, y, w, h] = useFlux(controller.transform$);
 
-  const boxStyle = computeStyle({ x, y, w, h });
+  const boxStyle = computeStyle({ x, y, w, h, resize: resizable ? 'both' : 'none' });
 
   return (
     <WindowContext value={controller}>

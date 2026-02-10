@@ -2,6 +2,7 @@ export * from './toArray';
 export * from './toAsync';
 export * from './toBoolean';
 export * from './toDate';
+export * from './toDictionary';
 export * from './toError';
 export * from './toFalse';
 export * from './toItem';

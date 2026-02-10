@@ -1,4 +1,5 @@
 export * from './base64toBlob';
+export * from './blobToBase64';
 export * from './base64Url';
 export * from './cases';
 export * from './humanize';

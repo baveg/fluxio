@@ -1,7 +1,7 @@
 import { Dictionary } from '../types/Dictionary';
 import { req } from './req';
 import { ReqOptions } from "./types";
-import { getDataStorage } from '../storage/DataStorage';
+import { getStorage } from '../storage/DataStorage';
 import { isFileOrBlob } from '../check/isFileOrBlob';
 import { logger } from 'fluxio/logger';
 
@@ -14,7 +14,7 @@ const newReqCache = async (url: string, options: ReqOptions<Blob> = {}) => {
     try {
         log.d('reqCache', url, options);
         
-        const storage = getDataStorage();
+        const storage = getStorage();
 
         const cached = await storage.get(url);
         if (isFileOrBlob(cached)) return cached;

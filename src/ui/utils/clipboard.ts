@@ -1,4 +1,4 @@
-import { getStorage } from '../../storage/getStorage';
+import { getStorage } from '../../storage';
 import { logger } from '../../logger/Logger';
 import { jsonStringify, jsonParse } from '../../string/json';
 
@@ -24,6 +24,6 @@ export const clipboardPaste = async () => {
     return value;
   } catch (e) {
     log.w('paste error', e);
-    return getStorage().get('clipboard', undefined);
+    return await getStorage().get('clipboard');
   }
 };

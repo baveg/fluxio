@@ -5,8 +5,10 @@ import { Dictionary } from '../types/Dictionary';
 import { singleton } from '../object';
 import { toVoid } from '../cast/toVoid';
 import { toString } from '../cast/toString';
-import { base64toBlob, blobToBase64, jsonParse, jsonStringify } from 'fluxio/string';
-import { isBlob } from 'fluxio/check';
+import { jsonParse, jsonStringify } from '../string/json';
+import { base64toBlob } from '../string/base64toBlob';
+import { isBlob } from '../check/isFileOrBlob';
+import { blobToBase64 } from '../string/blobToBase64';
 
 export interface InternalStorage {
   name: string;
@@ -198,86 +200,4 @@ export class DataStorage {
   }
 }
 
-export const getDataStorage = DataStorage.get;
-
-
-
-
-
-
-
-
-//     const DB_NAME = 'reqCache';
-//     const STORE = 'blobs';
-
-//     const idbGet = (db: IDBDatabase, key: string): Promise<Blob | undefined> =>
-//         new Promise((resolve, reject) => {
-//             const tx = db.transaction(STORE, 'readonly');
-//             const request = tx.objectStore(STORE).get(key);
-//             request.onsuccess = () => resolve(request.result);
-//             request.onerror = () => reject(request.error);
-//         });
-
-//     const idbPut = (db: IDBDatabase, key: string, value: Blob): Promise<void> =>
-//         new Promise((resolve, reject) => {
-//             const tx = db.transaction(STORE, 'readwrite');
-//             tx.objectStore(STORE).put(value, key);
-//             tx.oncomplete = () => resolve();
-//             tx.onerror = () => reject(tx.error);
-//         });
-
-//     return {
-//         async getBlob(url: string, options?: ReqOptions<Blob>): Promise<Blob | null> {
-//             const db = await openDB();
-//             const cached = await idbGet(db, url);
-//             if (cached) return cached;
-
-//             const blob = (await req({ url, resType: 'blob', ...options })) as Blob;
-//             await idbPut(db, url, blob);
-//             return blob;
-//         },
-//     };
-
-// const createReqCacheIDB = (): ReqCache | null => {
-//     const idb = glb.indexedDB;
-//     if (!idb) return null;
-
-//     const DB_NAME = 'reqCache';
-//     const STORE = 'blobs';
-
-//     const openDB = (): Promise<IDBDatabase> =>
-//         new Promise((resolve, reject) => {
-//             const request = idb.open(DB_NAME, 1);
-//             request.onupgradeneeded = () => request.result.createObjectStore(STORE);
-//             request.onsuccess = () => resolve(request.result);
-//             request.onerror = () => reject(request.error);
-//         });
-
-//     const idbGet = (db: IDBDatabase, key: string): Promise<Blob | undefined> =>
-//         new Promise((resolve, reject) => {
-//             const tx = db.transaction(STORE, 'readonly');
-//             const request = tx.objectStore(STORE).get(key);
-//             request.onsuccess = () => resolve(request.result);
-//             request.onerror = () => reject(request.error);
-//         });
-
-//     const idbPut = (db: IDBDatabase, key: string, value: Blob): Promise<void> =>
-//         new Promise((resolve, reject) => {
-//             const tx = db.transaction(STORE, 'readwrite');
-//             tx.objectStore(STORE).put(value, key);
-//             tx.oncomplete = () => resolve();
-//             tx.onerror = () => reject(tx.error);
-//         });
-
-//     return {
-//         async getBlob(url: string, options?: ReqOptions<Blob>): Promise<Blob | null> {
-//             const db = await openDB();
-//             const cached = await idbGet(db, url);
-//             if (cached) return cached;
-
-//             const blob = (await req({ url, resType: 'blob', ...options })) as Blob;
-//             await idbPut(db, url, blob);
-//             return blob;
-//         },
-//     };
-// };
+export const getStorage = DataStorage.get;

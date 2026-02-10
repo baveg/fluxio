@@ -1,5 +1,4 @@
 import { getChanges } from '../../../object/getChanges';
-import { getStorage } from '../../../storage/getStorage';
 import { isDeepEqual } from '../../../object/isDeepEqual';
 import { isDefined } from '../../../check/isDefined';
 import { isFunction } from '../../../check/isFunction';
@@ -17,6 +16,7 @@ import { FieldProps, FieldState } from './types';
 import { inputRegistry } from './inputRegistry';
 import { createContext } from 'preact';
 import type { ComponentChildren } from 'preact';
+import { notImplemented } from '../../../error/NotImplemented';
 
 export class FieldController<V, R> {
   private log = logger('FieldController');
@@ -76,7 +76,9 @@ export class FieldController<V, R> {
     this.log = logger(`Field:${config.name || type}`);
     this.log.d('reset', type, config, props);
 
-    const value = config.stored ? getStorage().get(config.stored, config.value) : config.value;
+    if (config.stored) throw notImplemented('config.stored');
+
+    const value = config.value;
     this.propsValue = props.value;
     this.propsError = props.error;
 

@@ -12,16 +12,13 @@ import { round } from '../../../../number/round';
 import { setRgb } from '../../../../color/setRgb';
 import { isFloat } from '../../../../check/isNumber';
 import { isLight } from '../../../../color/isLight';
+import { toHexColor } from '../../../../color/toHexColor';
+import { isHexColor } from '../../../../color/toHexColor';
+import { toColor } from '../../../../color/toColor';
 
 const c = Css('ColorPicker', {
   '': {
-    position: 'absolute',
-    xy: '100',
     col: 1,
-    p: 2,
-    gap: 10,
-    bg: 'bg',
-    elevation: 3,
   },
   Variations: {
     row: 1,
@@ -38,7 +35,7 @@ const c = Css('ColorPicker', {
     borderColor: 'border',
   },
   ' .FieldLabel': {
-    w: 70,
+    w: 74,
   },
 });
 
@@ -53,6 +50,7 @@ const ColorPickerContent = ({ value, onChange }: ColorPickerProps) => {
   const [color, setColor] = useState<string | undefined>(value || '#697689');
   const hsl = toHsl(color);
   const rgb = toRgb(color);
+  const hex = toHexColor(color);
 
   // const p = theme.primary || '#28A8D9';
   // const s = theme.secondary || addHsl(p, { h: 360 / 3 });
@@ -142,6 +140,12 @@ const ColorPickerContent = ({ value, onChange }: ColorPickerProps) => {
         min={0}
         max={100}
       />
+      <Field
+        label="HEX"
+        type="text"
+        value={hex}
+        onValue={(next) => isHexColor(next) && updateColor(toColor(next))}
+      />
     </div>
   );
 };
@@ -156,8 +160,8 @@ const ColorButton = () => {
       title: 'Couleur',
       content: () => <ColorPickerContent value={value} onChange={onChange} />,
       // pos: ref.current,
-      size: [300, 400],
-      min: [250, 300],
+      size: [300, 320],
+      resizable: false,
     });
   };
 

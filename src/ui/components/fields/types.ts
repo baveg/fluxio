@@ -9,7 +9,6 @@ export interface FieldProps<V, R> {
   items?: SelectItems<V>;
   required?: boolean;
   readonly?: boolean;
-  stored?: string;
   value?: V;
   onValue?: (next: V) => void;
   input?: () => ComponentChildren;

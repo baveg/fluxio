@@ -1,15 +1,15 @@
-import { Dictionary } from 'fluxio/types/Dictionary';
-import { indexBy } from 'fluxio/object/by';
-import { toDate } from 'fluxio/cast/toDate';
-import { padStart } from 'fluxio/string/pad';
-import { isFloat, isNumber, isUInt } from 'fluxio/check/isNumber';
-import { fluxStored } from 'fluxio/flux/fluxStored';
-import { lower } from 'fluxio/string';
-import { normalizeIndex } from 'fluxio/array/normalizeIndex';
-import { pInt } from 'fluxio/cast/toNumber';
-import { floor } from 'fluxio/number/floor';
-import { isDate } from 'fluxio/check/isDate';
-import { round } from 'fluxio/number/round';
+import { Dictionary } from '../types/Dictionary';
+import { indexBy } from '../object/by';
+import { toDate } from '../cast/toDate';
+import { padStart } from '../string/pad';
+import { isNumber, isUInt } from '../check/isNumber';
+import { fluxStored } from '../flux/fluxStored';
+import { lower } from '../string';
+import { normalizeIndex } from '../array/normalizeIndex';
+import { pInt, pFloat } from '../cast/toNumber';
+import { floor } from '../number/floor';
+import { isDate } from '../check/isDate';
+import { round } from '../number/round';
 
 export type DateLike = Readonly<Date> | string | number | null | undefined;
 
@@ -33,7 +33,7 @@ export const HALF_HOUR = 30 * MINUTE;
 
 ///// SERVER DATE /////
 
-export const timeOffset$ = fluxStored<number>('timeOffset$', 0, isFloat);
+export const timeOffset$ = fluxStored<number>('timeOffset$', 0, pFloat);
 
 if (!Date.now) Date.now = () => new Date().getTime();
 

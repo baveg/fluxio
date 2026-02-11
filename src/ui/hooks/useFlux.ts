@@ -16,8 +16,9 @@ export const useFlux = (<T = any>(flux: NFlux<T>): T | undefined => {
       setState(undefined);
       return;
     }
+    const off = flux.on((v) => setState(v));
     setState(flux.get());
-    return flux.on((v) => setState(v));
+    return off;
   }, [flux]);
   return state;
 }) as UseFlux;
@@ -29,8 +30,9 @@ interface UseFluxState {
 export const useFluxState = (<T = any>(flux: Flux<T>): [T, (next: T) => void] => {
   const [state, setState] = useState(flux && flux.get());
   useEffect(() => {
+    const off = flux && flux.on(setState);
     setState(flux && flux.get());
-    return flux && flux.on(setState);
+    return off || undefined;
   }, [flux]);
   return [state, (next) => flux && flux.set(next)];
 }) as UseFluxState;

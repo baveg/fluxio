@@ -33,8 +33,9 @@
     "url": "https://github.com/baveg/fluxio.git"
   },
   "devDependencies": {
+    "preact": "^10.26.9",
     "tsup": "^8.0.0",
     "typescript": "^5.0.0",
-    "preact": "^10.26.9"
+    "vitest": "^4.0.18"
   }
 }

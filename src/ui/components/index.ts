@@ -3,6 +3,7 @@ export * from './Anim';
 export * from './BackButton';
 export * from './Button';
 export * from './Calendar';
+export * from './Flag';
 export * from './Form';
 export * from './Grid';
 export * from './Iframe';

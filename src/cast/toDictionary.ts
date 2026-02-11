@@ -10,9 +10,8 @@ interface ToDictionary {
 }
 export const toDictionary = toItem as ToDictionary;
 
-export const toDictionaryOf = <T = any>(
-  to: (v: any) => T,
-) => (
+export const toDictionaryOf =
+  <T = any>(to: (v: any) => T) =>
   (v: any): Dictionary<T> => {
     const dico = toDictionary<T>(v);
     for (const key in dico) {
@@ -22,8 +21,7 @@ export const toDictionaryOf = <T = any>(
       else if (next !== from) dico[key] = next;
     }
     return dico;
-  }
-)
+  };
 
 export const toDictionaryOfNumber = toDictionaryOf(toNumber);
 

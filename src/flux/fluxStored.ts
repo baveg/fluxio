@@ -10,17 +10,16 @@ import { findFlux } from './findFlux';
 export const fluxStored = <T>(
   key: string,
   startValue: T,
-  clean?: (value: T) => T|undefined,
+  clean?: (value: T) => T | undefined,
   factory?: T | (() => T),
   storage = getStorage()
 ): Flux<T> =>
   findFlux<T>(key, () => {
     const target = flux<T>(startValue);
 
-    storage.get(key).then(value => {
+    storage.get(key).then((value) => {
       if (value !== undefined && clean) value = clean(value);
-      if (value === undefined && factory)
-        value = isFunction(factory) ? factory() : factory;
+      if (value === undefined && factory) value = isFunction(factory) ? factory() : factory;
       if (value !== undefined) target.set(value);
     });
 

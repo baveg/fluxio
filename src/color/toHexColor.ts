@@ -11,7 +11,7 @@ export const isHexColor = (value: string): boolean =>
 export const toHexColor = (color: any): string => {
   const { r, g, b, a } = toRgb(color);
   const hex = (n: number) => n.toString(16).toUpperCase().padStart(2, '0');
-  return a !== 1
-    ? `#${hex(r)}${hex(g)}${hex(b)}${hex(Math.round(a * 255))}`
+  return a !== 1 ?
+      `#${hex(r)}${hex(g)}${hex(b)}${hex(Math.round(a * 255))}`
     : `#${hex(r)}${hex(g)}${hex(b)}`;
 };

@@ -17,14 +17,27 @@ export const fluxStored = <T>(
   findFlux<T>(key, () => {
     const target = flux<T>(startValue);
 
+    let isStoredInit = false;
+    let stored: T|undefined;
+
     storage.get(key).then((value) => {
-      if (value !== undefined && clean) value = clean(value);
-      if (value === undefined && factory) value = isFunction(factory) ? factory() : factory;
-      if (value !== undefined) target.set(value);
+      isStoredInit = true;
+
+      stored = value !== undefined && clean ? clean(value) : value;
+      
+      if (stored === undefined && factory) {
+        stored = isFunction(factory) ? factory() : factory;
+      }
+
+      if (stored !== undefined) {
+        target.set(value);
+      }
     });
 
     target.throttle(100).on((value) => {
-      storage.set(key, value);
+      if (isStoredInit && value !== stored) {
+        storage.set(key, value);
+      }
     });
 
     return target;

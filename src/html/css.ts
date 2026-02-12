@@ -208,7 +208,16 @@ export const cssFunMap = {
   },
 
   elevation: (v: number, s: S) => {
-    s.boxShadow = `${px(1 * v)} ${px(2 * v)} ${px(4 * v + 2)} 0px ${cssColors.shadow || 'black'}`;
+    if (v === 0) {
+      s.boxShadow = 'none';
+      return;
+    }
+    const a = 0;
+    const b = v / 4;
+    const c = v / 4;
+    const clr = cssColors.shadow || '#4a2dc50b';
+    s.boxShadow = `0 ${b * 2}px ${c * 5}px ${clr},0 ${b * 8}px ${c * 22}px ${clr},0 ${b * 20}px ${c * 68}px ${clr}`;
+    // s.boxShadow = `${px(1 * v)} ${px(2 * v)} ${px(4 * v + 2)} 0px ${cssColors.shadow || 'black'}`;
   },
 
   rounded: (v: Px | Px[], s: S) => {

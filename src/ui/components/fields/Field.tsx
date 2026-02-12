@@ -14,16 +14,13 @@ import { isNotEmpty } from '../../../check/isEmpty';
 
 export const c = Css('Field', {
   '': {
-    row: 'center',
-    w: '100%',
+    col: ['stretch', 'start'],
+    // w: '100%',
     hMin: 30,
     m: 2,
   },
   Group: {
     row: ['center', 'between'],
-  },
-  '-col': {
-    col: ['stretch', 'start'],
   },
   '-error &Label': {
     fg: 'error',
@@ -36,8 +33,13 @@ export const c = Css('Field', {
   },
   Label: {
     textAlign: 'left',
-    opacity: 0.6,
     fg: 'fg',
+    w: '100%',
+  },
+  '-row': {
+    row: 'center',
+  },
+  '-row .FieldLabel': {
     w: LABEL_WIDTH,
   },
   Content: {
@@ -45,6 +47,7 @@ export const c = Css('Field', {
     row: ['center', 'around'],
     flex: 2,
     hMin: 16,
+    position: 'relative',
   },
   'Content > .Field:not(:first-child)': {
     ml: 4,
@@ -67,7 +70,9 @@ export const c = Css('Field', {
     fontFamily: 'inherit',
   },
   ' input:hover,& textarea:hover': {
-    borderColor: 'border',
+    // borderColor: 'border',
+    borderColor: 'primary',
+    elevation: 5,
   },
   Row: {
     row: ['center', 'between'],
@@ -105,7 +110,7 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
 
   const { config, error } = useFieldState(ctrl, 'config', 'error');
 
-  const { input: Input, children, label, helper, col, type, tooltip, containerProps } = config;
+  const { input: Input, children, label, helper, row, type, tooltip, containerProps } = config;
 
   const isComposed = isNotEmpty(children);
 
@@ -113,11 +118,11 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
     <FieldProvider value={ctrl}>
       <div
         {...containerProps}
-        {...c('', col && '-col', type && `-${type}`, error && '-error', containerProps)}
+        {...c('', row && '-row', type && `-${type}`, error && '-error', containerProps)}
       >
         {label && (
           <div {...c('Label')} {...tooltipProps(tooltip)}>
-            {label} :
+            {label}
           </div>
         )}
         <div {...c('Content')}>

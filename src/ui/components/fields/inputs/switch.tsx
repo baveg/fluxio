@@ -2,14 +2,15 @@ import { useInputProps } from '../hooks';
 import { FIELD_HEIGHT } from '../constants';
 import { Css } from '../../../../html/css';
 
-const HANDLE_SIZE = FIELD_HEIGHT - 6;
+const SWITCH_HEIGHT = FIELD_HEIGHT - 6;
+const HANDLE_SIZE = SWITCH_HEIGHT - 6;
 const HANDLE_X = HANDLE_SIZE - 4;
 
 const c = Css('SwitchInput', {
   '': {
     center: 1,
-    w: 50,
-    h: FIELD_HEIGHT,
+    w: 60,
+    h: SWITCH_HEIGHT,
     cursor: 'pointer',
     border: 'border',
     bg: 'bg',

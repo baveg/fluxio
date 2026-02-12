@@ -21,7 +21,7 @@ export interface FieldProps<V, R> {
   toRaw?: (value: V) => R | undefined;
   toValue?: (raw: R, e: Event) => V | undefined;
 
-  col?: boolean;
+  row?: boolean;
   label?: ComponentChildren;
   placeholder?: string;
   helper?: ComponentChildren;

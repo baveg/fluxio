@@ -7,6 +7,22 @@ import { toNumber } from '../../../../cast/toNumber';
 import { toString } from '../../../../cast/toString';
 import { formatTime, parseTime, SECOND } from '../../../../date/date';
 import { isNumber } from '../../../../check/isNumber';
+import { DivProps } from '../../types';
+import { Css } from 'fluxio/html';
+
+export const c = Css('FieldInput', {
+  Right: {
+    position: 'absolute',
+    t: 0,
+    r: 0,
+    h: '100%',
+    row: ['center', 'center'],
+  },
+});
+
+export const FieldRight = (props: DivProps) => {
+  return (<div {...props} {...c('Right')}></div>)
+}
 
 const inputFactory = (type: string) => () => {
   const props = useInputProps();
@@ -36,13 +52,15 @@ const password: FieldProps<string, string> = {
     return (
       <>
         <input {...props} type={show ? 'text' : 'password'} />
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            setShow((s) => !s);
-          }}
-          icon={show ? <EyeOffIcon /> : <EyeIcon />}
-        />
+        <FieldRight>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              setShow((s) => !s);
+            }}
+            icon={show ? <EyeOffIcon /> : <EyeIcon />}
+          />
+        </FieldRight>
       </>
     );
   },

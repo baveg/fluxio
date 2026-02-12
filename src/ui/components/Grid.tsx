@@ -38,6 +38,9 @@ const c = Css('Grid', {
     background: 'transparent',
     border: 0,
   },
+  ' .Field': {
+    w: '100%',
+  }
 });
 
 export type GridColTitle = string | ComponentChildren;

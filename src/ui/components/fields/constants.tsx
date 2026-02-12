@@ -1,2 +1,2 @@
-export const FIELD_HEIGHT = 22;
+export const FIELD_HEIGHT = 32;
 export const LABEL_WIDTH = 200;

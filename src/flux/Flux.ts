@@ -393,6 +393,8 @@ export class Pipe<T = any, U = T> extends Flux<T> {
         this.onSync(this);
       };
       this.sourceOff = isFunction(this.source) ? this.source(listener) : this.source.on(listener);
+      // Re-sync in case source changed between get() and on()
+      this.onSync(this);
     }
 
     return off;

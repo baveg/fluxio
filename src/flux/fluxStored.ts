@@ -24,17 +24,21 @@ export const fluxStored = <T>(
       isStoredInit = true;
 
       stored = value !== undefined && clean ? clean(value) : value;
+      // console.debug('get', key, value, stored);
       
       if (stored === undefined && factory) {
         stored = isFunction(factory) ? factory() : factory;
+        // console.debug('factory', key, stored);
       }
 
       if (stored !== undefined) {
-        target.set(value);
+        // console.debug('set', key, stored);
+        target.set(stored);
       }
     });
 
     target.throttle(100).on((value) => {
+      // console.debug('fluxStored on', key, isStoredInit, value, stored);
       if (isStoredInit && value !== stored) {
         storage.set(key, value);
       }

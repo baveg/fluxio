@@ -32,7 +32,7 @@ const c = Css('Grid', {
     row: ['center', 'around'],
     textAlign: 'left',
     px: 4,
-    h: 34,
+    hMin: 38,
   },
   'Cell input': {
     background: 'transparent',

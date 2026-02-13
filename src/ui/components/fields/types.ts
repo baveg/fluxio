@@ -1,5 +1,6 @@
 import type { ComponentChildren } from 'preact';
 import type { DivProps } from '../types';
+import { Comp } from '../../utils/comp';
 
 export type SelectItems<V> = ([V, ComponentChildren] | false | null | undefined)[];
 
@@ -29,6 +30,9 @@ export interface FieldProps<V, R> {
   containerProps?: DivProps;
   children?: DivProps['children'];
   tooltip?: string;
+
+  right?: Comp,
+  left?: Comp,
 }
 
 export interface FieldState<V, R> {
@@ -36,6 +40,9 @@ export interface FieldState<V, R> {
   readonly raw?: R;
   readonly error?: any;
   readonly event?: any;
+  readonly right?: Comp;
+  readonly left?: Comp;
+  readonly show?: boolean;
   readonly config: Readonly<FieldProps<V, R>>;
 }
 

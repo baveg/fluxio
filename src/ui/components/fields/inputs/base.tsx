@@ -1,28 +1,12 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
-import { useInputProps } from '../hooks';
+import { useFieldController, useFieldState, useInputProps } from '../hooks';
 import { FieldProps } from '../types';
 import { Button } from '../../Button';
 import { toNumber } from '../../../../cast/toNumber';
 import { toString } from '../../../../cast/toString';
 import { formatTime, parseTime, SECOND } from '../../../../date/date';
 import { isNumber } from '../../../../check/isNumber';
-import { DivProps } from '../../types';
-import { Css } from '../../../../html';
-
-export const c = Css('FieldInput', {
-  Right: {
-    position: 'absolute',
-    t: 0,
-    r: 0,
-    h: '100%',
-    row: ['center', 'center'],
-  },
-});
-
-export const FieldRight = (props: DivProps) => {
-  return (<div {...props} {...c('Right')}></div>)
-}
 
 const inputFactory = (type: string) => () => {
   const props = useInputProps();
@@ -45,24 +29,32 @@ const date = getStringInput('date');
 number.toRaw = toString;
 number.toValue = toNumber;
 
+const PasswordEye = () => {
+  const ctrl = useFieldController();
+  const { show } = useFieldState(ctrl, 'show');
+  
+  return (
+    <Button
+      onClick={(e) => {
+        e.preventDefault();
+        ctrl.update((s) => ({ show: !s.show }));
+      }}
+      icon={show ? <EyeOffIcon /> : <EyeIcon />}
+    />
+  )
+}
+
 const password: FieldProps<string, string> = {
   input: () => {
-    const [show, setShow] = useState(false);
+    const ctrl = useFieldController();
     const props = useInputProps();
-    return (
-      <>
-        <input {...props} type={show ? 'text' : 'password'} />
-        <FieldRight>
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              setShow((s) => !s);
-            }}
-            icon={show ? <EyeOffIcon /> : <EyeIcon />}
-          />
-        </FieldRight>
-      </>
-    );
+    const { show } = useFieldState(ctrl, 'show');
+
+    useEffect(() => {
+      ctrl.update({ right: PasswordEye });
+    }, [ctrl]);
+
+    return (<input {...props} type={show ? 'text' : 'password'} />);
   },
 };
 

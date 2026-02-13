@@ -11,6 +11,7 @@ import { tooltipProps } from '../Tooltip';
 import { Css } from '../../../html/css';
 import { isDefined } from '../../../check/isDefined';
 import { isNotEmpty } from '../../../check/isEmpty';
+import { comp } from '../../utils/comp';
 
 export const c = Css('Field', {
   '': {
@@ -59,7 +60,7 @@ export const c = Css('Field', {
   ' input,& textarea': {
     w: '100%',
     hMin: FIELD_HEIGHT,
-    py: 2,
+    py: 8,
     px: 8,
     border: 'border',
     rounded: 5,
@@ -85,6 +86,28 @@ export const c = Css('Field', {
     col: ['stretch', 'start'],
     w: '100%',
   },
+  Left: {
+    position: 'absolute',
+    t: 0,
+    l: 0,
+    h: '100%',
+    row: ['center', 'center'],
+    pl: 8,
+  },
+  Right: {
+    position: 'absolute',
+    t: 0,
+    r: 0,
+    h: '100%',
+    row: ['center', 'center'],
+    pr: 8,
+  },
+  '-hasLeft input,&-hasLeft textarea': {
+    pl: 32,
+  },
+  '-hasRight input,&-hasRight textarea': {
+    pr: 32,
+  },
 });
 
 const ClearButton = () => {
@@ -108,7 +131,7 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
   const ctrl = useConstant(() => new FieldController<V, R>());
   ctrl.setProps(props);
 
-  const { config, error } = useFieldState(ctrl, 'config', 'error');
+  const { config, error, right, left } = useFieldState(ctrl, 'config', 'error', 'right', 'left');
 
   const { input: Input, children, label, helper, row, type, tooltip, containerProps } = config;
 
@@ -118,7 +141,7 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
     <FieldProvider value={ctrl}>
       <div
         {...containerProps}
-        {...c('', row && '-row', type && `-${type}`, error && '-error', containerProps)}
+        {...c('', row && '-row', type && `-${type}`, error && '-error', !!left && '-hasLeft', !!right && '-hasRight', containerProps)}
       >
         {label && (
           <div {...c('Label')} {...tooltipProps(tooltip)}>
@@ -131,15 +154,17 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
           : Input ?
             <Input />
           : null}
+          {left && <div {...c('Left')}>{comp(left)}</div>}
+          {right && <div {...c('Right')}>{comp(right)}</div>}
           <ClearButton />
-          {error ?
-            <div {...c('Error')}>
-              <Tr ns="error" key={error} />
-            </div>
-          : helper ?
-            <div {...c('Helper')}>{helper}</div>
-          : null}
         </div>
+        {error ?
+          <div {...c('Error')}>
+            <Tr ns="error" key={error} />
+          </div>
+        : helper ?
+          <div {...c('Helper')}>{helper}</div>
+        : null}
       </div>
     </FieldProvider>
   );

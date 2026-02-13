@@ -89,7 +89,7 @@ export class FieldController<V, R> {
     }
 
     this.initValue = value;
-    this.state = { raw, value, error, config };
+    this.state = { raw, value, error, config, left: props.left, right: props.right };
     this.next = undefined;
     // this.notify();
   }

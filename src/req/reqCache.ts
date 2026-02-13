@@ -3,7 +3,7 @@ import { req } from './req';
 import { ReqOptions } from './types';
 import { getStorage } from '../storage/DataStorage';
 import { isFileOrBlob } from '../check/isFileOrBlob';
-import { logger } from 'fluxio/logger';
+import { logger } from '../logger';
 
 const log = logger('reqCache');
 

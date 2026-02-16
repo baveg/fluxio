@@ -18,14 +18,14 @@ export const fluxStored = <T>(
     const target = flux<T>(startValue);
 
     let isStoredInit = false;
-    let stored: T|undefined;
+    let stored: T | undefined;
 
     storage.get(key).then((value) => {
       isStoredInit = true;
 
       stored = value !== undefined && clean ? clean(value) : value;
       // console.debug('get', key, value, stored);
-      
+
       if (stored === undefined && factory) {
         stored = isFunction(factory) ? factory() : factory;
         // console.debug('factory', key, stored);

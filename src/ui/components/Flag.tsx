@@ -100,5 +100,7 @@ export const Flag = ({ iso, title, size, variant = '4x3', ...props }: FlagSVGPro
 };
 
 export const FLAG_NAMES = Object.keys(FLAGS);
-export const FLAG_ITEMS: [string, Comp][] = FLAG_NAMES
-  .map(iso => [iso, <Flag key={iso} iso={iso} />]);
+export const FLAG_ITEMS: [string, Comp][] = FLAG_NAMES.map((iso) => [
+  iso,
+  <Flag key={iso} iso={iso} />,
+]);

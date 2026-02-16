@@ -40,7 +40,7 @@ const c = Css('Grid', {
   },
   ' .Field': {
     w: '100%',
-  }
+  },
 });
 
 export type GridColTitle = string | ComponentChildren;

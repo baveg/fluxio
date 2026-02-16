@@ -31,8 +31,8 @@ export interface FieldProps<V, R> {
   children?: DivProps['children'];
   tooltip?: string;
 
-  right?: Comp,
-  left?: Comp,
+  right?: Comp;
+  left?: Comp;
 }
 
 export interface FieldState<V, R> {

@@ -141,7 +141,15 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
     <FieldProvider value={ctrl}>
       <div
         {...containerProps}
-        {...c('', row && '-row', type && `-${type}`, error && '-error', !!left && '-hasLeft', !!right && '-hasRight', containerProps)}
+        {...c(
+          '',
+          row && '-row',
+          type && `-${type}`,
+          error && '-error',
+          !!left && '-hasLeft',
+          !!right && '-hasRight',
+          containerProps
+        )}
       >
         {label && (
           <div {...c('Label')} {...tooltipProps(tooltip)}>

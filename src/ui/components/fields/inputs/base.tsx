@@ -32,7 +32,7 @@ number.toValue = toNumber;
 const PasswordEye = () => {
   const ctrl = useFieldController();
   const { show } = useFieldState(ctrl, 'show');
-  
+
   return (
     <Button
       onClick={(e) => {
@@ -41,8 +41,8 @@ const PasswordEye = () => {
       }}
       icon={show ? <EyeOffIcon /> : <EyeIcon />}
     />
-  )
-}
+  );
+};
 
 const password: FieldProps<string, string> = {
   input: () => {
@@ -54,7 +54,7 @@ const password: FieldProps<string, string> = {
       ctrl.update({ right: PasswordEye });
     }, [ctrl]);
 
-    return (<input {...props} type={show ? 'text' : 'password'} />);
+    return <input {...props} type={show ? 'text' : 'password'} />;
   },
 };
 

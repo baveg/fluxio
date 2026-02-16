@@ -1,5 +1,6 @@
 import { Dictionary } from '../../types/Dictionary';
 import { Css } from '../../html/css';
+import { Comp } from '../utils';
 
 const c = Css('Flag', {
   '': {
@@ -97,3 +98,7 @@ export const Flag = ({ iso, title, size, variant = '4x3', ...props }: FlagSVGPro
     </span>
   );
 };
+
+export const FLAG_NAMES = Object.keys(FLAGS);
+export const FLAG_ITEMS: [string, Comp][] = FLAG_NAMES
+  .map(iso => [iso, <Flag key={iso} iso={iso} />]);

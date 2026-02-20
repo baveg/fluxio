@@ -5,16 +5,16 @@ import { Comp } from '../utils';
 const c = Css('Flag', {
   '': {
     display: 'inline-block',
-    width: '1.33em',
-    height: '1em',
+    w: 4*15,
+    h: 3*15,
     borderRadius: '2px',
     overflow: 'hidden',
     verticalAlign: 'middle',
+    center: 1,
   },
-  '-square': {
-    width: '1em',
-    height: '1em',
-  },
+  ' svg': {
+    wh: '100%',
+  }
 });
 
 export interface FlagSVGProps {
@@ -22,7 +22,6 @@ export interface FlagSVGProps {
   iso: string; // ISO codes: fr, en, de, es, it
   title?: string;
   size?: string | number;
-  variant?: '4x3' | '1x1'; // 4x3 (rectangle) or 1x1 (square)
 }
 
 // SVG flags for the 5 required languages
@@ -71,29 +70,18 @@ const ISO_MAPPING: Dictionary<string> = {
   uk: 'en', // United Kingdom -> English flag
 };
 
-export const Flag = ({ iso, title, size, variant = '4x3', ...props }: FlagSVGProps) => {
-  // Normalize ISO code
-  let normalizedIso = iso?.toLowerCase() || '';
-  if (normalizedIso in ISO_MAPPING) {
-    const iso = ISO_MAPPING[normalizedIso];
-    if (iso) normalizedIso = iso;
-  }
+export const getFlagIso = (iso?: string) => {
+  const lower = iso?.toLowerCase() || '';
+  const mapped = (lower ? ISO_MAPPING[lower] : '') || lower;
+  return mapped in FLAGS ? mapped : 'fr';
+}
 
-  // Get flag SVG or fallback
-  const flagSVG = FLAGS[normalizedIso] || FLAGS['en']; // fallback to English
-
-  // Determine title
-  const flagTitle = title || `Flag of ${iso?.toUpperCase() || 'Unknown'}`;
-
-  const style: any = {};
-  if (size) {
-    const sizeValue = typeof size === 'number' ? `${size}em` : size;
-    style.width = variant === '1x1' ? sizeValue : `${parseFloat(sizeValue) * 1.33}em`;
-    style.height = sizeValue;
-  }
+export const Flag = ({ iso, title, size, ...props }: FlagSVGProps) => {
+  const normalizedIso = getFlagIso(iso);
+  const flagSVG = FLAGS[normalizedIso] || FLAGS['fr'];
 
   return (
-    <span {...c('', variant === '1x1' && '-square', props)} title={flagTitle} style={style}>
+    <span {...c('', `-${normalizedIso}`, props)}>
       {flagSVG}
     </span>
   );

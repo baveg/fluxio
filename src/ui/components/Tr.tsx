@@ -7,11 +7,7 @@ export interface TrProps {
   children?: any;
 }
 
-export const Tr = ({ ns, key, children }: TrProps) => {
+export const Tr = ({ ns, children }: TrProps) => {
   const tr = useTr(ns || 'default');
-  return (
-    key ? tr(key)
-    : isString(children) ? tr(children)
-    : children
-  );
+  return isString(children) ? tr(children) : children;
 };

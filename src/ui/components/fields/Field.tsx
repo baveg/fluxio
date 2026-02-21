@@ -168,7 +168,7 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
         </div>
         {error ?
           <div {...c('Error')}>
-            <Tr ns="error" key={error} />
+            <Tr ns="error">{error}</Tr>
           </div>
         : helper ?
           <div {...c('Helper')}>{helper}</div>

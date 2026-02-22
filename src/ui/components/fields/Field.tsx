@@ -23,14 +23,12 @@ export const c = Css('Field', {
   Group: {
     row: ['center', 'between'],
   },
-  '-error &Label': {
-    fg: 'error',
-  },
-  '-error input': {
+  '-error &Content input': {
     border: 'error',
   },
   Error: {
     fg: 'error',
+    textAlign: 'left',
   },
   Label: {
     textAlign: 'left',
@@ -73,7 +71,7 @@ export const c = Css('Field', {
   ' input:hover,& textarea:hover': {
     // borderColor: 'border',
     borderColor: 'primary',
-    elevation: 5,
+    elevation: 1,
   },
   Row: {
     row: ['center', 'between'],

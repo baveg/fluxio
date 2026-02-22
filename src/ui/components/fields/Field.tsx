@@ -137,6 +137,8 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
 
   const isComposed = isNotEmpty(children);
 
+  const err = props.error || error;
+
   return (
     <FieldProvider value={ctrl}>
       <div
@@ -145,7 +147,7 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
           '',
           row && '-row',
           type && `-${type}`,
-          error && '-error',
+          err && '-error',
           !!left && '-hasLeft',
           !!right && '-hasRight',
           containerProps
@@ -166,9 +168,9 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
           {right && <div {...c('Right')}>{comp(right)}</div>}
           <ClearButton />
         </div>
-        {error ?
+        {err ?
           <div {...c('Error')}>
-            <Tr ns="error">{error}</Tr>
+            <Tr ns="error">{err}</Tr>
           </div>
         : helper ?
           <div {...c('Helper')}>{helper}</div>

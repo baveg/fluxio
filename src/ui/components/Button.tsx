@@ -83,7 +83,7 @@ type BaseButtonProps = Omit<Omit<Props['button'] & Props['a'], 'onClick'>, 'titl
 export interface ButtonProps extends BaseButtonProps {
   class?: string;
   color?: 'default' | 'primary' | 'secondary' | 'success' | 'warn' | 'error';
-  variant?: 'upload';
+  variant?: 'upload' | 'outlined';
   big?: boolean;
   selected?: boolean;
   icon?: Comp | true;

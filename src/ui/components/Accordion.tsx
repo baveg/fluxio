@@ -2,13 +2,21 @@ import { Css } from '../../html/css';
 import { comp, Comp } from '../utils/comp';
 import { useState } from 'preact/hooks';
 import { DivProps } from './types';
+import { ChevronDownIcon } from '@/components/icons';
 
 const c = Css('Accordion', {
   '': {
-    h: 200,
-    w: 200,
-    wh: 100,
     col: ['stretch', 'around'],
+  },
+  Header: {
+    row: ['center', 'start'],
+  },
+  Chevron: {
+    rotate: '-90deg',
+    transition: 0.25,
+  },
+  '-open &Chevron': {
+    rotate: 0,
   },
   // '-open': {
   // },
@@ -37,6 +45,7 @@ export const Accordion = ({
   return (
     <div {...props} {...c('', isOpen ? '-open' : '-close', props)}>
       <div {...headerProps} {...c('Header', headerProps)} onClick={handle}>
+        {isOpen ? <ChevronDownIcon {...c('Chevron')} /> : <ChevronDownIcon {...c('Chevron')} />}
         {comp(header)}
       </div>
       {isOpen && (

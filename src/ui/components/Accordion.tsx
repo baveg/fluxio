@@ -2,7 +2,7 @@ import { Css } from '../../html/css';
 import { comp, Comp } from '../utils/comp';
 import { useState } from 'preact/hooks';
 import { DivProps } from './types';
-import { ChevronDownIcon } from '@/components/icons';
+import { ChevronDownIcon } from 'lucide-react';
 
 const c = Css('Accordion', {
   '': {

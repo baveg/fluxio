@@ -99,7 +99,7 @@ export class FieldController<V, R> {
     const prev = this.next || this.state;
     const changes = isFunction(next) ? next(prev) : next;
     this.next = { ...prev, ...changes };
-    const delay = toNumber(this.config.delay, 400);
+    const delay = toNumber(this.config.delay, 200);
 
     if (this.timer) clearTimeout(this.timer);
 

@@ -2,7 +2,7 @@ import { isArrayOfNumber } from '../check/isArrayOf';
 import { hslToRgb } from './hslToRgb';
 import { rgbColor } from './rgbColor';
 import { stringToColor } from './stringToColor';
-import { RgbColor } from './types';
+import type { RgbColor } from './types';
 
 /**
  * Converts any color format to RGB

@@ -1,5 +1,5 @@
 import { jsonParse } from '../string/json';
-import { ReqContext } from './types';
+import type { ReqContext } from './types';
 
 export const reqXHR = async <T = any>(ctx: ReqContext<T>): Promise<void> => {
   try {

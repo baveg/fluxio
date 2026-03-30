@@ -1,7 +1,7 @@
 import { glb } from '../glb';
 import { toError } from '../cast/toError';
 import { logger } from '../logger/Logger';
-import { Dictionary } from '../types/Dictionary';
+import type { Dictionary } from '../types/Dictionary';
 import { singleton } from '../object';
 import { toVoid } from '../cast/toVoid';
 import { toString } from '../cast/toString';
@@ -126,7 +126,7 @@ export const jsonStore = async (name: string): Promise<InternalStorage | undefin
 };
 
 export class DataStorage {
-  log = logger(`DataStorage:${this.name}`);
+  log = logger(`DataStorage:${(this as any).name}`);
 
   static get = singleton(DataStorage);
   private constructor(public name: string = 'default') {}

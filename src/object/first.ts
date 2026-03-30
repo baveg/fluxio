@@ -1,7 +1,7 @@
 import { isString } from '../check/isString';
 import { isArray } from '../check/isArray';
 import { isItem } from '../check/isItem';
-import { Item } from '../types/Item';
+import type { Item } from '../types/Item';
 
 const _firstKey = (v: Item): string | undefined => {
   for (const k in v) return k;

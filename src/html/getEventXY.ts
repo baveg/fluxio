@@ -1,4 +1,4 @@
-import { Vector2 } from 'fluxio/types';
+import type { Vector2 } from '../types';
 import { isNumber } from '../check/isNumber';
 
 export const getEventXY = (e: any): Vector2 | undefined => {

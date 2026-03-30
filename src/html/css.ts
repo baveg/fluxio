@@ -1,6 +1,6 @@
 import { isFloat, isNumber } from '../check/isNumber';
 import { isArray } from '../check/isArray';
-import { Dictionary } from '../types/Dictionary';
+import type { Dictionary } from '../types/Dictionary';
 import { toString } from '../cast/toString';
 import { isDeepEqual } from '../object/isDeepEqual';
 import { createEl } from './createEl';
@@ -9,15 +9,15 @@ import { isItem } from '../check/isItem';
 import { pascalToKebabCase } from '../string/cases';
 import { isFunction } from '../check/isFunction';
 import { isEmpty } from '../check/isEmpty';
-import {
+import type {
   StyleAnim,
   CssStyle,
   StyleFlexAlign,
   StyleFlexDirection,
   StyleFlexJustify,
 } from './cssTypes';
-import { isDefined } from 'fluxio/check';
-import { toNumber } from 'fluxio/cast';
+import { isDefined } from '../check';
+import { toNumber } from '../cast';
 
 let cssColors: Dictionary<string> = {};
 

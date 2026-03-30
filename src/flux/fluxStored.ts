@@ -1,4 +1,4 @@
-import { isFunction } from 'fluxio/check';
+import { isFunction } from '../check';
 import { getStorage } from '../storage';
 import { Flux, flux } from './Flux';
 import { findFlux } from './findFlux';

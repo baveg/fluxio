@@ -1,6 +1,6 @@
 import { removeAccents } from './removeAccents';
 import { lower } from './lower';
-import { Item } from 'fluxio/types';
+import type { Item } from '../types';
 import { humanize } from './humanize';
 
 export const cleanSearch = (search: string | null | undefined) => (

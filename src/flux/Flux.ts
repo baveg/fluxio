@@ -4,10 +4,10 @@ import { isDefined } from '../check/isDefined';
 import { isFunction } from '../check/isFunction';
 import { toVoid } from '../cast/toVoid';
 import { removeItem } from '../array/removeItem';
-import { Unsubscribe } from '../types/Unsubscribe';
-import { Listener } from '../types/Listener';
-import { NextState } from 'fluxio/types';
-import { toError } from 'fluxio/cast';
+import type { Unsubscribe } from '../types/Unsubscribe';
+import type { Listener } from '../types/Listener';
+import type { NextState } from '../types';
+import { toError } from '../cast';
 
 export type PipeSource<T, U> = Flux<U> | ((listener: () => void) => Unsubscribe);
 export type PipeOnSync<T, U> = (pipe: Pipe<T, U>) => void;

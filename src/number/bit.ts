@@ -1,5 +1,4 @@
-import { toNumber } from 'fluxio/cast';
-import { Bits, Dictionary } from 'fluxio/types';
+import type { Bits, Dictionary } from '../types';
 
 export const setBit = (bits: Bits, index: number, value: boolean): Bits =>
   value ? bits | (1 << index) : bits & ~(1 << index);

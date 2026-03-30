@@ -1,4 +1,4 @@
-import { Dictionary } from '../types/Dictionary';
+import type { Dictionary } from '../types/Dictionary';
 import { indexBy } from '../object/by';
 import { toDate } from '../cast/toDate';
 import { padStart } from '../string/pad';

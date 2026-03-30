@@ -1,6 +1,6 @@
 import { round } from '../number/round';
 import { toRgb } from './toRgb';
-import { HslColor } from './types';
+import type { HslColor } from './types';
 
 /**
  * Converts any color format to HSL

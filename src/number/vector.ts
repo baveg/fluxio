@@ -1,4 +1,4 @@
-import {
+import type {
   Vector1,
   Vector2,
   Vector3,

@@ -1,4 +1,4 @@
-import { Dictionary } from '../types/Dictionary';
+import type { Dictionary } from '../types/Dictionary';
 
 const names: Dictionary<number> = {};
 

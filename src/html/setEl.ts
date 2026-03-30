@@ -1,8 +1,10 @@
 import { glb } from '../glb';
-import { Attributes, resetAttributes, setAttributes } from './attributes';
-import { Cls, setCls } from './cls';
+import type { Attributes } from './attributes';
+import { resetAttributes, setAttributes } from './attributes';
+import type { Cls } from './cls';
+import { setCls } from './cls';
 import { createEl } from './createEl';
-import { CssStyle } from './cssTypes';
+import type { CssStyle } from './cssTypes';
 import { setStyle } from './style';
 
 type HTMLAllElement = HTMLDivElement &

@@ -1,4 +1,13 @@
-import { createUrl, Dictionary, flux, glb, logger, onEvent, removeIndex, isString, isArray, notImplemented, keyByValue, fluxCombine } from 'fluxio';
+import { removeIndex } from "../array/removeIndex";
+import { isArray } from "../check/isArray";
+import { isString } from "../check/isString";
+import { notImplemented } from "../error/NotImplemented";
+import { flux } from "../flux/Flux";
+import { logger } from "../logger/Logger";
+import type { Dictionary } from "../types/Dictionary";
+import { createUrl } from "./createUrl";
+import { glb } from "../glb";
+import { onEvent } from "../html/onEvent";
 
 const log = logger('router');
 

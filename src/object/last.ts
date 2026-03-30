@@ -1,4 +1,4 @@
-import { isString } from 'fluxio/check';
+import { isString } from '../check';
 import { isArray } from '../check/isArray';
 import { isItem } from '../check/isItem';
 

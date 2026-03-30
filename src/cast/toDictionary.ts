@@ -1,4 +1,4 @@
-import { Dictionary } from '../types/Dictionary';
+import type { Dictionary } from '../types/Dictionary';
 import { toItem } from './toItem';
 import { toString } from './toString';
 import { toBoolean } from './toBoolean';

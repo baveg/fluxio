@@ -1,4 +1,4 @@
-import { Dictionary } from '../types/Dictionary';
+import type { Dictionary } from '../types/Dictionary';
 import { isBoolean } from './isBoolean';
 import { isDictionary } from './isDictionary';
 import { isItem } from './isItem';

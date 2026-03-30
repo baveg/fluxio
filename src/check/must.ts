@@ -1,4 +1,4 @@
-import { Check } from '../types/Check';
+import type { Check } from '../types/Check';
 import { toError } from '../cast/toError';
 import { isNotEmpty } from './isEmpty';
 import { isFunction } from './isFunction';

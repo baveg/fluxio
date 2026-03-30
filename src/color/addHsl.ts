@@ -1,7 +1,7 @@
 import { isFloat } from '../check/isNumber';
 import { toHsl } from './toHsl';
 import { toColor } from './toColor';
-import { HslColor } from './types';
+import type { HslColor } from './types';
 
 export const addHsl = (color: any, values: Partial<HslColor>) => {
   color = toHsl(color);

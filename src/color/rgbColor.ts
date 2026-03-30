@@ -1,6 +1,6 @@
 import { round } from '../number/round';
 import { clamp } from '../number/clamp';
-import { RgbColor } from './types';
+import type { RgbColor } from './types';
 
 /**
  * Creates a new RGB color array with properly rounded values

@@ -1,6 +1,6 @@
-import { NotImplemented } from 'fluxio/error';
+import { NotImplemented } from '../error';
 import type { Dictionary } from '../types/Dictionary';
-import { isString } from 'fluxio/check';
+import { isString } from '../check';
 
 type Class<T = any> = (new (...args: any[]) => T) | string;
 type Factory<T = any> = () => T;
@@ -56,7 +56,7 @@ class IoC {
    * Clear all instances or a specific instance
    */
   clear(clazz?: Class<any>): void {
-    const key = isString(clazz) ? clazz : clazz.name;
+    const key = isString(clazz) ? clazz : (clazz as any).name;
     if (key) {
       delete this.instances[key];
       return;

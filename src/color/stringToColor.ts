@@ -1,4 +1,4 @@
-import { RgbColor, HslColor } from './types';
+import type { RgbColor, HslColor } from './types';
 
 const pInt16 = (hex: string) => parseInt(hex, 16);
 const pFloat = (val: string) => parseFloat(val);

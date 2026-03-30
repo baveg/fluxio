@@ -1,5 +1,5 @@
 import { setAttributes } from './attributes';
-import { CssStyle } from './cssTypes';
+import type { CssStyle } from './cssTypes';
 
 export const getStyle = (el: HTMLElement): CssStyle => el.style as CssStyle;
 

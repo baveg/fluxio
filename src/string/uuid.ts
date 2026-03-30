@@ -1,4 +1,4 @@
-import { isUuid } from 'fluxio/check';
+import { isUuid } from '../check';
 import { randHex } from './randString';
 
 /**

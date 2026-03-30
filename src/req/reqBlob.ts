@@ -1,6 +1,6 @@
 import { glb } from '../glb';
 import { req } from './req';
-import { ReqOptions } from './types';
+import type { ReqOptions } from './types';
 
 export const getCache = async (): Promise<Cache | undefined> => {
   return await glb.caches?.open('fluxio-blobs');

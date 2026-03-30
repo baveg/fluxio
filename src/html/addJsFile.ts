@@ -1,4 +1,4 @@
-import { Dictionary } from '../types/Dictionary';
+import type { Dictionary } from '../types/Dictionary';
 import { createEl } from './createEl';
 import { waitScriptLoaded } from './waitScriptLoaded';
 

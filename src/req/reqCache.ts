@@ -1,6 +1,6 @@
-import { Dictionary } from '../types/Dictionary';
+import type { Dictionary } from '../types/Dictionary';
 import { req } from './req';
-import { ReqOptions } from './types';
+import type { ReqOptions } from './types';
 import { getStorage } from '../storage/DataStorage';
 import { isFileOrBlob } from '../check/isFileOrBlob';
 import { logger } from '../logger';

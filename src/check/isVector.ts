@@ -1,4 +1,4 @@
-import { Vector, Vector1, Vector2, Vector3, Vector4, Vector5 } from 'fluxio/types/Vector';
+import type { Vector, Vector1, Vector2, Vector3, Vector4, Vector5 } from '../types/Vector';
 import { isArrayOfNumber } from './isArrayOf';
 
 export const isVector = (v: any): v is Vector => isArrayOfNumber(v);

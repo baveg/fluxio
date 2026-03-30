@@ -1,7 +1,6 @@
-import { isFunction, isUndefined } from 'fluxio/check';
-import { isArray } from 'fluxio/check/isArray';
-import { isDefined } from 'fluxio/check/isDefined';
-import { isFloat } from 'fluxio/check/isNumber';
+import { isFunction, isUndefined } from '../check';
+import { isArray } from '../check/isArray';
+import { isDefined } from '../check/isDefined';
 
 type Factory<T, U> = U | ((v: T) => U);
 type Is<T> = (v: T) => boolean;

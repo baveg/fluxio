@@ -1,4 +1,4 @@
-import { Check } from '../types/Check';
+import type { Check } from '../types/Check';
 import { isArray } from './isArray';
 import { isBoolean } from './isBoolean';
 import { isDictionary } from './isDictionary';

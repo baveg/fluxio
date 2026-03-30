@@ -1,4 +1,4 @@
-import { Unsubscribe } from '../types/Unsubscribe';
+import type { Unsubscribe } from '../types/Unsubscribe';
 import { Flux, pipe } from './Flux';
 
 // Type utilities for Flux tuples

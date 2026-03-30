@@ -1,4 +1,4 @@
-import { WVector } from 'fluxio/types/Vector';
+import type { WVector } from '../types/Vector';
 
 interface SetItem {
   <V extends WVector>(vector: V, index: number, value: V[0]): V;

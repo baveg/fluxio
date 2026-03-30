@@ -1,5 +1,5 @@
 import { Flux, Pipe } from './Flux';
-import { isItem } from 'fluxio/check/isItem';
+import { isItem } from '../check/isItem';
 
 export const fluxProp = <T extends {}, P extends keyof T>(
   source: Flux<T>,

@@ -1,5 +1,5 @@
 import { isArray } from '../check/isArray';
-import { Item } from '../types/Item';
+import type { Item } from '../types/Item';
 import { isItem } from '../check/isItem';
 
 export const clear = <T extends Item | any[]>(v: T): T => {

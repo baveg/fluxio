@@ -1,5 +1,5 @@
 import { isDefined } from '../check/isDefined';
-import { Dictionary } from '../types/Dictionary';
+import type { Dictionary } from '../types/Dictionary';
 
 export const keepIf = <T = any>(
   items: Dictionary<T>,

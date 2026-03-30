@@ -1,4 +1,4 @@
-import { isBetween } from 'fluxio/check/isBetween';
+import { isBetween } from '../check/isBetween';
 import { toHsl } from './toHsl';
 
 /**

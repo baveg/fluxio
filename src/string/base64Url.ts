@@ -30,7 +30,7 @@ export const base64UrlToHex = (b64: string): string => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
   // Pad to multiple of 4
-  const padded = b64.padEnd(Math.ceil(b64.length / 4) * 4, 'A');
+  const padded: any = b64.padEnd(Math.ceil(b64.length / 4) * 4, 'A');
 
   let hex = '';
 

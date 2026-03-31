@@ -1,9 +1,11 @@
+import type { Props } from './types';
+import type { Comp } from '../utils/comp';
+import type { Dictionary } from '../../types/Dictionary';
+import type { Style } from '../../html/css';
 import { useRef } from 'preact/hooks';
-import { Props } from './types';
 import { tooltipProps } from './Tooltip';
-import { comp, Comp } from '../utils/comp';
-import { Dictionary } from '../../types/Dictionary';
-import { Css, Style } from '../../html/css';
+import { comp } from '../utils/comp';
+import { Css } from '../../html/css';
 
 const addColors = () => {
   const styles: Dictionary<Style> = {};
@@ -76,7 +78,7 @@ const c = Css('Button', {
   '-big &Content': { flex: 0 },
 });
 
-type BaseButtonProps = Omit<Omit<Props['button'] & Props['a'], 'onClick'>, 'title'> & {
+type BaseButtonProps = Omit<Props['button'] & Props['a'], 'onClick' | 'title' | 'ref'> & {
   onClick?: (e: Event) => void;
 };
 
@@ -132,14 +134,14 @@ export const Button = ({
 
   if (link) {
     return (
-      <a {...props} {...clsProps}>
+      <a {...props as any} {...clsProps as any}>
         {content}
       </a>
     );
   }
 
   return (
-    <button {...props} {...clsProps} {...tooltipProps(tooltip)}>
+    <button {...props as any} {...clsProps as any} {...tooltipProps(tooltip) as any}>
       {content}
     </button>
   );
@@ -173,7 +175,7 @@ export const UploadButton = ({
         <input
           style={{ display: 'none' }}
           type="file"
-          ref={inputRef}
+          ref={inputRef as any}
           accept={accept}
           multiple={multiple || true}
           onChange={(event) => {

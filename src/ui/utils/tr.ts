@@ -1,6 +1,6 @@
 import { isString } from '../../check';
 import { flux } from '../../flux';
-import { Dictionary } from '../../types/Dictionary';
+import type { Dictionary } from '../../types/Dictionary';
 
 const _trsChanged$ = flux(Date.now());
 export const trsChanged$ = _trsChanged$.debounce(100);

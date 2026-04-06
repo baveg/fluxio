@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'preact/hooks';
 import { FieldContext, FieldController } from './FieldController';
-import { FieldState } from './types';
+import type { FieldState } from './types';
 import { isEmpty } from '../../../check/isEmpty';
 
 export const useFieldController = () => useContext(FieldContext)!;

@@ -1,9 +1,9 @@
 import { useRef, useEffect } from 'preact/hooks';
-import { DivProps } from './types';
+import type { DivProps } from './types';
 import { logger } from '../../logger/Logger';
 import { Css } from '../../html/css';
 import { flux, Flux } from '../../flux/Flux';
-import { Vector2 } from '../../types/Vector';
+import type { Vector2 } from '../../types/Vector';
 import { onHtmlEvent } from '../../html/onEvent';
 import { mustExist } from '../../check/must';
 import { getEventXY } from '../../html/getEventXY';

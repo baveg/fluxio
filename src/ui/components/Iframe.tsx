@@ -1,5 +1,5 @@
 import { Css } from '../../html/css';
-import { JSX } from 'preact';
+import type { JSX } from 'preact';
 
 const c = Css('Iframe', {
   '': {

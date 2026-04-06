@@ -1,10 +1,10 @@
 import { computeStyle, Css } from '../../html/css';
 import { stopEvent } from '../../html/stopEvent';
-import { Vector2 } from '../../types/Vector';
-import { Vector4 } from '../../types/Vector';
+import type { Vector2 } from '../../types/Vector';
+import type { Vector4 } from '../../types/Vector';
 import { Flux } from '../../flux/Flux';
 import { onHtmlEvent } from '../../html/onEvent';
-import { Unsubscribe } from '../../types/Unsubscribe';
+import type { Unsubscribe } from '../../types/Unsubscribe';
 import { getEventXY } from '../../html/getEventXY';
 import { clamp } from '../../number/clamp';
 import { toVoid } from '../../cast/toVoid';
@@ -15,8 +15,9 @@ import { useMemo } from 'preact/hooks';
 import { XIcon, CheckIcon, XCircleIcon, BanIcon } from 'lucide-react';
 import { Button } from './Button';
 import { useContext } from 'preact/hooks';
-import { ComponentChildren, createContext } from 'preact';
-import { Comp } from '../utils/comp';
+import type { ComponentChildren } from 'preact';
+import { createContext } from 'preact';
+import type { Comp } from '../utils/comp';
 import { clampVector, VECTOR2_ZERO, VECTOR4_MAX, VECTOR4_ZERO } from '../../number/vector';
 import { mustExist } from '../../check/must';
 

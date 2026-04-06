@@ -1,5 +1,5 @@
 import { Css } from '../../../../html/css';
-import { FieldProps } from '../types';
+import type { FieldProps } from '../types';
 import { useInputProps } from '../hooks';
 
 const c = Css('UploadInput', {

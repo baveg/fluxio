@@ -1,6 +1,6 @@
-import { DivProps } from '../types';
+import type { DivProps } from '../types';
 import { Tr } from '../Tr';
-import { FieldProps } from './types';
+import type { FieldProps } from './types';
 import { FieldController, FieldProvider } from './FieldController';
 import { FIELD_HEIGHT, LABEL_WIDTH } from './constants';
 import { Button } from '../Button';

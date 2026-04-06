@@ -1,10 +1,10 @@
-import { ComponentChildren, JSX } from 'preact';
-import { DivProps } from './types';
+import type { ComponentChildren, JSX } from 'preact';
+import type { DivProps } from './types';
 import { useMemo } from 'preact/hooks';
 import { Css } from '../../html/css';
 import { isArray } from '../../check/isArray';
 import { toTrue } from '../../cast/toTrue';
-import { CssStyle } from '../../html/cssTypes';
+import type { CssStyle } from '../../html/cssTypes';
 
 const c = Css('Grid', {
   '': {

@@ -1,6 +1,6 @@
-import { Dictionary } from '../../types/Dictionary';
+import type { Dictionary } from '../../types/Dictionary';
 import { Css } from '../../html/css';
-import { Comp } from '../utils';
+import type { Comp } from '../utils';
 
 const c = Css('Flag', {
   '': {

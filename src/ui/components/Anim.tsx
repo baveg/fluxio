@@ -1,7 +1,8 @@
-import { DivProps } from './types';
-import { ComponentChildren } from 'preact';
+import type { DivProps } from './types';
+import type { ComponentChildren } from 'preact';
 import { Css } from '../../html/css';
-import { AnimState, useAnimState } from '../hooks/useAnimState';
+import type { AnimState } from '../hooks/useAnimState';
+import { useAnimState } from '../hooks/useAnimState';
 
 const c = Css('Anim', {
   '': { transition: 0.3 },

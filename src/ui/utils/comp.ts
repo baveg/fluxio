@@ -1,5 +1,6 @@
 import { isFunction } from '../../check/isFunction';
-import { ComponentChildren, ComponentType, createElement } from 'preact';
+import type { ComponentChildren, ComponentType } from 'preact';
+import { createElement } from 'preact';
 
 export type Comp<P = {}> = null | undefined | ComponentChildren | ComponentType<P>;
 

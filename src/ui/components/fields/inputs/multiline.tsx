@@ -1,7 +1,7 @@
 import { isDefined } from '../../../../check/isDefined';
 import { Css } from '../../../../html/css';
 import { useInputProps } from '../hooks';
-import { FieldProps } from '../types';
+import type { FieldProps } from '../types';
 import { useEffect, useRef } from 'preact/hooks';
 import { isString } from '../../../../check/isString';
 

@@ -1,4 +1,5 @@
-import { Inputs, useEffect, useMemo, useState } from 'preact/hooks';
+import type { Inputs } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 import { FluxDictionary } from '../../flux/fluxDictionary';
 import { Flux, isFlux } from '../../flux/Flux';
 

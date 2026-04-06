@@ -2,9 +2,10 @@ import { render } from 'preact';
 import { createPortal } from 'preact/compat';
 import { useEffect } from 'preact/hooks';
 import { setEl } from '../../html/setEl';
-import { ElOptions } from '../../html/setEl';
+import type { ElOptions } from '../../html/setEl';
 import { useConstant } from '../hooks/useConstant';
-import { comp, Comp } from '../utils/comp';
+import type { Comp } from '../utils/comp';
+import { comp } from '../utils/comp';
 
 export const portal = (content: Comp, options?: ElOptions) => {
   // console.debug('portal', content, options);

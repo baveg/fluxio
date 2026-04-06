@@ -1,7 +1,7 @@
-import { ComponentChildren } from 'preact';
+import type { ComponentChildren } from 'preact';
 import { useState, useRef, useEffect } from 'preact/hooks';
 import { ChevronDownIcon } from 'lucide-react';
-import { FieldProps } from '../types';
+import type { FieldProps } from '../types';
 import { useFieldController, useFieldState } from '../hooks';
 import { Css } from '../../../../html/css';
 import { isArray } from '../../../../check/isArray';

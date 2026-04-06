@@ -1,6 +1,5 @@
 import { Css } from '../../html/css';
-import { DivProps } from './types';
-import { Tr } from './Tr';
+import type { DivProps } from './types';
 import { useTr } from '../hooks/useTr';
 
 const c = Css('Loading', {

@@ -1,4 +1,4 @@
-import { FieldProps, FieldType } from './types';
+import type { FieldProps, FieldType } from './types';
 import { baseInputs } from './inputs/base';
 import { multilineInputs } from './inputs/multiline';
 import { selectInputs } from './inputs/select';

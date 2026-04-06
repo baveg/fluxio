@@ -1,4 +1,4 @@
-import { JSX } from 'preact';
+import type { JSX } from 'preact';
 import { useState } from 'preact/hooks';
 import { Css } from '../../html/css';
 import { Button } from './Button';

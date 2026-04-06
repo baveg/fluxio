@@ -1,8 +1,9 @@
 import { onHtmlEvent } from '../../html/onEvent';
-import { Unsubscribe } from '../../types/Unsubscribe';
+import type { Unsubscribe } from '../../types/Unsubscribe';
 import { Css } from '../../html/css';
-import { DivProps } from './types';
-import { comp, Comp } from '../utils/comp';
+import type { DivProps } from './types';
+import type { Comp } from '../utils/comp';
+import { comp } from '../utils/comp';
 import { portal } from './Portal';
 
 const c = Css('Tooltip', {

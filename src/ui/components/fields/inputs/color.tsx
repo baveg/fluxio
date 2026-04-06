@@ -1,4 +1,4 @@
-import { FieldProps } from '../types';
+import type { FieldProps } from '../types';
 import { useInputProps } from '../hooks';
 import { useState, useRef } from 'preact/hooks';
 import { Field } from '../Field';

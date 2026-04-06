@@ -1,4 +1,4 @@
-import { JSX } from 'preact';
+import type { JSX } from 'preact';
 
 export type GetProps<T> = Omit<T, 'style'> & { style?: any };
 

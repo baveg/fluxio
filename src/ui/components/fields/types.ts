@@ -1,6 +1,6 @@
 import type { ComponentChildren } from 'preact';
 import type { DivProps } from '../types';
-import { Comp } from '../../utils/comp';
+import type { Comp } from '../../utils/comp';
 
 export type SelectItems<V> = ([V, ComponentChildren] | false | null | undefined)[];
 

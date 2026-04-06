@@ -1,10 +1,10 @@
 import { Button } from '../../Button';
 import { isArray } from '../../../../check/isArray';
 import { useFieldController, useFieldState } from '../hooks';
-import { FieldProps } from '../types';
+import type { FieldProps } from '../types';
 import { comp } from '../../../utils/comp';
 import { Css } from '../../../../html/css';
-import { Dictionary } from '../../../../types/Dictionary';
+import type { Dictionary } from '../../../../types/Dictionary';
 import { isDictionary } from '../../../../check/isDictionary';
 
 const c = Css('Picker', {

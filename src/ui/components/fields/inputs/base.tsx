@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import { useFieldController, useFieldState, useInputProps } from '../hooks';
-import { FieldProps } from '../types';
+import type { FieldProps } from '../types';
 import { Button } from '../../Button';
 import { toNumber } from '../../../../cast/toNumber';
 import { toString } from '../../../../cast/toString';

@@ -1,10 +1,10 @@
 import { Css } from '../../html/css';
-import { DivProps } from './types';
+import type { DivProps } from './types';
 import { clamp } from '../../number/clamp';
 import { round } from '../../number/round';
 import { toNumber } from '../../cast/toNumber';
 
-import { ComponentChildren } from 'preact';
+import type { ComponentChildren } from 'preact';
 
 const c = Css('Progress', {
   '': {

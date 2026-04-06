@@ -1,6 +1,6 @@
 import { onHtmlEvent } from '../../html/onEvent';
-import { SetState } from '../../types/SetState';
-import { Unsubscribe } from '../../types/Unsubscribe';
+import type { SetState } from '../../types/SetState';
+import type { Unsubscribe } from '../../types/Unsubscribe';
 import { useMemo, useState } from 'preact/hooks';
 
 const getOnMouseOver = (setOver: SetState<boolean>) => (event: Event) => {

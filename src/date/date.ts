@@ -273,7 +273,7 @@ export const formatTime = (d: Date | number | null | undefined, seconds = false)
 };
 
 /** Format milliseconds as "5h 3min 2s", "3min 2s", "5min" */
-export const formatDuration = (d: Date | number | null | undefined): string => {
+export const formatDuration = (d: Date | number | null | undefined, seconds = false): string => {
   const ms =
     isDate(d) ? getDayTime(d)
     : isNumber(d) ? d
@@ -285,7 +285,7 @@ export const formatDuration = (d: Date | number | null | undefined): string => {
   const parts: string[] = [];
   if (h > 0) parts.push(`${h}h`);
   if (m > 0) parts.push(`${m}min`);
-  if (s > 0 || parts.length === 0) parts.push(`${s}s`);
+  if (seconds && (s > 0 || parts.length === 0)) parts.push(`${s}s`);
   return parts.join(' ');
 };
 

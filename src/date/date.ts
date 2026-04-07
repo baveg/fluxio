@@ -272,6 +272,23 @@ export const formatTime = (d: Date | number | null | undefined, seconds = false)
   return seconds ? `${h}:${m}:${s}` : `${h}:${m}`;
 };
 
+/** Format milliseconds as "5h 3min 2s", "3min 2s", "5min" */
+export const formatDuration = (d: Date | number | null | undefined): string => {
+  const ms =
+    isDate(d) ? getDayTime(d)
+    : isNumber(d) ? d
+    : 0;
+  const t = floor(ms / SECOND);
+  const h = floor(t / 3600);
+  const m = floor((t % 3600) / 60);
+  const s = t % 60;
+  const parts: string[] = [];
+  if (h > 0) parts.push(`${h}h`);
+  if (m > 0) parts.push(`${m}min`);
+  if (s > 0 || parts.length === 0) parts.push(`${s}s`);
+  return parts.join(' ');
+};
+
 /** Format date as "Mardi, 9 Février 2025 15:04:05" */
 export const formatDateTime = (d: DateLike) => `${formatDate((d = toDate(d)))} ${formatTime(d)}`;
 

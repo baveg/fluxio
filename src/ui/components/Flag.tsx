@@ -19,12 +19,12 @@ const c = Css('Flag', {
 
 export interface FlagSVGProps {
   class?: string;
-  iso: string; // ISO codes: fr, en, de, es, it
+  iso: string; // ISO codes: fr, en, de, es, it, nl
   title?: string;
   size?: string | number;
 }
 
-// SVG flags for the 5 required languages
+// SVG flags for the 6 required languages
 const FLAGS: Dictionary<any> = {
   fr: (
     <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
@@ -60,6 +60,13 @@ const FLAGS: Dictionary<any> = {
       <rect width="300" height="600" fill="#009246" />
       <rect x="300" width="300" height="600" fill="#ffffff" />
       <rect x="600" width="300" height="600" fill="#ce2b37" />
+    </svg>
+  ),
+  nl: (
+    <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+      <rect width="900" height="200" fill="#ae1c28" />
+      <rect y="200" width="900" height="200" fill="#ffffff" />
+      <rect y="400" width="900" height="200" fill="#21468b" />
     </svg>
   ),
 };

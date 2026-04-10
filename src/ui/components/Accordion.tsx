@@ -45,7 +45,9 @@ export const Accordion = ({
   return (
     <div {...props} {...c('', isOpen ? '-open' : '-close', props)}>
       <div {...headerProps} {...c('Header', headerProps)} onClick={handle}>
-        {isOpen ? <ChevronDownIcon {...c('Chevron')} /> : <ChevronDownIcon {...c('Chevron')} />}
+        {isOpen ?
+          <ChevronDownIcon {...c('Chevron')} />
+        : <ChevronDownIcon {...c('Chevron')} />}
         {comp(header)}
       </div>
       {isOpen && (

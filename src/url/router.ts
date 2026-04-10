@@ -1,13 +1,13 @@
-import { removeIndex } from "../array/removeIndex";
-import { isArray } from "../check/isArray";
-import { isString } from "../check/isString";
-import { notImplemented } from "../error/NotImplemented";
-import { flux } from "../flux/Flux";
-import { logger } from "../logger/Logger";
-import type { Dictionary } from "../types/Dictionary";
-import { createUrl } from "./createUrl";
-import { glb } from "../glb";
-import { onEvent } from "../html/onEvent";
+import { removeIndex } from '../array/removeIndex';
+import { isArray } from '../check/isArray';
+import { isString } from '../check/isString';
+import { notImplemented } from '../error/NotImplemented';
+import { flux } from '../flux/Flux';
+import { logger } from '../logger/Logger';
+import type { Dictionary } from '../types/Dictionary';
+import { createUrl } from './createUrl';
+import { glb } from '../glb';
+import { onEvent } from '../html/onEvent';
 
 const log = logger('router');
 
@@ -16,12 +16,8 @@ const log = logger('router');
 export const extractBaseUrl = (url: string) =>
   (url.replace('://', '::').split('/', 1)[0] || '').replace('::', '://');
 
-export const extractUrlSegments = (url: string) => (
-  removeIndex(
-    (url.replace('://', '').split('?', 1)[0] || '').split('/'),
-    0
-  )
-);
+export const extractUrlSegments = (url: string) =>
+  removeIndex((url.replace('://', '').split('?', 1)[0] || '').split('/'), 0);
 
 // URL Streams
 
@@ -31,10 +27,7 @@ export const urlSegments$ = url$.map(extractUrlSegments);
 
 // Navigation
 
-export const navTo = (
-  url: string | string[],
-  query?: Dictionary<string>,
-) => {
+export const navTo = (url: string | string[], query?: Dictionary<string>) => {
   const baseUrl = baseUrl$.get();
   if (isString(url) && url.startsWith('http') && !url.startsWith(baseUrl)) {
     log.w('navTo notImplemented', url, query);
@@ -47,7 +40,7 @@ export const navTo = (
   const nextUrl = createUrl(baseUrl, urlPath, query);
 
   log.d('navTo', url, query, nextUrl);
-  
+
   url$.set(nextUrl);
   glb.history?.pushState(null, '', nextUrl);
 

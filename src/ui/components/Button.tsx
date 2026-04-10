@@ -134,14 +134,14 @@ export const Button = ({
 
   if (link) {
     return (
-      <a {...props as any} {...clsProps as any}>
+      <a {...(props as any)} {...(clsProps as any)}>
         {content}
       </a>
     );
   }
 
   return (
-    <button {...props as any} {...clsProps as any} {...tooltipProps(tooltip) as any}>
+    <button {...(props as any)} {...(clsProps as any)} {...(tooltipProps(tooltip) as any)}>
       {content}
     </button>
   );

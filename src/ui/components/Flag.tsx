@@ -5,8 +5,8 @@ import type { Comp } from '../utils';
 const c = Css('Flag', {
   '': {
     display: 'inline-block',
-    w: 4*15,
-    h: 3*15,
+    w: 4 * 15,
+    h: 3 * 15,
     borderRadius: '2px',
     overflow: 'hidden',
     verticalAlign: 'middle',
@@ -14,7 +14,7 @@ const c = Css('Flag', {
   },
   ' svg': {
     wh: '100%',
-  }
+  },
 });
 
 export interface FlagSVGProps {
@@ -81,17 +81,13 @@ export const getFlagIso = (iso?: string) => {
   const lower = iso?.toLowerCase() || '';
   const mapped = (lower ? ISO_MAPPING[lower] : '') || lower;
   return mapped in FLAGS ? mapped : 'fr';
-}
+};
 
 export const Flag = ({ iso, title, size, ...props }: FlagSVGProps) => {
   const normalizedIso = getFlagIso(iso);
   const flagSVG = FLAGS[normalizedIso] || FLAGS['fr'];
 
-  return (
-    <span {...c('', `-${normalizedIso}`, props)}>
-      {flagSVG}
-    </span>
-  );
+  return <span {...c('', `-${normalizedIso}`, props)}>{flagSVG}</span>;
 };
 
 export const FLAG_NAMES = Object.keys(FLAGS);

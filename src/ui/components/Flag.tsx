@@ -34,12 +34,12 @@ const FLAGS: Dictionary<any> = {
     </svg>
   ),
   en: (
-    <svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
-      <rect width="1200" height="600" fill="#012169" />
-      <path d="M0,0 L1200,600 M1200,0 L0,600" stroke="#ffffff" strokeWidth="80" />
-      <path d="M0,0 L1200,600 M1200,0 L0,600" stroke="#c8102e" strokeWidth="48" />
-      <path d="M600,0 V600 M0,300 H1200" stroke="#ffffff" strokeWidth="100" />
-      <path d="M600,0 V600 M0,300 H1200" stroke="#c8102e" strokeWidth="60" />
+    <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+      <rect width="900" height="600" fill="#012169" />
+      <path d="M0,0 L900,600 M900,0 L0,600" stroke="#ffffff" strokeWidth="80" />
+      <path d="M0,0 L900,600 M900,0 L0,600" stroke="#c8102e" strokeWidth="48" />
+      <path d="M450,0 V600 M0,300 H900" stroke="#ffffff" strokeWidth="100" />
+      <path d="M450,0 V600 M0,300 H900" stroke="#c8102e" strokeWidth="60" />
     </svg>
   ),
   de: (

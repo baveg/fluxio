@@ -17,3 +17,5 @@ export const pascalCase = (v: any): string => getWords(v).map(firstUpper).join('
 export const camelCase = (v: any): string => firstLower(pascalCase(v));
 
 export const kebabCase = (v: string): string => pascalToKebabCase(pascalCase(v));
+
+export const snakeCase = (v: string): string => getWords(v).join('_');

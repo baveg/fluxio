@@ -1,16 +1,62 @@
+import { useMemo, useEffect } from 'preact/hooks';
 import type { Flux } from '../../flux/Flux';
+import { flux } from '../../flux';
+import { toInt, toFloat } from '../../cast/toNumber';
+import { toBoolean } from '../../cast/toBoolean';
+import { toString } from '../../cast/toString';
+import { jsonParse, jsonStringify } from '../../string/json';
 import { getInputValue } from '../utils/getInputValue';
 import { useFlux } from './useFlux';
 
-export interface FluxInputProps {
-  value: string;
-  onInput: (e: Event) => void;
+type InputType = 'text' | 'password' | 'email' | 'int' | 'float' | 'json' | 'checkbox';
+
+export interface FluxInputOptions<T extends InputType | undefined = undefined> {
+  delay?: number;
+  type?: T;
 }
 
-export const useFluxInput = (value$: Flux<string>): FluxInputProps => {
-  const value = useFlux(value$);
+const valueToRaw = (value: any, type: InputType): string => (
+  type === 'json' ? jsonStringify(value) :
+  toString(value)
+);
+
+const rawToValue = (raw: string, type: InputType): any => (
+  type === 'int' ? toInt(raw) :
+  type === 'float' ? toFloat(raw) :
+  type === 'checkbox' ? raw === '' ? null : toBoolean(raw) :
+  type === 'json' ? jsonParse(raw) :
+  raw
+);
+
+export const useFluxInput = (
+  name: string,
+  type: InputType,
+  value$: Flux<any>,
+  delay = 200,
+) => {
+  const raw$ = useMemo(() => flux(valueToRaw(value$.get(), type)), [value$]);
+
+  useEffect(
+    () => raw$.debounce(delay).on((raw) => value$.set(rawToValue(raw, type))),
+    [raw$, value$]
+  );
+
+  const value = useFlux(raw$);
+
+  if (type === 'checkbox') {
+    return {
+      name,
+      type,
+      checked: value === 'true',
+      indeterminate: value === '',
+      onChange: (e: Event) => raw$.set(getInputValue(e)),
+    };
+  }
+
   return {
+    name,
+    type,
     value,
-    onInput: (e: Event) => value$.set(getInputValue(e)),
+    onInput: (e: Event) => raw$.set(getInputValue(e)),
   };
 };

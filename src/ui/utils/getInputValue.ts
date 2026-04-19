@@ -1,5 +1,4 @@
 export const getInputValue = (e: HTMLInputElement | Event): string => {
-  if (e instanceof HTMLInputElement) return e.value;
-  const target = (e as Event).target ?? (e as Event).currentTarget;
-  return (target as HTMLInputElement).value;
+  const el = e instanceof HTMLInputElement ? e : ((e.target ?? e.currentTarget) as HTMLInputElement);
+  return el.type === 'checkbox' || el.type === 'radio' ? el.indeterminate ? '' : el.checked ? 'true' : 'false' : el.value;
 };

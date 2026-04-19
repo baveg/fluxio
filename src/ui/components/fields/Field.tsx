@@ -106,6 +106,9 @@ export const c = Css('Field', {
   '-hasRight input,&-hasRight textarea': {
     pr: 32,
   },
+  '-select': {
+    wMin: 150,
+  }
 });
 
 const ClearButton = () => {
@@ -115,12 +118,12 @@ const ClearButton = () => {
   const { clearable, readonly } = config;
   const showClear = clearable && isDefined(value) && !readonly;
   return showClear ?
-      <Button
-        {...c('Clear')}
-        icon={<XIcon size={16} />}
-        onClick={() => ctrl.update({ value: undefined })}
-        tooltip="Effacer la valeur"
-      />
+    <Button
+      {...c('Clear')}
+      icon={<XIcon size={16} />}
+      onClick={() => ctrl.update({ value: undefined })}
+      tooltip="Effacer la valeur"
+    />
     : null;
 };
 
@@ -159,9 +162,9 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
         <div {...c('Content')}>
           {isComposed ?
             children
-          : Input ?
-            <Input />
-          : null}
+            : Input ?
+              <Input />
+              : null}
           {left && <div {...c('Left')}>{comp(left)}</div>}
           {right && <div {...c('Right')}>{comp(right)}</div>}
           <ClearButton />
@@ -170,9 +173,9 @@ export const Field = <V, R>(props: FieldProps<V, R>) => {
           <div {...c('Error')}>
             <Tr ns="error">{err}</Tr>
           </div>
-        : helper ?
-          <div {...c('Helper')}>{helper}</div>
-        : null}
+          : helper ?
+            <div {...c('Helper')}>{helper}</div>
+            : null}
       </div>
     </FieldProvider>
   );

@@ -13,7 +13,7 @@ const c = Css('Select', {
   '': {
     position: 'relative',
     col: ['stretch', 'start'],
-    w: '100%',
+    wh: '100%',
     wMax: '100%',
     hMin: FIELD_HEIGHT,
   },
@@ -58,7 +58,7 @@ const c = Css('Select', {
     border: 'border',
     borderTop: 'none',
     rounded: [0, 0, 4, 4],
-    hMax: 100,
+    hMax: 200,
     overflowY: 'auto',
     zIndex: 1000,
     elevation: 2,
@@ -68,6 +68,7 @@ const c = Css('Select', {
     px: 8,
     cursor: 'pointer',
     transition: 0.2,
+    border: 'border',
   },
   'Option:hover': {
     bg: 'bg',
@@ -130,7 +131,7 @@ const Select = ({
         ([key, label]) =>
           isSearched(key, search) || (typeof label === 'string' && isSearched(label, search))
       )
-    : validItems;
+      : validItems;
 
   const selectedItem = validItems.find(([key]) => key === value);
   const displayValue = selectedItem ? selectedItem[1] : '';
@@ -220,17 +221,19 @@ const Select = ({
             autocomplete="off"
             onClick={(e) => e.stopPropagation()}
           />
-        : <div {...c('Input')} onKeyDown={handleKeyDown}>
-            <div {...c('InputText')}>{displayValue || placeholder}</div>
-            <input
-              ref={inputRef}
-              name={name}
-              required={required}
-              value={value || ''}
-              style={{ display: 'none' }}
-              tabIndex={-1}
-            />
-          </div>
+          : (
+            <div {...c('Input')} onKeyDown={handleKeyDown}>
+              <div {...c('InputText')}>{displayValue || placeholder}</div>
+              <input
+                ref={inputRef}
+                name={name}
+                required={required}
+                value={value || ''}
+                style={{ display: 'none' }}
+                tabIndex={-1}
+              />
+            </div>
+          )
         }
         <div {...c('Arrow')}>
           <ChevronDownIcon />
@@ -241,7 +244,7 @@ const Select = ({
         <div {...c('Dropdown')}>
           {filteredItems.length === 0 ?
             <div {...c('Option')}>Aucun résultat</div>
-          : filteredItems.map(([key, label], index) => (
+            : filteredItems.map(([key, label], index) => (
               <div
                 key={key}
                 {...c(

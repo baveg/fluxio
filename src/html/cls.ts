@@ -1,5 +1,23 @@
 import type { Dictionary } from '../types/Dictionary';
 
+type ClsArg = string | { class?: any; className?: any } | boolean | number | undefined | null;
+
+export const cls = (...args: ClsArg[]): string => {
+  const sb: string[] = [];
+  for (const arg of args) {
+    if (!arg) continue;
+    if (typeof arg === 'string') {
+      sb.push(arg);
+      continue;
+    }
+    if (typeof arg === 'object') {
+      const v = arg.class || arg.className;
+      if (typeof v === 'string' && v) sb.push(v);
+    }
+  }
+  return sb.join(' ');
+};
+
 export type Cls = Dictionary<boolean | number | undefined | null>;
 
 export const getCls = (el: Element | null | undefined): Cls => {

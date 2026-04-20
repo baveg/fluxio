@@ -8,7 +8,7 @@ import { jsonParse, jsonStringify } from '../../string/json';
 import { getInputValue } from '../utils/getInputValue';
 import { useFlux } from './useFlux';
 
-export type InputType = 'text' | 'password' | 'email' | 'int' | 'float' | 'json' | 'checkbox';
+export type InputType = 'select' | 'text' | 'password' | 'email' | 'int' | 'float' | 'json' | 'checkbox';
 
 export interface FluxInputOptions<T extends InputType | undefined = undefined> {
   delay?: number;
@@ -30,14 +30,14 @@ const rawToValue = (raw: string, type: InputType): any => (
 
 export const useFluxInput = (
   type: InputType,
-  val$: Flux<any>,
+  v$: Flux<any>,
   delay = 200,
 ) => {
-  const raw$ = useMemo(() => flux(valueToRaw(val$.get(), type)), [value$]);
+  const raw$ = useMemo(() => flux(valueToRaw(v$.get(), type)), [v$]);
 
   useEffect(
-    () => raw$.debounce(delay).on((raw) => val$.set(rawToValue(raw, type))),
-    [raw$, val$]
+    () => raw$.debounce(delay).on((raw) => v$.set(rawToValue(raw, type))),
+    [raw$, v$]
   );
 
   const value = useFlux(raw$);

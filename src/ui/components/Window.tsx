@@ -12,7 +12,7 @@ import { useFlux } from '../hooks/useFlux';
 import { portal } from './Portal';
 import { comp } from '../utils/comp';
 import { useMemo } from 'preact/hooks';
-import { XIcon, CheckIcon, XCircleIcon, BanIcon } from 'lucide-react';
+import { XIcon, CheckIcon, XCircleIcon, BanIcon } from 'lucide-preact';
 import { Button } from './Button';
 import { useContext } from 'preact/hooks';
 import type { ComponentChildren } from 'preact';

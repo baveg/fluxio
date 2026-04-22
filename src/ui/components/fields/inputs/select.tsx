@@ -1,6 +1,6 @@
 import type { ComponentChildren } from 'preact';
 import { useState, useRef, useEffect } from 'preact/hooks';
-import { ChevronDownIcon } from 'lucide-react';
+import { ChevronDownIcon } from 'lucide-preact';
 import type { FieldProps } from '../types';
 import { useFieldController, useFieldState } from '../hooks';
 import { Css } from '../../../../html/css';

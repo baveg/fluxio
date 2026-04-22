@@ -1,4 +1,4 @@
-import { CheckIcon } from 'lucide-react';
+import { CheckIcon } from 'lucide-preact';
 import { useInputProps } from '../hooks';
 import { FIELD_HEIGHT } from '../constants';
 import type { FieldProps } from '../types';

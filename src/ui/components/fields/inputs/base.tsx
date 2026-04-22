@@ -1,5 +1,5 @@
 import { useEffect } from 'preact/hooks';
-import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import { EyeIcon, EyeOffIcon } from 'lucide-preact';
 import { useFieldController, useFieldState, useInputProps } from '../hooks';
 import type { FieldProps } from '../types';
 import { Button } from '../../Button';

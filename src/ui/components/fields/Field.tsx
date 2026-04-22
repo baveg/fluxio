@@ -4,7 +4,7 @@ import type { FieldProps } from './types';
 import { FieldController, FieldProvider } from './FieldController';
 import { FIELD_HEIGHT, LABEL_WIDTH } from './constants';
 import { Button } from '../Button';
-import { XIcon } from 'lucide-react';
+import { XIcon } from 'lucide-preact';
 import { useFieldController, useFieldState } from './hooks';
 import { useConstant } from '../../hooks/useConstant';
 import { tooltipProps } from '../Tooltip';

@@ -131,7 +131,7 @@ const Select = ({
         ([key, label]) =>
           isSearched(key, search) || (typeof label === 'string' && isSearched(label, search))
       )
-      : validItems;
+    : validItems;
 
   const selectedItem = validItems.find(([key]) => key === value);
   const displayValue = selectedItem ? selectedItem[1] : '';
@@ -221,19 +221,17 @@ const Select = ({
             autocomplete="off"
             onClick={(e) => e.stopPropagation()}
           />
-          : (
-            <div {...c('Input')} onKeyDown={handleKeyDown}>
-              <div {...c('InputText')}>{displayValue || placeholder}</div>
-              <input
-                ref={inputRef}
-                name={name}
-                required={required}
-                value={value || ''}
-                style={{ display: 'none' }}
-                tabIndex={-1}
-              />
-            </div>
-          )
+        : <div {...c('Input')} onKeyDown={handleKeyDown}>
+            <div {...c('InputText')}>{displayValue || placeholder}</div>
+            <input
+              ref={inputRef}
+              name={name}
+              required={required}
+              value={value || ''}
+              style={{ display: 'none' }}
+              tabIndex={-1}
+            />
+          </div>
         }
         <div {...c('Arrow')}>
           <ChevronDownIcon />
@@ -244,7 +242,7 @@ const Select = ({
         <div {...c('Dropdown')}>
           {filteredItems.length === 0 ?
             <div {...c('Option')}>Aucun résultat</div>
-            : filteredItems.map(([key, label], index) => (
+          : filteredItems.map(([key, label], index) => (
               <div
                 key={key}
                 {...c(

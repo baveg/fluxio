@@ -16,7 +16,8 @@ export type InputType =
   | 'int'
   | 'float'
   | 'json'
-  | 'checkbox';
+  | 'checkbox'
+  | 'color';
 
 export interface FluxInputOptions<T extends InputType | undefined = undefined> {
   delay?: number;

@@ -44,18 +44,21 @@ export const useFluxInput = (type: InputType, v$: Flux<any>, delay = 200) => {
 
   const value = useFlux(raw$);
 
+  const handler = (e: Event) => raw$.set(getInputValue(e));
+
   if (type === 'checkbox') {
     return {
       type,
       checked: value === 'true',
       indeterminate: value === '',
-      onChange: (e: Event) => raw$.set(getInputValue(e)),
+      onChange: handler,
     };
   }
 
   return {
     type,
     value,
-    onInput: (e: Event) => raw$.set(getInputValue(e)),
+    onInput: handler,
+    onChange: handler,
   };
 };

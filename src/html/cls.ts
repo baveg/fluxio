@@ -1,6 +1,7 @@
 import type { Dictionary } from '../types/Dictionary';
 
-type ClsArg = string | { class?: any; className?: any } | boolean | number | undefined | null;
+export type ClsObj = { class?: any; className?: any; value?: any };
+export type ClsArg = ClsObj | string | boolean | number | undefined | null;
 
 export const cls = (...args: ClsArg[]): string => {
   const sb: string[] = [];
@@ -11,7 +12,7 @@ export const cls = (...args: ClsArg[]): string => {
       continue;
     }
     if (typeof arg === 'object') {
-      const v = arg.class || arg.className;
+      const v = arg.class || arg.className || arg.value || String(arg);
       if (typeof v === 'string' && v) sb.push(v);
     }
   }

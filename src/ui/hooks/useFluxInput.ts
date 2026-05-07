@@ -11,6 +11,7 @@ import { useFlux } from './useFlux';
 export type InputType =
   | 'select'
   | 'text'
+  | 'multiline'
   | 'password'
   | 'email'
   | 'int'

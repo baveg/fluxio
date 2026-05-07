@@ -3,7 +3,6 @@ export * from './useAsync';
 export * from './useAsyncEffect';
 export * from './useConstant';
 export * from './useFlux';
-export * from './useFluxInput';
 export * from './useInterval';
 export * from './useOver';
 export * from './usePromise';

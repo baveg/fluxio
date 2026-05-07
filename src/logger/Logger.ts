@@ -12,7 +12,7 @@ export const getLogIcon = (level: LogLevel) =>
   : level === 'error' ? '❌'
   : '';
 
-let log = (name: string, level: LogLevel, args: any[]) => {
+export const logDefault = (name: string, level: LogLevel, args: any[]) => {
   if (typeof console === 'object' && level in console) {
     const icon = getLogIcon(level);
     if (icon) {
@@ -22,6 +22,8 @@ let log = (name: string, level: LogLevel, args: any[]) => {
     }
   }
 };
+
+let log = logDefault;
 
 export const setLog = (value: typeof log) => {
   log = value;

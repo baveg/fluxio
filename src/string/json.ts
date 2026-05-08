@@ -16,7 +16,7 @@ export const jsonStringify = (
 };
 
 export const jsonParse = (
-  text: string,
+  text: string|null|undefined,
   reviver?: ((this: any, key: string, value: any) => any) | undefined
 ): any => {
   try {

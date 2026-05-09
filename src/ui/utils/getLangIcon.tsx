@@ -1,21 +1,5 @@
 import type { Dictionary } from '../../types/Dictionary';
-import { Css } from '../../html/css';
-import type { Comp } from '../utils';
-
-const c = Css('Flag', {
-  '': {
-    display: 'inline-block',
-    w: 4 * 15,
-    h: 3 * 15,
-    borderRadius: '2px',
-    overflow: 'hidden',
-    verticalAlign: 'middle',
-    center: 1,
-  },
-  ' svg': {
-    wh: '100%',
-  },
-});
+import type { Comp } from '.';
 
 export interface FlagSVGProps {
   class?: string;
@@ -76,7 +60,7 @@ export const FLAGS: Dictionary<Comp> = {
   ),
 };
 
-export const LANGUAGES: Dictionary<string> = {
+export const LANGS: Dictionary<string> = {
   '': 'Auto',
   fr: 'Français',
   en: 'English',
@@ -92,21 +76,20 @@ export const ISO_MAPPING: Dictionary<string> = {
   uk: 'en', // United Kingdom -> English flag
 };
 
-export const getFlagIso = (iso?: string) => {
+export const getLangIso = (iso?: string) => {
   const lower = iso?.toLowerCase() || '';
-  const mapped = (lower ? ISO_MAPPING[lower] : '') || lower;
-  return mapped in FLAGS ? mapped : 'fr';
+  const mapped = ISO_MAPPING[lower] || lower;
+  return mapped in FLAGS ? mapped : '';
 };
 
-export const Flag = ({ iso, title, size, ...props }: FlagSVGProps) => {
-  const normalizedIso = getFlagIso(iso);
-  const flagSVG = FLAGS[normalizedIso] || FLAGS[''];
+export const getLangIcon = (iso?: string) => (
+  FLAGS[getLangIso(iso)] || FLAGS['']
+);
 
-  return <span {...c('', `-${normalizedIso}`, props)}>{flagSVG}</span>;
-};
+export const getLangTitle = (iso?: string) => (
+  LANGS[getLangIso(iso)] || LANGS['']
+);
 
-export const FLAG_NAMES = Object.keys(FLAGS);
-export const FLAG_ITEMS: [string, Comp][] = FLAG_NAMES.map((iso) => [
-  iso,
-  <Flag key={iso} iso={iso} />,
-]);
+export const LANG_ENTRIES = Object.entries(LANGS).map(([iso, title]) => (
+  { iso, icon: getLangIcon(iso), title }
+));

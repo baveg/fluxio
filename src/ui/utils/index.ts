@@ -4,6 +4,7 @@ export * from './clipboard';
 export * from './comp';
 export * from './getDatasetValue';
 export * from './getInputValue';
+export * from './getLangIcon';
 export * from './getTarget';
 export * from './responsive';
 export * from './startDownload';

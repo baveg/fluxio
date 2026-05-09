@@ -1,4 +1,4 @@
-import { getTarget } from "./getTarget";
+import { getTarget } from './getTarget';
 
 export const getInputValue = (e: HTMLInputElement | Event): string => {
   const el = getTarget(e) as HTMLInputElement;

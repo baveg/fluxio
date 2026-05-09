@@ -4,9 +4,7 @@ import { toBoolean } from '../cast/toBoolean';
 import { glb } from '../glb';
 import { jsonParse } from '../string/json';
 
-export const processEnv = () => (
-  glb.process.env || {}
-);
+export const processEnv = () => glb.process.env || {};
 
 export const envString = (key: string, defaultValue?: string) => {
   const value = processEnv()[key];

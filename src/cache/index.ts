@@ -1,1 +1,1 @@
-export * from "./cached";
+export * from './cached';

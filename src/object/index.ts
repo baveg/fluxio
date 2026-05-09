@@ -18,4 +18,5 @@ export * from './last';
 export * from './merge';
 export * from './setKey';
 export * from './singleton';
+export * from './topCaseConverter';
 export * from './sortKey';

@@ -25,7 +25,12 @@ export interface FlagSVGProps {
 }
 
 // SVG flags for the 6 required languages
-const FLAGS: Dictionary<any> = {
+export const FLAGS: Dictionary<Comp> = {
+  '': (
+    <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+      <rect width="900" height="600" fill="#000000" />
+    </svg>
+  ),
   fr: (
     <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
       <rect width="300" height="600" fill="#002654" />
@@ -71,8 +76,18 @@ const FLAGS: Dictionary<any> = {
   ),
 };
 
+export const LANGUAGES: Dictionary<string> = {
+  '': 'Auto',
+  fr: 'Français',
+  en: 'English',
+  de: 'Deutsch',
+  es: 'Español',
+  it: 'Italiano',
+  nl: 'Nederlands',
+};
+
 // Mapping for alternative codes
-const ISO_MAPPING: Dictionary<string> = {
+export const ISO_MAPPING: Dictionary<string> = {
   gb: 'en', // Great Britain -> English flag
   uk: 'en', // United Kingdom -> English flag
 };
@@ -85,7 +100,7 @@ export const getFlagIso = (iso?: string) => {
 
 export const Flag = ({ iso, title, size, ...props }: FlagSVGProps) => {
   const normalizedIso = getFlagIso(iso);
-  const flagSVG = FLAGS[normalizedIso] || FLAGS['fr'];
+  const flagSVG = FLAGS[normalizedIso] || FLAGS[''];
 
   return <span {...c('', `-${normalizedIso}`, props)}>{flagSVG}</span>;
 };

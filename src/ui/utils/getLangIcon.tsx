@@ -82,14 +82,12 @@ export const getLangIso = (iso?: string) => {
   return mapped in FLAGS ? mapped : '';
 };
 
-export const getLangIcon = (iso?: string) => (
-  FLAGS[getLangIso(iso)] || FLAGS['']
-);
+export const getLangIcon = (iso?: string) => FLAGS[getLangIso(iso)] || FLAGS[''];
 
-export const getLangTitle = (iso?: string) => (
-  LANGS[getLangIso(iso)] || LANGS['']
-);
+export const getLangTitle = (iso?: string) => LANGS[getLangIso(iso)] || LANGS[''];
 
-export const LANG_ENTRIES = Object.entries(LANGS).map(([iso, title]) => (
-  { iso, icon: getLangIcon(iso), title }
-));
+export const LANG_ENTRIES = Object.entries(LANGS).map(([iso, title]) => ({
+  iso,
+  icon: getLangIcon(iso),
+  title,
+}));

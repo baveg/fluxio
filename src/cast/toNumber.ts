@@ -19,3 +19,8 @@ export const pFloat = (v: any): number | undefined =>
 
 export const toInt = pInt;
 export const toFloat = pFloat;
+
+export const toNbr = toNumber;
+export const toNbr0 = (v: any): number => toNumber(v, 0);
+export const toInt0 = (v: any): number => toInt(v) || 0;
+export const toFloat0 = (v: any): number => toFloat(v) || 0;

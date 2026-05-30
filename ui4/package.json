@@ -1,0 +1,35 @@
+{
+  "name": "@fluxio/ui4",
+  "version": "0.2.0",
+  "type": "module",
+  "description": "Fluxio DaisyUI 4 components for Preact",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0"
+  },
+  "dependencies": {
+    "@fluxio/core": "*"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "preact": "^10.0.0"
+  },
+  "keywords": [
+    "preact",
+    "daisyui",
+    "components",
+    "ui"
+  ],
+  "author": "baveg",
+  "license": "MIT"
+}

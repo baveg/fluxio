@@ -1,0 +1,27 @@
+{
+  "name": "@fluxio/core",
+  "version": "0.2.0",
+  "type": "module",
+  "description": "Fluxio core utilities",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "keywords": [
+    "functional",
+    "utility",
+    "typescript"
+  ],
+  "author": "baveg",
+  "license": "MIT",
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}

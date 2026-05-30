@@ -1,23 +1,17 @@
 {
   "name": "fluxio",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
+  "private": true,
   "description": "Functional utility library for TypeScript",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": "./src/index.ts",
-    "./*": "./src/*.ts"
-  },
-  "files": [
-    "dist",
-    "src",
-    "README.md"
+  "workspaces": [
+    "core",
+    "ui4"
   ],
   "scripts": {
-    "build": "tsup",
-    "prepublishOnly": "npm run build"
+    "build": "npm run build --workspaces",
+    "build:core": "npm run build -w @fluxio/core",
+    "build:ui4": "npm run build -w @fluxio/ui4"
   },
   "keywords": [
     "functional",

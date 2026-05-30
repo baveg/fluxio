@@ -1,7 +1,7 @@
-import { getTarget } from './getTarget';
+import { getTargetEl } from './getTargetEl';
 
 export const getInputValue = (e: HTMLInputElement | Event): string => {
-  const el = getTarget(e) as HTMLInputElement;
+  const el = getTargetEl(e) as HTMLInputElement;
   return (
     el.type === 'checkbox' || el.type === 'radio' ?
       el.indeterminate ? ''

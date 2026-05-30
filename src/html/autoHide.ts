@@ -1,4 +1,4 @@
-import { setCss } from '../../html/css';
+import { setCss } from './css';
 
 /**
  * Auto-hide UI elements based on user interaction

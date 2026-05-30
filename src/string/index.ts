@@ -13,6 +13,7 @@ export * from './removeAccents';
 export * from './replace';
 export * from './setTemplate';
 export * from './sha256';
+export * from './tr';
 export * from './truncate';
 export * from './upper';
 export * from './uuid';

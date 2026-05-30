@@ -1,6 +1,6 @@
-import { getStorage } from '../../storage';
-import { logger } from '../../logger/Logger';
-import { jsonStringify, jsonParse } from '../../string/json';
+import { getStorage } from '../storage';
+import { logger } from '../logger/Logger';
+import { jsonStringify, jsonParse } from '../string/json';
 
 const log = logger('clipboard');
 

@@ -6,6 +6,7 @@ import { isArray } from '@fluxio/core/check/isArray';
 import { type CssStyle } from '@fluxio/core/html/cssTypes';
 import { toTrue } from '@fluxio/core/cast/toTrue';
 import { sortItems } from '@fluxio/core/array/sortItems';
+import { useCss } from '../hooks/useCss';
 
 export type DataTableColumnTitle = string | ComponentChildren;
 export type DataTableColumnValue<T, C> = (item: T, ctx: C, index: number) => ComponentChildren;
@@ -72,7 +73,7 @@ const getComputedColumns = (cols: DataTableColumns<any, any>) => {
           title: data[0],
           val: data[1],
         }
-      : {
+        : {
           ...data,
         }) as DataTableComputedColumn;
 
@@ -103,6 +104,30 @@ const getComputedColumns = (cols: DataTableColumns<any, any>) => {
   return computedColumns;
 };
 
+const css = `
+.table tr.row-success {
+  color: hsl(var(--su));
+}
+
+.table tr.row-error {
+  color: hsl(var(--er));
+}
+
+.table tr.row-selected {
+  background-color: hsl(var(--b3));
+}
+
+.table td input,
+.table th input {
+  background: transparent;
+  border: 0;
+}
+
+.table .Field {
+  width: 100%;
+}
+`
+
 export const DataTable = (({
   cols,
   ctx,
@@ -115,6 +140,8 @@ export const DataTable = (({
   ...props
 }: DataTableProps) => {
   if (!getKey) getKey = defaultGetKey;
+
+  useCss(css);
 
   const computedColumns = useMemo(() => getComputedColumns(cols), [cols]);
   const visibleColumns = computedColumns.filter((col) => col.if(col, ctx));

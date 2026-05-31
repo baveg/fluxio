@@ -1,7 +1,6 @@
 import { Css } from '@fluxio/core/html/css';
-import { comp, Comp } from '../utils/comp';
+import { type Comp } from '../utils/comp';
 import { useState } from 'preact/hooks';
-import { DivProps } from './types';
 
 const c = Css('Carousel', {
   '': {

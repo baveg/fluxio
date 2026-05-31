@@ -1,0 +1,23 @@
+/* DaisyUI Table customizations for Grid */
+
+.table tr.row-success {
+  color: hsl(var(--su));
+}
+
+.table tr.row-error {
+  color: hsl(var(--er));
+}
+
+.table tr.row-selected {
+  background-color: hsl(var(--b3));
+}
+
+.table td input,
+.table th input {
+  background: transparent;
+  border: 0;
+}
+
+.table .Field {
+  width: 100%;
+}

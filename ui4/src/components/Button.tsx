@@ -1,191 +1,74 @@
-import type { ElProps } from './types';
-import type { Comp } from '../utils/comp';
-import type { Dictionary } from '@fluxio/core/types/Dictionary';
-import type { Style } from '@fluxio/core/html/css';
-import { useRef } from 'preact/hooks';
+import type { LucideIcon } from 'lucide-preact';
+import { cls } from '@fluxio/core/html/cls';
 import { tooltipProps } from './Tooltip';
-import { comp } from '../utils/comp';
-import { Css } from '@fluxio/core/html/css';
+import { type Comp } from '../utils/comp';
 
-const addColors = () => {
-  const styles: Dictionary<Style> = {};
-  const colors = ['primary', 'secondary', 'success', 'warn', 'error'];
-  for (const color of colors) {
-    styles[`-${color}`] = { bg: color, fg: 'handle' };
-    styles[`-icon&-${color}`] = { fg: color };
-    styles[`-selected&-icon&-${color}`] = { bg: color };
-    styles[`:hover&-icon&-${color}`] = { bg: color };
-  }
-  // console.debug('addColors', styles);
-  return styles;
-};
-
-const c = Css('Button', {
-  '': {
-    row: ['center', 'start'],
-    position: 'relative',
-    m: 2,
-    p: 2,
-    rounded: 5,
-    border: 0,
-    bg: 'btn',
-    fg: 'fg',
-    whMin: 20,
-    elevation: 1,
-    transition: 0.5,
-    bold: 1,
-    fontSize: 'inherit',
-    overflow: 'hidden',
-  },
-  Sfx: {
-    position: 'absolute',
-    inset: 0,
-    bg: 'secondary',
-    transition: 0.5,
-    scaleX: 0,
-    transformOrigin: 'left',
-  },
-  Content: {
-    position: 'relative',
-    row: ['center', 'start'],
-    m: 2,
-    flex: 1,
-    textAlign: 'left',
-  },
-
-  '-icon &Content': {
-    display: 'none',
-  },
-  Icon: {
-    position: 'relative',
-    center: 1,
-    m: 2,
-    rounded: 5,
-  },
-
-  ':active': { bg: 'primary', fg: 'handle' },
-  '-selected': { bg: 'primary', fg: 'handle' },
-  ':hover': { elevation: 0, fg: 'handle' },
-  ':hover > &Sfx': { scaleX: 1 },
-
-  ...addColors(),
-
-  '-icon': { bg: 'transparent', fg: 'fg', elevation: 0, border: 0 },
-  '-selected&-icon,:hover&-icon': { bg: 'primary', fg: 'handle', border: 0 },
-
-  '-big': { col: ['stretch', 'center'], p: 8 },
-  '-big &Icon svg': { whMin: 48 },
-  '-big &Content': { flex: 0 },
-});
-
-type BaseButtonProps = Omit<ElProps['button'] & ElProps['a'], 'onClick' | 'title' | 'ref'> & {
-  onClick?: (e: Event) => void;
-};
-
-export interface ButtonProps extends BaseButtonProps {
-  class?: string;
-  color?: 'default' | 'primary' | 'secondary' | 'success' | 'warn' | 'error';
-  variant?: 'upload' | 'outlined';
-  big?: boolean;
+export interface ButtonProps {
+  icon?: LucideIcon;
+  primary?: boolean;
+  secondary?: boolean;
   selected?: boolean;
-  icon?: Comp | true;
-  before?: Comp;
-  title?: Comp;
-  link?: boolean;
+  error?: boolean;
+  warn?: boolean;
+  success?: boolean;
+  circle?: boolean;
+  outline?: boolean;
+  sm?: boolean;
+  xs?: boolean;
+  ghost?: boolean;
+  square?: boolean;
+  submit?: boolean;
+  class?: string;
+  title?: string;
   tooltip?: Comp;
+  onClick?: (e: Event) => void;
+  children?: any;
 }
 
 export const Button = ({
-  title,
-  color,
-  variant,
+  icon: Icon,
+  circle,
+  outline,
+  primary,
+  secondary,
   selected,
-  icon,
-  children,
-  before,
-  link,
+  error,
+  warn,
+  success,
+  sm,
+  xs,
+  ghost,
+  submit,
+  square,
+  class: extraCls,
+  title,
   tooltip,
-  big,
-  ...props
-}: ButtonProps) => {
-  const isIcon = icon === true || (icon && !(children || title));
-
-  const clsProps = c(
-    '',
-    `-${color || 'default'}`,
-    selected && `-selected`,
-    isIcon ? `-icon` : null,
-    variant && `-${variant}`,
-    big && `-big`,
-    props
-  );
-
-  const content = (
-    <>
-      <div {...c('Sfx')} />
-      {comp(before)}
-      {icon && icon !== true && <div {...c('Icon')}>{comp(icon)}</div>}
-      <div {...c('Content')}>
-        {comp(title)}
-        {children}
-      </div>
-    </>
-  );
-
-  if (link) {
-    return (
-      <a {...(props as any)} {...(clsProps as any)}>
-        {content}
-      </a>
-    );
-  }
-
-  return (
-    <button {...(props as any)} {...(clsProps as any)} {...(tooltipProps(tooltip) as any)}>
-      {content}
-    </button>
-  );
-};
-
-export interface UploadButtonProps extends ButtonProps {
-  onFiles?: (files: File[]) => void;
-  accept?: string;
-  multiple?: boolean;
-  icon?: Comp;
-}
-
-export const UploadButton = ({
   onClick,
-  onFiles,
-  accept,
-  multiple,
-  ...props
-}: UploadButtonProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  return (
-    <Button
-      variant="upload"
-      onClick={(event) => {
-        if (onClick) onClick(event);
-        inputRef.current?.click();
-      }}
-      {...props}
-      before={
-        <input
-          style={{ display: 'none' }}
-          type="file"
-          ref={inputRef as any}
-          accept={accept}
-          multiple={multiple || true}
-          onChange={(event) => {
-            const target = event.target as HTMLInputElement;
-            const files = Array.from(target.files || []);
-            if (onFiles) onFiles(files);
-            if (inputRef.current) inputRef.current.value = '';
-          }}
-        />
-      }
-    />
-  );
-};
+  children,
+}: ButtonProps) => (
+  <button
+    type={submit ? 'submit' : 'button'}
+    class={cls(
+      'btn',
+      circle && 'btn-circle',
+      outline && 'btn-outline',
+      primary && 'btn-primary',
+      secondary && 'btn-secondary',
+      selected && 'btn-selected',
+      error && 'btn-error',
+      warn && 'btn-warn',
+      success && 'btn-success',
+      sm && 'btn-sm',
+      xs && 'btn-xs',
+      ghost && 'btn-ghost',
+      ((Icon && !(title || children)) || square) && 'btn-square',
+      extraCls
+    )}
+    {...tooltipProps(tooltip)}
+    onClick={onClick}
+  >
+    {Icon && <Icon size={xs ? 14 : 24} />}
+    {title}
+    {children}
+  </button>
+);

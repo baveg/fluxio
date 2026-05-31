@@ -1,7 +1,6 @@
-import type { ButtonProps } from './Button';
-import { Button } from './Button';
 import { ArrowLeftIcon } from 'lucide-preact';
+import { Button, type ButtonProps } from './Button';
 
 export const BackButton = (props: ButtonProps) => (
-  <Button title="Back" icon={ArrowLeftIcon} color="secondary" {...props} />
+  <Button title="Back" icon={ArrowLeftIcon} secondary {...props} />
 );

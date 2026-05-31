@@ -5,3 +5,5 @@ interface ToString {
   <T extends string = string>(value: any | T, defaultValue: T): T;
 }
 export const toString = ((v: any, d: any = '') => (isNil(v) ? d : String(v))) as ToString;
+
+export const toStr = toString;

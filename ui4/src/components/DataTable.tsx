@@ -7,6 +7,7 @@ import { type CssStyle } from '@fluxio/core/html/cssTypes';
 import { toTrue } from '@fluxio/core/cast/toTrue';
 import { sortItems } from '@fluxio/core/array/sortItems';
 import { useCss } from '../hooks/useCss';
+import { toFloat } from '@fluxio/core/cast';
 
 export type DataTableColumnTitle = string | ComponentChildren;
 export type DataTableColumnValue<T, C> = (item: T, ctx: C, index: number) => ComponentChildren;
@@ -155,7 +156,8 @@ export const DataTable = (({
       if (col) {
         sortItems(list, (item) => {
           const value = col.val(item, ctx, 0);
-          if (typeof value === 'string' || typeof value === 'number') return value;
+          if (typeof value === 'string') return toFloat(value) || value;
+          if (typeof value === 'number') return value;
           return String(value);
         });
         if (!sortAsc) list.reverse();

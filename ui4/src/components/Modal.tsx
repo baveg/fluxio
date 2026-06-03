@@ -1,5 +1,5 @@
 import { render } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
 import { X, Trash2, Save } from 'lucide-preact';
 import { Button } from './Button';
 import { type Vector2 } from '@fluxio/core/types/Vector';
@@ -15,9 +15,10 @@ interface ModalInstanceProps {
   onCancel?: () => void;
   onSave?: () => void;
   onDelete?: () => void;
+  dialog: HTMLDialogElement;
 }
 
-const ModalAction = (props: DivProps) => <div {...props} class={cls('modal-action', props)} />;
+const ModalAction = (props: DivProps) => <div {...props} class={cls('modal-action', props.class || props.className)} />;
 
 const ModalInstance = ({
   size,
@@ -27,21 +28,16 @@ const ModalInstance = ({
   onCancel,
   onSave,
   onDelete,
+  dialog,
 }: ModalInstanceProps) => {
-  const [closing, setClosing] = useState(false);
-
   const close = () => {
-    setClosing(true);
-    setTimeout(onClose, 1000);
+    dialog.close();
+    onClose();
   };
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close();
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, []);
+    dialog.showModal();
+  }, [dialog]);
 
   const boxStyle = size && {
     width: size[0],
@@ -51,12 +47,12 @@ const ModalInstance = ({
   };
 
   return (
-    <div class={cls('modal transition-opacity duration-300', !closing && 'modal-open')}>
-      <div class={cls('modal-box', size && 'max-w-none')} style={boxStyle}>
-        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={close}>
+    <>
+      <div class={cls('modal-box bg-base-100 p-6 rounded-lg shadow-xl', size && 'max-w-none')} style={boxStyle}>
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10" onClick={close}>
           ✕
         </button>
-        {title && <h3 class="font-bold text-lg mb-4">{title}</h3>}
+        {title && <h3 class="font-bold text-lg mb-4 pr-8">{title}</h3>}
         {content}
         <ModalAction>
           {onDelete && (
@@ -101,8 +97,10 @@ const ModalInstance = ({
           )}
         </ModalAction>
       </div>
-      <div class="modal-backdrop" onClick={close} />
-    </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </>
   );
 };
 
@@ -118,12 +116,13 @@ export const openModal = (
   content?: any | ((close: () => void) => any),
   { size, onCancel, onSave, onDelete }: OpenModalOptions = {}
 ) => {
-  const container = document.createElement('div');
-  document.body.appendChild(container);
+  const dialog = document.createElement('dialog');
+  dialog.className = 'modal modal-bottom sm:modal-middle';
+  document.body.appendChild(dialog);
 
   const onClose = () => {
-    render(null, container);
-    container.remove();
+    render(null, dialog);
+    dialog.remove();
   };
 
   render(
@@ -135,7 +134,8 @@ export const openModal = (
       onCancel={onCancel}
       onSave={onSave}
       onDelete={onDelete}
+      dialog={dialog}
     />,
-    container
+    dialog
   );
 };

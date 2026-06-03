@@ -38,13 +38,13 @@ const valueToRaw = (value: any, type: InputType): string =>
 
 const rawToValue = (raw: string, type: InputType): any =>
   type === 'int' ? toInt(raw)
-  : type === 'float' ? toFloat(raw)
-  : type === 'checkbox' ?
-    raw === '' ?
-      null
-    : toBoolean(raw)
-  : type === 'json' ? jsonParse(raw)
-  : raw;
+    : type === 'float' ? toFloat(raw)
+      : type === 'checkbox' ?
+        raw === '' ?
+          null
+          : toBoolean(raw)
+        : type === 'json' ? jsonParse(raw)
+          : raw;
 
 const useFluxInput = (type: InputType, v$: Flux<any>, delay = 200) => {
   const raw$ = useMemo(() => flux(valueToRaw(v$.get(), type)), [v$]);
@@ -151,7 +151,7 @@ const SelectInput = ({
       onOpen();
       return;
     }
-    openModal(null, ({ onClose }: { onClose: () => void }) => (
+    openModal(placeholder || 'Sélectionner', ({ onClose }: { onClose: () => void }) => (
       <SelectContent
         value={value}
         items={items}
@@ -195,9 +195,9 @@ const TextInput = ({ error, icon: Icon, type, ...iProps }: InputProps) => {
       {Icon && <Icon class="h-4 opacity-50" />}
       {type === 'password' ?
         <PasswordInput {...iProps} />
-      : type === 'multiline' ?
-        <textarea class="textarea textarea-ghost" {...iProps} />
-      : <input class="grow" type={type || 'text'} {...iProps} />}
+        : type === 'multiline' ?
+          <textarea class="textarea textarea-ghost" {...iProps} />
+          : <input class="grow" type={type || 'text'} {...iProps} />}
     </label>
   );
 };
@@ -221,7 +221,7 @@ const FieldInput = (props: FieldInputProps) => {
     () =>
       onValue && effectiveDelay > 0 ?
         debounce((value: any) => onValue(value), effectiveDelay)
-      : onValue,
+        : onValue,
     [onValue, effectiveDelay]
   );
 
@@ -256,9 +256,9 @@ const FieldInput = (props: FieldInputProps) => {
       )}
       {type === 'select' ?
         <SelectInput {...inputProps} onValue={onValue} />
-      : type === 'checkbox' ?
-        <CheckboxInput {...inputProps} />
-      : <TextInput type={type} {...inputProps} />}
+        : type === 'checkbox' ?
+          <CheckboxInput {...inputProps} />
+          : <TextInput type={type} {...inputProps} />}
       {error && (
         <div class="label">
           <span class="label-text-alt text-error">{error}</span>

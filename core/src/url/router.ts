@@ -8,6 +8,7 @@ import type { Dictionary } from '../types/Dictionary';
 import { createUrl } from './createUrl';
 import { glb } from '../glb';
 import { onEvent } from '../html/onEvent';
+import { getUrlParams } from './getUrlParams';
 
 const log = logger('router');
 
@@ -24,6 +25,7 @@ export const extractUrlSegments = (url: string) =>
 export const url$ = flux('');
 export const baseUrl$ = url$.map(extractBaseUrl);
 export const urlSegments$ = url$.map(extractUrlSegments);
+export const urlParams$ = url$.map(url => getUrlParams(url));
 
 // Navigation
 

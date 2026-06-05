@@ -1,4 +1,5 @@
 import { isArray } from '../check/isArray';
+import { getKeys } from './getKeys';
 
 export const deepClone = <T>(obj: T): T => {
   if (typeof obj !== 'object' || obj === null) return obj;
@@ -10,7 +11,7 @@ export const deepClone = <T>(obj: T): T => {
     }
   } else {
     c = {};
-    const keys = Object.keys(obj);
+    const keys = getKeys(obj);
     for (let i = 0, l = keys.length; i < l; i++) {
       const key = keys[i];
       if (key) {

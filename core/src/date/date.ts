@@ -121,6 +121,9 @@ export const getWeekDay = (d: DateLike) => toDate(d).getDay();
 
 export const setWeekDay = (d: DateLike, v: number) => addDay((d = toDate(d)), v - getWeekDay(d));
 
+/** Get ISO week day (1=Monday, 7=Sunday) */
+export const getISODay = (d: DateLike) => getWeekDay(d) || 7;
+
 ///// MONTH /////
 
 export const getMonth = (d: DateLike) => toDate(d).getMonth();
@@ -358,6 +361,22 @@ export const endOfMonth = (d: DateLike): Date =>
 export const startOfYear = (d: DateLike): Date => new Date(getYear(d), 0, 1, 0, 0, 0, 0);
 
 export const endOfYear = (d: DateLike): Date => new Date(getYear(d), 11, 31, 23, 59, 59, 999);
+
+///// WEEK NUMBER /////
+
+/** Get ISO 8601 week number (1-53) */
+export const getISOWeek = (d: DateLike): number => {
+  const target = cloneDate(d);
+  const dayNr = getISODay(target) - 1; // 0=Monday, 6=Sunday
+  setMonthDay(target, getMonthDay(target) - dayNr + 3);
+  const firstThursday = getTime(target);
+  setMonth(target, 0);
+  setMonthDay(target, 1);
+  if (getWeekDay(target) !== 4) {
+    setMonthDay(target, 1 + ((4 - getWeekDay(target)) + 7) % 7);
+  }
+  return 1 + Math.ceil((firstThursday - getTime(target)) / (7 * DAY));
+};
 
 /** Format date as "2025-02-09T15:04:05.000Z" */
 export const toDateISO = (d: DateLike): string => toDate(d).toISOString();

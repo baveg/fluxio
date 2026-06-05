@@ -417,14 +417,14 @@ export const endOfYear = (d: DateLike): Date => new Date(getYear(d), 11, 31, 23,
 
 /** Get ISO 8601 week number (1-53) - getISOWeek('2025-02-09') -> 6 */
 export const getISOWeek = (d: DateLike): number => {
-  const target = cloneDate(d);
+  let target = cloneDate(d);
   const dayNr = getISODay(target) - 1; // 0=Monday, 6=Sunday
-  setMonthDay(target, getMonthDay(target) - dayNr + 3);
+  target = setMonthDay(target, getMonthDay(target) - dayNr + 3);
   const firstThursday = getTime(target);
-  setMonth(target, 0);
-  setMonthDay(target, 1);
+  target = setMonth(target, 0);
+  target = setMonthDay(target, 1);
   if (getWeekDay(target) !== 4) {
-    setMonthDay(target, 1 + ((4 - getWeekDay(target)) + 7) % 7);
+    target = setMonthDay(target, 1 + ((4 - getWeekDay(target)) + 7) % 7);
   }
   return 1 + Math.ceil((firstThursday - getTime(target)) / (7 * DAY));
 };

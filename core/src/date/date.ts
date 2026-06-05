@@ -122,7 +122,7 @@ export const setHours = (d: DateLike, v: number) => updateDate(d, (d) => d.setHo
 /** Get day of month (1-31) - getMonthDay('2025-02-09') -> 9 */
 export const getMonthDay = (d: DateLike) => toDate(d).getDate();
 
-/** Set day of month - if Date modifies in place, otherwise returns new Date */
+/** Set day of month - setMonthDay('2025-02-09', 15) -> 2025-02-15 */
 export const setMonthDay = (d: DateLike, v: number) => updateDate(d, (d) => d.setDate(v));
 
 ///// WEEK DAY /////
@@ -141,7 +141,7 @@ export const getISODay = (d: DateLike) => getWeekDay(d) || 7;
 /** Get month (0=January, 11=December) - getMonth('2025-02-09') -> 1 */
 export const getMonth = (d: DateLike) => toDate(d).getMonth();
 
-/** Set month (0=January, 11=December) - if Date modifies in place, otherwise returns new Date */
+/** Set month (0=January, 11=December) - setMonth('2025-02-09', 5) -> 2025-06-09 */
 export const setMonth = (d: DateLike, v: number) => updateDate(d, (d) => d.setMonth(v));
 
 ///// DAY SECONDS /////
@@ -378,9 +378,9 @@ export const isFuture = (d: DateLike): boolean => getTime(d) > serverTime();
 /** Clone a date - cloneDate('2025-02-09') -> Date object */
 export const cloneDate = (d: DateLike) => new Date(toDate(d));
 
-/** Update date - if already a Date modifies in place, otherwise creates a new Date */
+/** Update date - updateDate('2025-02-09', d => d.setDate(15)) -> 2025-02-15 */
 export const updateDate = (d: DateLike, update: (date: Date) => void) => {
-  const date = d instanceof Date ? d : toDate(d);
+  const date = toDate(d);
   update(date);
   return date;
 };

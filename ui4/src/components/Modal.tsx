@@ -109,12 +109,13 @@ export interface OpenModalOptions {
   onCancel?: () => void;
   onSave?: () => void;
   onDelete?: () => void;
+  onClose?: () => void;
 }
 
 export const openModal = (
   title?: string | null,
   content?: any | ((close: () => void) => any),
-  { size, onCancel, onSave, onDelete }: OpenModalOptions = {}
+  { size, onCancel, onSave, onDelete, onClose: _onClose }: OpenModalOptions = {}
 ) => {
   const dialog = document.createElement('dialog');
   dialog.className = 'modal modal-bottom sm:modal-middle';
@@ -123,6 +124,7 @@ export const openModal = (
   const onClose = () => {
     render(null, dialog);
     dialog.remove();
+    if (_onClose) _onClose();
   };
 
   render(

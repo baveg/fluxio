@@ -1,5 +1,6 @@
 import type { Dictionary } from '@fluxio/core/types/Dictionary';
 import type { Comp } from '.';
+import { getEntries } from '@fluxio/core/object/getEntries';
 
 export interface FlagSVGProps {
   class?: string;
@@ -86,7 +87,7 @@ export const getLangIcon = (iso?: string) => FLAGS[getLangIso(iso)] || FLAGS['']
 
 export const getLangTitle = (iso?: string) => LANGS[getLangIso(iso)] || LANGS[''];
 
-export const LANG_ENTRIES = Object.entries(LANGS).map(([iso, title]) => ({
+export const LANG_ENTRIES = getEntries(LANGS).map(([iso, title]) => ({
   iso,
   icon: getLangIcon(iso),
   title,

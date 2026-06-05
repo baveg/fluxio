@@ -18,6 +18,7 @@ import type {
 } from './cssTypes';
 import { isDefined } from '../check';
 import { toNumber } from '../cast';
+import { getValues } from '../object/getValues';
 
 let cssColors: Dictionary<string> = {};
 
@@ -454,7 +455,7 @@ export const setCss = (key: string, css?: StylesValue, order?: number, force?: b
 
     cssCache[key] = [el, css, order || cssCount++];
 
-    Object.values(cssCache)
+    getValues(cssCache)
       .sort((a, b) => a[2] - b[2])
       .map((p) => {
         document.head.appendChild(p[0]);

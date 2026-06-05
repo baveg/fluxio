@@ -4,6 +4,7 @@ import { flux, Flux, Pipe } from './Flux';
 import { isEmpty } from '../check/isEmpty';
 import { isNil } from '../check/isNil';
 import { merge } from '../object/merge';
+import { getValues } from '../object/getValues';
 
 export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
   constructor(source: Flux<Dictionary<T>>) {
@@ -70,7 +71,7 @@ export class FluxDictionary<T> extends Pipe<Dictionary<T>> {
   }
 
   getItems() {
-    return Object.values(this.get());
+    return getValues(this.get());
   }
 
   getItem$(id?: string) {

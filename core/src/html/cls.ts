@@ -1,3 +1,4 @@
+import { fromEntries } from '../object/fromEntries';
 import type { Dictionary } from '../types/Dictionary';
 
 export type ClsObj = { class?: any; className?: any; value?: any };
@@ -23,7 +24,7 @@ export type Cls = Dictionary<boolean | number | undefined | null>;
 
 export const getCls = (el: Element | null | undefined): Cls => {
   if (!el) return {};
-  return Object.fromEntries(el.className.split(' ').map((k) => [k, true]));
+  return fromEntries(el.className.split(' ').map((k) => [k, true]));
 };
 
 export const setCls = (el: Element | null | undefined, classes: Cls | string) => {

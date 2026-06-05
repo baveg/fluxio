@@ -2,7 +2,8 @@ import { glb } from '../glb';
 import { toError } from '../cast/toError';
 import { logger } from '../logger/Logger';
 import type { Dictionary } from '../types/Dictionary';
-import { singleton } from '../object';
+import { getKeys } from '../object/getKeys';
+import { singleton } from '../object/singleton';
 import { toVoid } from '../cast/toVoid';
 import { toString } from '../cast/toString';
 import { jsonParse, jsonStringify } from '../string/json';
@@ -30,7 +31,7 @@ export const ramStore = (name: string): InternalStorage => {
     rm: (key: string) => {
       delete dico[key];
     },
-    keys: () => Object.keys(dico),
+    keys: () => getKeys(dico),
     clear: () => {
       for (const k in dico) delete dico[k];
     },

@@ -1,9 +1,10 @@
+import { fromEntries } from '../object/fromEntries';
 import type { Dictionary } from '../types/Dictionary';
 
 export type Attributes = Dictionary<any>;
 
 export const getAttributes = (el: Element): Attributes =>
-  Object.fromEntries(el.getAttributeNames().map((name) => [name, el.getAttribute(name)]));
+  fromEntries(el.getAttributeNames().map((name) => [name, el.getAttribute(name)]));
 
 export const setAttributes = (el: Element, attributes: Attributes) => {
   for (const n in attributes) el.setAttribute(n, attributes[n]);

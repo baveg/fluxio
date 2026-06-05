@@ -8,6 +8,7 @@ import { toTrue } from '@fluxio/core/cast/toTrue';
 import { sortItems } from '@fluxio/core/array/sortItems';
 import { useCss } from '../hooks/useCss';
 import { toFloat } from '@fluxio/core/cast';
+import { getEntries } from '@fluxio/core/object/getEntries';
 
 export type DataTableColumnTitle = string | ComponentChildren;
 export type DataTableColumnValue<T, C> = (item: T, ctx: C, index: number) => ComponentChildren;
@@ -64,7 +65,7 @@ const defaultGetKey = (row: any, index: number) => row.id || index;
 const getComputedColumns = (cols: DataTableColumns<any, any>) => {
   const computedColumns: DataTableComputedColumn[] = [];
 
-  for (const [key, data] of Object.entries(cols)) {
+  for (const [key, data] of getEntries(cols)) {
     if (!data) continue;
 
     const col = (

@@ -1,3 +1,4 @@
+import { getValues } from '../object/getValues';
 import type { Dictionary } from '../types/Dictionary';
 import { isBoolean } from './isBoolean';
 import { isDictionary } from './isDictionary';
@@ -8,7 +9,7 @@ import { isString } from './isString';
 export const isDictionaryOf =
   <T>(is: (v: any) => v is T) =>
   (v: any): v is Dictionary<T> =>
-    isDictionary(v) && Object.values(v).every(is);
+    isDictionary(v) && getValues(v).every(is);
 
 export const isDictionaryOfNumber = isDictionaryOf(isNumber);
 

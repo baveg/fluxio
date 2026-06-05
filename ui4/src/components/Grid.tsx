@@ -5,6 +5,7 @@ import { Css } from '@fluxio/core/html/css';
 import { isArray } from '@fluxio/core/check/isArray';
 import { toTrue } from '@fluxio/core/cast/toTrue';
 import type { CssStyle } from '@fluxio/core/html/cssTypes';
+import { getEntries } from '@fluxio/core/object/getEntries';
 
 const c = Css('Grid', {
   '': {
@@ -93,7 +94,7 @@ const defaultGetKey = (row: any, index: number) => row.id || index;
 const getComputedCols = (cols: GridCols<any, any>) => {
   const computedCols: GridComputedCol[] = [];
 
-  for (const [key, data] of Object.entries(cols)) {
+  for (const [key, data] of getEntries(cols)) {
     if (!data) continue;
 
     const col = (
@@ -103,7 +104,7 @@ const getComputedCols = (cols: GridCols<any, any>) => {
           title: data[0],
           val: data[1],
         }
-      : {
+        : {
           ...data,
         }) as GridComputedCol;
 

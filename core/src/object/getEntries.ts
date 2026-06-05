@@ -1,3 +1,3 @@
-export const getEntries = <T extends Record<string | number | symbol, any>>(
-  obj: T
-): [keyof T, T[keyof T]][] => Object.entries(obj) as [keyof T, T[keyof T]][];
+import { Dictionary } from "../types";
+
+export const getEntries = <T>(obj: Dictionary<T>) => Object.entries(obj) as [string, T][];

@@ -2,12 +2,13 @@ import { removeAccents } from './removeAccents';
 import { lower } from './lower';
 import type { Item } from '../types';
 import { humanize } from './humanize';
+import { getValues } from '../object/getValues';
 
 export const cleanSearch = (search: string | null | undefined) =>
   search ? lower(removeAccents(search)).trim() : '';
 
 export const getSearchTags = (item: Item | null | undefined) =>
-  item ? cleanSearch(humanize(Object.values(item))) : '';
+  item ? cleanSearch(humanize(getValues(item))) : '';
 
 export const isSearched = (
   source: string | null | undefined,

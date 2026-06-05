@@ -122,7 +122,7 @@ export const setHours = (d: DateLike, v: number) => updateDate(d, (d) => d.setHo
 /** Get day of month (1-31) - getMonthDay('2025-02-09') -> 9 */
 export const getMonthDay = (d: DateLike) => toDate(d).getDate();
 
-/** Set day of month - setMonthDay('2025-02-09', 15) -> 2025-02-15 */
+/** Set day of month - if Date modifies in place, otherwise returns new Date */
 export const setMonthDay = (d: DateLike, v: number) => updateDate(d, (d) => d.setDate(v));
 
 ///// WEEK DAY /////
@@ -141,7 +141,7 @@ export const getISODay = (d: DateLike) => getWeekDay(d) || 7;
 /** Get month (0=January, 11=December) - getMonth('2025-02-09') -> 1 */
 export const getMonth = (d: DateLike) => toDate(d).getMonth();
 
-/** Set month (0=January, 11=December) - setMonth('2025-02-09', 5) -> 2025-06-09 */
+/** Set month (0=January, 11=December) - if Date modifies in place, otherwise returns new Date */
 export const setMonth = (d: DateLike, v: number) => updateDate(d, (d) => d.setMonth(v));
 
 ///// DAY SECONDS /////
@@ -378,11 +378,11 @@ export const isFuture = (d: DateLike): boolean => getTime(d) > serverTime();
 /** Clone a date - cloneDate('2025-02-09') -> Date object */
 export const cloneDate = (d: DateLike) => new Date(toDate(d));
 
-/** Update date immutably - updateDate('2025-02-09', d => d.setDate(15)) -> 2025-02-15 */
+/** Update date - if already a Date modifies in place, otherwise creates a new Date */
 export const updateDate = (d: DateLike, update: (date: Date) => void) => {
-  const r = new Date(toDate(d));
-  update(r);
-  return r;
+  const date = d instanceof Date ? d : toDate(d);
+  update(date);
+  return date;
 };
 
 /** Get start of day (00:00:00.000) - startOfDay('2025-02-09T15:30Z') -> 2025-02-09T00:00:00.000Z */
@@ -417,14 +417,14 @@ export const endOfYear = (d: DateLike): Date => new Date(getYear(d), 11, 31, 23,
 
 /** Get ISO 8601 week number (1-53) - getISOWeek('2025-02-09') -> 6 */
 export const getISOWeek = (d: DateLike): number => {
-  let target = cloneDate(d);
+  const target = cloneDate(d);
   const dayNr = getISODay(target) - 1; // 0=Monday, 6=Sunday
-  target = setMonthDay(target, getMonthDay(target) - dayNr + 3);
+  setMonthDay(target, getMonthDay(target) - dayNr + 3);
   const firstThursday = getTime(target);
-  target = setMonth(target, 0);
-  target = setMonthDay(target, 1);
+  setMonth(target, 0);
+  setMonthDay(target, 1);
   if (getWeekDay(target) !== 4) {
-    target = setMonthDay(target, 1 + ((4 - getWeekDay(target)) + 7) % 7);
+    setMonthDay(target, 1 + ((4 - getWeekDay(target)) + 7) % 7);
   }
   return 1 + Math.ceil((firstThursday - getTime(target)) / (7 * DAY));
 };

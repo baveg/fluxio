@@ -1,5 +1,6 @@
 import { isArray } from '../check/isArray';
 import { isObject } from '../check/isObject';
+import { getKeys } from './getKeys';
 
 export const deepReplaceKeys = (
   obj: any,
@@ -12,9 +13,9 @@ export const deepReplaceKeys = (
           v[i] = walk(v[i]);
         }
       } else {
-        for (const k of Object.keys(v)) {
+        for (const k of getKeys(v)) {
           const val = walk(v[k]);
-          const newKey = replace(k, val, v);
+          const newKey = replace(k as string, val, v);
           delete v[k];
           v[newKey] = val;
         }

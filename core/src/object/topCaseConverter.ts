@@ -1,9 +1,10 @@
 import { camelCase, kebabCase, pascalCase, snakeCase } from '../string/cases';
+import { getKeys } from './getKeys';
 
 export const topCaseConverter = (obj: any, converter: (k: string) => string): any => {
   if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return obj;
   const out: any = {};
-  for (const k of Object.keys(obj)) out[converter(k)] = obj[k];
+  for (const k of getKeys(obj)) out[converter(k as string)] = obj[k];
   return out;
 };
 

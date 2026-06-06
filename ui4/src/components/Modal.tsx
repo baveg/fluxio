@@ -100,6 +100,7 @@ const ModalBox = ({
 };
 
 export interface OpenModalOptions {
+  class?: string;
   size?: Vector2;
   onCancel?: () => void;
   onSave?: () => void;
@@ -110,10 +111,10 @@ export interface OpenModalOptions {
 export const openModal = (
   title?: string | null,
   content?: any | ((close: () => void) => any),
-  { size, onCancel, onSave, onDelete, onClose: _onClose }: OpenModalOptions = {}
+  { class: modalClass, size, onCancel, onSave, onDelete, onClose: _onClose }: OpenModalOptions = {}
 ) => {
   const dialog = document.createElement('dialog');
-  dialog.className = 'modal modal-bottom sm:modal-middle';
+  dialog.className = cls('modal', modalClass); // modal-bottom sm:modal-middle
   document.body.appendChild(dialog);
 
   const onClose = () => {

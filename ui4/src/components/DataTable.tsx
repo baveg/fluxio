@@ -9,6 +9,9 @@ import { sortItems } from '@fluxio/core/array/sortItems';
 import { useCss } from '../hooks/useCss';
 import { toFloat } from '@fluxio/core/cast';
 import { getEntries } from '@fluxio/core/object/getEntries';
+import { Button } from './Button';
+import { EditIcon, PointerIcon } from 'lucide-preact';
+import { Field } from './Field';
 
 export type DataTableColumnTitle = string | ComponentChildren;
 export type DataTableColumnValue<T, C> = (item: T, ctx: C, index: number) => ComponentChildren;
@@ -182,6 +185,7 @@ export const DataTable = (({
         <thead>
           <tr>
             {onSelect && <th style={{ width: '40px' }}></th>}
+            {onEdit && <th style={{ width: '40px' }}></th>}
             {visibleColumns.map((col) => (
               <th
                 key={col.key}
@@ -193,7 +197,6 @@ export const DataTable = (({
                 {sortKey === col.key && (sortAsc ? ' ▲' : ' ▼')}
               </th>
             ))}
-            {onEdit && <th style={{ width: '80px' }}>Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -206,12 +209,13 @@ export const DataTable = (({
                 class={cls('hover', mode && `row-${mode}`, trProps)}
               >
                 {onSelect && (
-                  <td>
-                    <input
-                      type="checkbox"
-                      class="checkbox checkbox-sm"
-                      onChange={() => onSelect(item)}
-                    />
+                  <td class="p-0">
+                    <Button icon={PointerIcon} ghost xs onClick={() => onSelect(item)} />
+                  </td>
+                )}
+                {onEdit && (
+                  <td class="p-0">
+                    <Button icon={EditIcon} ghost xs onClick={() => onEdit(item)} />
                   </td>
                 )}
                 {visibleColumns.map((col) => (
@@ -219,13 +223,6 @@ export const DataTable = (({
                     {col.val(item, ctx, index)}
                   </td>
                 ))}
-                {onEdit && (
-                  <td>
-                    <button class="btn btn-ghost btn-xs" onClick={() => onEdit(item)}>
-                      Éditer
-                    </button>
-                  </td>
-                )}
               </tr>
             );
           })}

@@ -114,11 +114,11 @@ export const openModal = (
   { class: modalClass, size, onCancel, onSave, onDelete, onClose: _onClose }: OpenModalOptions = {}
 ) => {
   const dialog = document.createElement('dialog');
-  dialog.className = cls('modal modal-init', modalClass);
+  dialog.className = cls('modal modal-init modal-close', modalClass);
   document.body.appendChild(dialog);
 
   const onClose = () => {
-    setCls(dialog, { 'modal-open': false, 'modal-close': true });
+    setCls(dialog, { 'modal-init': false, 'modal-close': true, 'modal-open': false });
 
     setTimeout(() => {
       render(null, dialog);
@@ -142,6 +142,6 @@ export const openModal = (
   );
 
   setTimeout(() => {
-    setCls(dialog, { 'modal-init': false, 'modal-open': true });
+    setCls(dialog, { 'modal-init': false, 'modal-close': false, 'modal-open': true });
   }, 100);
 };

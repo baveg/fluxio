@@ -5,7 +5,7 @@ import { Button } from './Button';
 import { type Vector2 } from '@fluxio/core/types/Vector';
 import { comp, type Comp } from '../utils/comp';
 import { type DivProps } from './types';
-import { cls } from '@fluxio/core/html/cls';
+import { cls, setCls } from '@fluxio/core/html/cls';
 
 interface ModalInstanceProps {
   size?: Vector2;
@@ -114,13 +114,17 @@ export const openModal = (
   { class: modalClass, size, onCancel, onSave, onDelete, onClose: _onClose }: OpenModalOptions = {}
 ) => {
   const dialog = document.createElement('dialog');
-  dialog.className = cls('modal', modalClass); // modal-bottom sm:modal-middle
+  dialog.className = cls('modal modal-init', modalClass);
   document.body.appendChild(dialog);
 
   const onClose = () => {
-    render(null, dialog);
-    dialog.remove();
-    if (_onClose) _onClose();
+    setCls(dialog, { 'modal-open': false, 'modal-close': true });
+
+    setTimeout(() => {
+      render(null, dialog);
+      dialog.remove();
+      if (_onClose) _onClose();
+    }, 500);
   };
 
   render(
@@ -136,4 +140,8 @@ export const openModal = (
     />,
     dialog
   );
+
+  setTimeout(() => {
+    setCls(dialog, { 'modal-init': false, 'modal-open': true });
+  }, 100);
 };

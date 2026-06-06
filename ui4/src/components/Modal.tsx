@@ -48,10 +48,10 @@ const ModalBox = ({
 
   return (
     <div class={cls('modal-box')} style={boxStyle}>
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={close}>
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 modal-x-btn" onClick={close}>
         ✕
       </button>
-      {title && <h3 class="text-lg font-bold">{title}</h3>}
+      {title && <h3 class="text-lg font-bold modal-title">{title}</h3>}
       {content}
       <ModalAction>
         {onDelete && (

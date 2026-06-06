@@ -18,6 +18,7 @@ export interface ButtonProps {
   ghost?: boolean;
   square?: boolean;
   submit?: boolean;
+  disabled?: boolean;
   class?: string;
   title?: string;
   tooltip?: Comp;
@@ -39,6 +40,7 @@ export const Button = ({
   xs,
   ghost,
   submit,
+  disabled,
   square,
   class: extraCls,
   title,
@@ -48,6 +50,7 @@ export const Button = ({
 }: ButtonProps) => (
   <button
     type={submit ? 'submit' : 'button'}
+    disabled={disabled}
     class={cls(
       'btn',
       circle && 'btn-circle',

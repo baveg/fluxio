@@ -1,5 +1,4 @@
 import { cls } from '@fluxio/core/html/cls';
-import type { ComponentType } from 'preact';
 import { useState } from 'preact/hooks';
 import { ChevronDownIcon, EyeIcon, EyeOffIcon } from 'lucide-preact';
 import { useMemo, useEffect } from 'preact/hooks';
@@ -76,7 +75,9 @@ interface InputProps {
   placeholder?: string;
   items?: [any, Comp][];
   error?: string;
-  icon?: ComponentType<{ class?: string }>;
+  icon?: Comp;
+  prefix?: Comp;
+  suffix?: Comp;
   onChange?: (e: Event) => void;
   onInput?: (e: Event) => void;
   onValue?: (value: any, e?: Event) => void;
@@ -98,14 +99,14 @@ const PasswordInput = (props: ElProps['input']) => {
   const Icon = showPassword ? EyeOffIcon : EyeIcon;
   return (
     <>
-      <input class="grow" {...props} type={showPassword ? 'text' : 'password'} />
       <button
         type="button"
-        class="opacity-50 hover:opacity-100 cursor-pointer"
+        class="h-4 opacity-50 hover:opacity-100 cursor-pointer"
         onClick={() => setShowPassword((v) => !v)}
       >
         <Icon class="h-4" />
       </button>
+      <input class="grow" {...props} type={showPassword ? 'text' : 'password'} />
     </>
   );
 };
@@ -141,7 +142,9 @@ const SelectContent = ({
 
 const SelectInput = ({
   error,
-  icon: Icon,
+  icon,
+  prefix,
+  suffix,
   placeholder,
   items,
   value,
@@ -181,8 +184,10 @@ const SelectInput = ({
       )}
       onClick={handle}
     >
-      {Icon && <Icon class="h-4 opacity-50" />}
+      {icon && comp(icon, { class: "h-4 opacity-50" })}
+      {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
       <span class="grow">{item[1] || <span class="opacity-50">{placeholder}</span>}</span>
+      {suffix && <span class="opacity-50">{comp(suffix)}</span>}
       <ChevronDownIcon class={cls(
         'w-5 h-5 opacity-50 shrink-0 text-grey-500 transition-transform',
         isOpen ? 'rotate-180' : ''
@@ -191,24 +196,28 @@ const SelectInput = ({
   );
 };
 
-const CheckboxInput = ({ error, icon: Icon, type, value, ...iProps }: InputProps) => {
+const CheckboxInput = ({ error, icon, prefix, suffix, type, value, ...iProps }: InputProps) => {
   return (
     <label class={cls('cursor-pointer label', error && 'input-error')}>
-      {Icon && <Icon class="h-4 opacity-50" />}
+      {icon && comp(icon, { class: "h-4 opacity-50" })}
+      {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
       <input type="checkbox" class="checkbox checkbox-info" checked={!!value} {...iProps} />
+      {suffix && <span class="opacity-50">{comp(suffix)}</span>}
     </label>
   );
 };
 
-const TextInput = ({ error, icon: Icon, type, ...iProps }: InputProps) => {
+const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps) => {
   return (
     <label class={cls('input input-bordered flex items-center gap-2', error && 'input-error')}>
-      {Icon && <Icon class="h-4 opacity-50" />}
+      {icon && comp(icon, { class: "h-4 opacity-50" })}
+      {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
       {type === 'password' ?
         <PasswordInput {...iProps} />
         : type === 'multiline' ?
           <textarea class="textarea textarea-ghost" {...iProps} />
           : <input class="grow" type={type || 'text'} {...iProps} />}
+      {suffix && <span class="opacity-50">{comp(suffix)}</span>}
     </label>
   );
 };

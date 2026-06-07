@@ -14,6 +14,7 @@ import { type ElProps } from './types';
 import { debounce } from '@fluxio/core/async/debounce';
 import { toVoid } from '@fluxio/core/cast/toVoid';
 import { getInputValue } from '@fluxio/core/html/getInputValue';
+import { Button } from './Button';
 
 export type InputType =
   | 'select'
@@ -121,22 +122,13 @@ const SelectContent = ({
   onPick: (value: any) => void;
 }) => {
   return (
-    <ul class="menu absolute left-0 right-0 top-full mt-1 z-40 bg-white border border-grey-300 rounded-md shadow-lg max-h-72 overflow-auto py-1">
+    <div>
       {items?.map(([v, lbl]) => (
-        <li>
-          <button
-            type="button"
-            class={cls(
-              'flex items-center gap-2',
-              'w-full text-left px-4 py-2 text-blue-950 transition-colors hover:bg-secondary-300',
-              v === value && 'active bg-secondary-300 font-semibold')}
-            onClick={() => onPick(v)}
-          >
-            {comp(lbl)}
-          </button>
-        </li>
+        <Button secondary={v === value} onClick={() => onPick(v)}>
+          {comp(lbl)}
+        </Button>
       ))}
-    </ul>
+    </div>
   );
 };
 

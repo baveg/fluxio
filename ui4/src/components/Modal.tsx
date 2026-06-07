@@ -39,12 +39,7 @@ const ModalBox = ({
     dialog.showModal();
   }, [dialog]);
 
-  const boxStyle = size && {
-    width: size[0],
-    height: size[1],
-    maxWidth: '90vw',
-    maxHeight: '90vh',
-  };
+  const boxStyle = size ? { width: size[0], height: size[1] } : {};
 
   return (
     <div class={cls('modal-box')} style={boxStyle}>

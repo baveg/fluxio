@@ -24,6 +24,7 @@ export interface ButtonProps {
   tooltip?: Comp;
   onClick?: (e: Event) => void;
   children?: any;
+  href?: string;
 }
 
 export const Button = ({
@@ -47,31 +48,55 @@ export const Button = ({
   tooltip,
   onClick,
   children,
-}: ButtonProps) => (
-  <button
-    type={submit ? 'submit' : 'button'}
-    disabled={disabled}
-    class={cls(
-      'btn',
-      circle && 'btn-circle',
-      outline && 'btn-outline',
-      primary && 'btn-primary',
-      secondary && 'btn-secondary',
-      selected && 'btn-selected',
-      error && 'btn-error',
-      warn && 'btn-warn',
-      success && 'btn-success',
-      sm && 'btn-sm',
-      xs && 'btn-xs',
-      ghost && 'btn-ghost',
-      ((Icon && !(title || children)) || square) && 'btn-square',
-      extraCls
-    )}
-    {...tooltipProps(tooltip)}
-    onClick={onClick}
-  >
-    {Icon && <Icon size={xs ? 14 : 24} />}
-    {title}
-    {children}
-  </button>
-);
+  href,
+}: ButtonProps) => {
+  const className = cls(
+    'btn',
+    circle && 'btn-circle',
+    outline && 'btn-outline',
+    primary && 'btn-primary',
+    secondary && 'btn-secondary',
+    selected && 'btn-selected',
+    error && 'btn-error',
+    warn && 'btn-warn',
+    success && 'btn-success',
+    sm && 'btn-sm',
+    xs && 'btn-xs',
+    ghost && 'btn-ghost',
+    ((Icon && !(title || children)) || square) && 'btn-square',
+    extraCls
+  );
+
+  const content = (
+    <>
+      {Icon && <Icon size={xs ? 14 : 24} />}
+      {title}
+      {children}
+    </>
+  );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        class={className}
+        {...tooltipProps(tooltip)}
+        onClick={onClick}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <button
+      type={submit ? 'submit' : 'button'}
+      disabled={disabled}
+      class={className}
+      {...tooltipProps(tooltip)}
+      onClick={onClick}
+    >
+      {content}
+    </button>
+  );
+};

@@ -1,11 +1,11 @@
-import { render } from 'preact';
 import { useEffect } from 'preact/hooks';
 import { X, Trash2, Save } from 'lucide-preact';
 import { Button } from './Button';
 import { type Vector2 } from '@fluxio/core/types/Vector';
 import { comp, type Comp } from '../utils/comp';
 import { type DivProps } from './types';
-import { cls, setCls } from '@fluxio/core/html/cls';
+import { cls } from '@fluxio/core/html/cls';
+import { openPortal } from './Portal';
 
 interface ModalInstanceProps {
   size?: Vector2;
@@ -108,35 +108,23 @@ export const openModal = (
   content?: any | ((close: () => void) => any),
   { class: modalClass, size, onCancel, onSave, onDelete, onClose: _onClose }: OpenModalOptions = {}
 ) => {
-  const dialog = document.createElement('dialog');
-  dialog.className = cls('modal modal-init modal-close', modalClass);
-  document.body.appendChild(dialog);
-
-  const onClose = () => {
-    setCls(dialog, { 'modal-init': false, 'modal-close': true, 'modal-open': false });
-
-    setTimeout(() => {
-      render(null, dialog);
-      dialog.remove();
-      if (_onClose) _onClose();
-    }, 500);
-  };
-
-  render(
-    <ModalBox
-      size={size}
-      title={title}
-      content={comp(content, { onClose })}
-      onClose={onClose}
-      onCancel={onCancel}
-      onSave={onSave}
-      onDelete={onDelete}
-      dialog={dialog}
-    />,
-    dialog
+  return openPortal(
+    ({ onClose, el }) => (
+      <ModalBox
+        size={size}
+        title={title}
+        content={comp(content, { onClose })}
+        onClose={onClose}
+        onCancel={onCancel}
+        onSave={onSave}
+        onDelete={onDelete}
+        dialog={el as HTMLDialogElement}
+      />
+    ),
+    {
+      tag: 'dialog',
+      className: cls('modal', modalClass),
+      onClose: _onClose,
+    }
   );
-
-  setTimeout(() => {
-    setCls(dialog, { 'modal-init': false, 'modal-close': false, 'modal-open': true });
-  }, 100);
 };

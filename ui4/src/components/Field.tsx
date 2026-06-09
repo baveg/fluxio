@@ -1,8 +1,8 @@
 import { cls } from '@fluxio/core/html/cls';
-import { useState } from 'preact/hooks';
+import { useState, useRef } from 'preact/hooks';
 import { ChevronDownIcon, EyeIcon, EyeOffIcon } from 'lucide-preact';
 import { useMemo, useEffect } from 'preact/hooks';
-import { openModal } from './Modal';
+import { openPortal } from './Portal';
 import { jsonParse, jsonStringify } from '@fluxio/core/string/json';
 import { toFloat, toInt } from '@fluxio/core/cast/toNumber';
 import { toString } from '@fluxio/core/cast/toString';
@@ -145,36 +145,98 @@ const SelectInput = ({
 }: InputProps) => {
   const item = items?.find(([v]) => v === value) || [null, ''];
   const [isOpen, setIsOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
+  const portalRef = useRef<{ onClose: () => void } | null>(null);
 
-  const handle = () => {
-    setIsOpen(true);
+  const handleToggle = () => {
     if (onOpen) {
       onOpen();
       return;
     }
-    openModal(placeholder || 'Sélectionner', ({ onClose }: { onClose: () => void }) => (
-      <SelectContent
-        value={value}
-        items={items}
-        onPick={(v) => {
-          console.debug('onPick', v);
-          onValue?.(v);
-          onClose();
-        }}
-      />
-    ), {
-      onClose: () => setIsOpen(false),
-    });
+
+    if (!isOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      });
+      setIsOpen(true);
+    } else if (isOpen && portalRef.current) {
+      portalRef.current.onClose();
+      portalRef.current = null;
+    }
   };
+
+  const handlePick = (v: any) => {
+    onValue?.(v);
+    if (portalRef.current) {
+      portalRef.current.onClose();
+      portalRef.current = null;
+    }
+  };
+
+  // Ouvrir le dropdown avec openPortal
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const portal = openPortal(
+      ({ onClose, el }) => {
+        const handleClickOutside = (e: MouseEvent) => {
+          if (buttonRef.current && !buttonRef.current.contains(e.target as Node) && !el.contains(e.target as Node)) {
+            onClose();
+          }
+        };
+
+        setTimeout(() => {
+          document.addEventListener('mousedown', handleClickOutside);
+        }, 0);
+
+        return (
+          <div
+            class="fixed z-50 bg-base-100 border border-base-300 rounded-lg shadow-lg p-2 max-h-80 overflow-auto"
+            style={{
+              top: `${dropdownPosition.top + 4}px`,
+              left: `${dropdownPosition.left}px`,
+              width: `${dropdownPosition.width}px`,
+            }}
+          >
+            <SelectContent
+              value={value}
+              items={items}
+              onPick={handlePick}
+            />
+          </div>
+        );
+      },
+      {
+        onClose: () => {
+          setIsOpen(false);
+          portalRef.current = null;
+        },
+      }
+    );
+
+    portalRef.current = portal;
+
+    return () => {
+      if (portalRef.current) {
+        portalRef.current.onClose();
+        portalRef.current = null;
+      }
+    };
+  }, [isOpen, dropdownPosition, value, items]);
 
   return (
     <button
+      ref={buttonRef}
       type="button"
       class={cls(
         'input input-bordered flex items-center justify-between gap-2 cursor-pointer text-left w-full',
         error && 'input-error'
       )}
-      onClick={handle}
+      onClick={handleToggle}
     >
       {icon && comp(icon, { class: "h-4 opacity-50" })}
       {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}

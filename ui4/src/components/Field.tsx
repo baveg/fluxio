@@ -15,6 +15,7 @@ import { debounce } from '@fluxio/core/async/debounce';
 import { toVoid } from '@fluxio/core/cast/toVoid';
 import { getInputValue } from '@fluxio/core/html/getInputValue';
 import { Button } from './Button';
+import { onEvent } from '@fluxio/core/html/onEvent';
 
 export type InputType =
   | 'select'
@@ -127,7 +128,10 @@ const SelectContent = ({
         <div class="relative">
           <Button
             class={cls('SelectBtn', v === value && 'SelectBtn-active')}
-            onClick={() => onPick(v)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onPick(v);
+            }}
           >
             {comp(lbl)}
           </Button>
@@ -189,36 +193,25 @@ const SelectInput = ({
     setIsOpen(false);
   };
 
-  // Ouvrir le dropdown avec portal
+  useEffect(() => isOpen ? onEvent(0, 'mousedown', () => {
+    setIsOpen(false);
+  }) : undefined, [isOpen]);
+
   useEffect(() => isOpen ? portal(
-    ({ onClose, el }) => {
-      const handleClickOutside = (e: MouseEvent) => {
-        if (buttonRef.current && !buttonRef.current.contains(e.target as Node) && !el.contains(e.target as Node)) {
-          onClose();
-        }
-      };
-
-      setTimeout(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-      }, 0);
-
-      return (
-        <div
-          class="fixed z-50 bg-base-100 border border-base-300 rounded-lg shadow-lg p-2 max-h-80 overflow-auto"
-          style={{
-            top: `${dropdownPosition.top + 4}px`,
-            left: `${dropdownPosition.left}px`,
-            width: `${dropdownPosition.width}px`,
-          }}
-        >
-          <SelectContent
-            value={value}
-            items={items}
-            onPick={handlePick}
-          />
-        </div>
-      );
-    },
+    <div
+      class="fixed z-50 bg-base-100 border border-base-300 rounded-lg shadow-lg p-2 max-h-80 overflow-auto"
+      style={{
+        top: `${dropdownPosition.top + 4}px`,
+        left: `${dropdownPosition.left}px`,
+        width: `${dropdownPosition.width}px`,
+      }}
+    >
+      <SelectContent
+        value={value}
+        items={items}
+        onPick={handlePick}
+      />
+    </div>,
     {
       onClose: () => setIsOpen(false),
     }

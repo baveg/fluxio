@@ -124,7 +124,10 @@ const SelectContent = ({
   return (
     <div>
       {items?.map(([v, lbl]) => (
-        <Button secondary={v === value} onClick={() => onPick(v)}>
+        <Button
+          class={cls('SelectBtn', v === value && 'SelectBtn-active')}
+          onClick={() => onPick(v)}
+        >
           {comp(lbl)}
         </Button>
       ))}

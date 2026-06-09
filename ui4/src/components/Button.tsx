@@ -16,6 +16,7 @@ export interface ButtonProps {
   sm?: boolean;
   xs?: boolean;
   ghost?: boolean;
+  text?: boolean;
   square?: boolean;
   submit?: boolean;
   disabled?: boolean;
@@ -40,6 +41,7 @@ export const Button = ({
   sm,
   xs,
   ghost,
+  text,
   submit,
   disabled,
   square,
@@ -63,6 +65,7 @@ export const Button = ({
     sm && 'btn-sm',
     xs && 'btn-xs',
     ghost && 'btn-ghost',
+    text && 'btn-text',
     ((Icon && !(title || children)) || square) && 'btn-square',
     extraCls
   );

@@ -18,6 +18,7 @@ export * from './PanZoom';
 export * from './Portal';
 export * from './Progress';
 export * from './TabPanel';
+export * from './Toast';
 export * from './Tooltip';
 export * from './Tr';
 export * from './types';

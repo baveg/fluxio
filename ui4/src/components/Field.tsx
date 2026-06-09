@@ -1,8 +1,8 @@
 import { cls } from '@fluxio/core/html/cls';
 import { useState, useRef } from 'preact/hooks';
-import { ChevronDownIcon, EyeIcon, EyeOffIcon } from 'lucide-preact';
+import { ChevronDownIcon, XIcon, EyeIcon, EyeOffIcon } from 'lucide-preact';
 import { useMemo, useEffect } from 'preact/hooks';
-import { openPortal } from './Portal';
+import { portal } from './Portal';
 import { jsonParse, jsonStringify } from '@fluxio/core/string/json';
 import { toFloat, toInt } from '@fluxio/core/cast/toNumber';
 import { toString } from '@fluxio/core/cast/toString';
@@ -124,12 +124,26 @@ const SelectContent = ({
   return (
     <div>
       {items?.map(([v, lbl]) => (
-        <Button
-          class={cls('SelectBtn', v === value && 'SelectBtn-active')}
-          onClick={() => onPick(v)}
-        >
-          {comp(lbl)}
-        </Button>
+        <div class="relative">
+          <Button
+            class={cls('SelectBtn', v === value && 'SelectBtn-active')}
+            onClick={() => onPick(v)}
+          >
+            {comp(lbl)}
+          </Button>
+          {v === value && (
+            <Button
+              class="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-red-100 transition-colors"
+              ghost
+              circle
+              onClick={(e) => {
+                e.stopPropagation();
+                onPick(null);
+              }}
+              icon={XIcon}
+            />
+          )}
+        </div>
       ))}
     </div>
   );
@@ -150,7 +164,6 @@ const SelectInput = ({
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
-  const portalRef = useRef<{ onClose: () => void } | null>(null);
 
   const handleToggle = () => {
     if (onOpen) {
@@ -166,70 +179,50 @@ const SelectInput = ({
         width: rect.width,
       });
       setIsOpen(true);
-    } else if (isOpen && portalRef.current) {
-      portalRef.current.onClose();
-      portalRef.current = null;
+    } else {
+      setIsOpen(false);
     }
   };
 
   const handlePick = (v: any) => {
     onValue?.(v);
-    if (portalRef.current) {
-      portalRef.current.onClose();
-      portalRef.current = null;
-    }
+    setIsOpen(false);
   };
 
-  // Ouvrir le dropdown avec openPortal
-  useEffect(() => {
-    if (!isOpen) return;
+  // Ouvrir le dropdown avec portal
+  useEffect(() => isOpen ? portal(
+    ({ onClose, el }) => {
+      const handleClickOutside = (e: MouseEvent) => {
+        if (buttonRef.current && !buttonRef.current.contains(e.target as Node) && !el.contains(e.target as Node)) {
+          onClose();
+        }
+      };
 
-    const portal = openPortal(
-      ({ onClose, el }) => {
-        const handleClickOutside = (e: MouseEvent) => {
-          if (buttonRef.current && !buttonRef.current.contains(e.target as Node) && !el.contains(e.target as Node)) {
-            onClose();
-          }
-        };
+      setTimeout(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+      }, 0);
 
-        setTimeout(() => {
-          document.addEventListener('mousedown', handleClickOutside);
-        }, 0);
-
-        return (
-          <div
-            class="fixed z-50 bg-base-100 border border-base-300 rounded-lg shadow-lg p-2 max-h-80 overflow-auto"
-            style={{
-              top: `${dropdownPosition.top + 4}px`,
-              left: `${dropdownPosition.left}px`,
-              width: `${dropdownPosition.width}px`,
-            }}
-          >
-            <SelectContent
-              value={value}
-              items={items}
-              onPick={handlePick}
-            />
-          </div>
-        );
-      },
-      {
-        onClose: () => {
-          setIsOpen(false);
-          portalRef.current = null;
-        },
-      }
-    );
-
-    portalRef.current = portal;
-
-    return () => {
-      if (portalRef.current) {
-        portalRef.current.onClose();
-        portalRef.current = null;
-      }
-    };
-  }, [isOpen, dropdownPosition, value, items]);
+      return (
+        <div
+          class="fixed z-50 bg-base-100 border border-base-300 rounded-lg shadow-lg p-2 max-h-80 overflow-auto"
+          style={{
+            top: `${dropdownPosition.top + 4}px`,
+            left: `${dropdownPosition.left}px`,
+            width: `${dropdownPosition.width}px`,
+          }}
+        >
+          <SelectContent
+            value={value}
+            items={items}
+            onPick={handlePick}
+          />
+        </div>
+      );
+    },
+    {
+      onClose: () => setIsOpen(false),
+    }
+  ) : undefined, [isOpen]);
 
   return (
     <button

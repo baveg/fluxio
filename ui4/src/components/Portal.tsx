@@ -13,7 +13,7 @@ export interface PortalOptions extends ElOptions {
   onClose?: () => void;
 }
 
-export const portal = (content: Comp, options?: PortalOptions) => (
+export const portal = (content: Comp<{ onClose: () => void; el: HTMLElement }>, options?: PortalOptions) => (
   openPortal(content, options).onClose
 );
 

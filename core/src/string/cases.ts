@@ -1,4 +1,5 @@
 import { firstLower } from './lower';
+import { removeAccents } from './removeAccents';
 import { firstUpper } from './upper';
 
 /**
@@ -18,7 +19,7 @@ export const pascalToKebabCase = (v: string): string =>
  * getWords('hello_world') // ['hello', 'world']
  */
 export const getWords = (v: string) =>
-  v
+  removeAccents(v)
     .replace(/[a-z0-9][A-Z]/g, (s) => s[0] + ' ' + (s[1] || ''))
     .replace(/[^a-z0-9A-Z$]+/g, () => ' ')
     .trim()

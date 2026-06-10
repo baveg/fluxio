@@ -50,7 +50,7 @@ export const camelCase = (v: any): string => firstLower(pascalCase(v));
  * kebabCase('HelloWorld') // 'hello-world'
  * kebabCase('hello_world') // 'hello-world'
  */
-export const kebabCase = (v: string): string => pascalToKebabCase(pascalCase(v));
+export const kebabCase = (v: string): string => getWords(v).join('-');
 
 /**
  * Converts to snake_case

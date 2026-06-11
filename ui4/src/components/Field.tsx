@@ -259,7 +259,7 @@ const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps)
         <PasswordInput {...iProps} />
         : type === 'multiline' ?
           <textarea class="textarea textarea-ghost" {...iProps} />
-          : <input class="grow" type={type || 'text'} {...iProps} />}
+          : <input class="grow min-w-0" type={type || 'text'} {...iProps} />}
       {suffix && <span class="opacity-50">{comp(suffix)}</span>}
     </label>
   );

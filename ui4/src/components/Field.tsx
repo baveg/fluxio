@@ -1,8 +1,7 @@
 import { cls } from '@fluxio/core/html/cls';
-import { useState, useRef } from 'preact/hooks';
-import { ChevronDownIcon, XIcon, EyeIcon, EyeOffIcon } from 'lucide-preact';
+import { useState } from 'preact/hooks';
+import { EyeIcon, EyeOffIcon } from 'lucide-preact';
 import { useMemo, useEffect } from 'preact/hooks';
-import { portal } from './Portal';
 import { jsonParse, jsonStringify } from '@fluxio/core/string/json';
 import { toFloat, toInt } from '@fluxio/core/cast/toNumber';
 import { toString } from '@fluxio/core/cast/toString';
@@ -14,8 +13,7 @@ import { type ElProps } from './types';
 import { debounce } from '@fluxio/core/async/debounce';
 import { toVoid } from '@fluxio/core/cast/toVoid';
 import { getInputValue } from '@fluxio/core/html/getInputValue';
-import { Button } from './Button';
-import { onEvent } from '@fluxio/core/html/onEvent';
+import { SelectInput } from './SelectInput';
 
 export type InputType =
   | 'select'
@@ -110,132 +108,6 @@ const PasswordInput = (props: ElProps['input']) => {
       </button>
       <input class="grow" {...props} type={showPassword ? 'text' : 'password'} />
     </>
-  );
-};
-
-const SelectContent = ({
-  value,
-  items,
-  onPick,
-}: {
-  value: any;
-  items?: [any, Comp][];
-  onPick: (value: any) => void;
-}) => {
-  return (
-    <div>
-      {items?.map(([v, lbl]) => (
-        <div class="relative">
-          <Button
-            class={cls('SelectBtn', v === value && 'SelectBtn-active')}
-            onClick={(e) => {
-              e.stopPropagation();
-              onPick(v);
-            }}
-          >
-            {comp(lbl)}
-          </Button>
-          {v === value && (
-            <Button
-              class="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-red-100 transition-colors"
-              ghost
-              circle
-              onClick={(e) => {
-                e.stopPropagation();
-                onPick(null);
-              }}
-              icon={XIcon}
-            />
-          )}
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const SelectInput = ({
-  error,
-  icon,
-  prefix,
-  suffix,
-  placeholder,
-  items,
-  value,
-  onValue,
-  onOpen,
-}: InputProps) => {
-  const item = items?.find(([v]) => v === value) || [null, ''];
-  const [isOpen, setIsOpen] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
-
-  const handleToggle = () => {
-    if (onOpen) {
-      onOpen();
-      return;
-    }
-
-    if (!isOpen && buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
-        width: rect.width,
-      });
-      setIsOpen(true);
-    } else {
-      setIsOpen(false);
-    }
-  };
-
-  const handlePick = (v: any) => {
-    onValue?.(v);
-    setIsOpen(false);
-  };
-
-  useEffect(() => isOpen ? onEvent(0, 'mousedown', () => {
-    setIsOpen(false);
-  }) : undefined, [isOpen]);
-
-  useEffect(() => isOpen ? portal(
-    <div
-      class="fixed z-50 bg-base-100 border border-base-300 rounded-lg shadow-lg p-2 max-h-80 overflow-auto"
-      style={{
-        top: `${dropdownPosition.top + 4}px`,
-        left: `${dropdownPosition.left}px`,
-        width: `${dropdownPosition.width}px`,
-      }}
-    >
-      <SelectContent
-        value={value}
-        items={items}
-        onPick={handlePick}
-      />
-    </div>,
-    {
-      onClose: () => setIsOpen(false),
-    }
-  ) : undefined, [isOpen]);
-
-  return (
-    <button
-      ref={buttonRef}
-      type="button"
-      class={cls(
-        'input input-bordered flex items-center justify-between gap-2 cursor-pointer text-left w-full',
-        error && 'input-error'
-      )}
-      onClick={handleToggle}
-    >
-      {icon && comp(icon, { class: "h-4 opacity-50" })}
-      {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
-      <span class="grow">{item[1] || <span class="opacity-50">{placeholder}</span>}</span>
-      {suffix && <span class="opacity-50">{comp(suffix)}</span>}
-      <ChevronDownIcon class={cls(
-        'w-5 h-5 opacity-50 shrink-0 text-grey-500 transition-transform',
-        isOpen ? 'rotate-180' : ''
-      )} />
-    </button>
   );
 };
 

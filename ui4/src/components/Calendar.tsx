@@ -44,7 +44,7 @@ export const Calendar = ({}: CalendarProps) => {
   const daysCount = floor((getTime(end) - getTime(start)) / DAY);
 
   console.debug('Calendar', { day, month, year, start, end, monthDaysCount, daysCount });
-  
+
   return (
     <div class="Calendar w-full flex flex-row flex-wrap">
       <Field

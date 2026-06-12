@@ -424,7 +424,7 @@ export const getISOWeek = (d: DateLike): number => {
   setMonth(target, 0);
   setMonthDay(target, 1);
   if (getWeekDay(target) !== 4) {
-    setMonthDay(target, 1 + ((4 - getWeekDay(target)) + 7) % 7);
+    setMonthDay(target, 1 + ((4 - getWeekDay(target) + 7) % 7));
   }
   return 1 + Math.ceil((firstThursday - getTime(target)) / (7 * DAY));
 };

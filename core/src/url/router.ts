@@ -25,7 +25,7 @@ export const extractUrlSegments = (url: string) =>
 export const url$ = flux('');
 export const baseUrl$ = url$.map(extractBaseUrl);
 export const urlSegments$ = url$.map(extractUrlSegments);
-export const urlParams$ = url$.map(url => getUrlParams(url));
+export const urlParams$ = url$.map((url) => getUrlParams(url));
 
 // Navigation
 

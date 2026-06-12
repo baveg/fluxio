@@ -1,4 +1,4 @@
-import { type ElProps } from "./types";
+import { type ElProps } from './types';
 
 type _FormProps = ElProps['form'];
 

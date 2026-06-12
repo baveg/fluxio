@@ -20,10 +20,14 @@ interface Uniq {
  */
 export const uniq: Uniq = <T, U>(a: T[], map?: (v: T) => U): U[] => {
   const o: Dictionary<any> = {};
-  let v: T|U;
+  let v: T | U;
   for (v of a) {
     if (map) v = map(v);
-    o[isString(v) ? v : isNumber(v) ? String(v) : jsonStringify(v)] = v;
+    o[
+      isString(v) ? v
+      : isNumber(v) ? String(v)
+      : jsonStringify(v)
+    ] = v;
   }
   return getValues(o);
 };

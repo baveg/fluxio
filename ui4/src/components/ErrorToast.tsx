@@ -1,7 +1,7 @@
-import { toError } from "@fluxio/core/cast/toError";
-import { flux } from "@fluxio/core/flux/Flux";
-import { logger } from "@fluxio/core/logger/Logger";
-import { useFlux } from "../hooks/useFlux";
+import { toError } from '@fluxio/core/cast/toError';
+import { flux } from '@fluxio/core/flux/Flux';
+import { logger } from '@fluxio/core/logger/Logger';
+import { useFlux } from '../hooks/useFlux';
 
 const log = logger('error');
 

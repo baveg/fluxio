@@ -55,23 +55,24 @@ export const onViewportClick = (listener: (e: any) => any, options?: OnEventOpti
     u1();
     u2();
   };
-}
+};
 
-export const onClickOutside = (el: HTMLElement|null, listener: (e: any) => any, options?: OnEventOptions) => (
+export const onClickOutside = (
+  el: HTMLElement | null,
+  listener: (e: any) => any,
+  options?: OnEventOptions
+) =>
   onViewportClick((e) => {
     if (el && !el.contains(e.target)) {
       listener(e);
     }
-  }, options)
-);
+  }, options);
 
-export const onResize = (listener: (e: any) => any, options?: OnEventOptions) => (
-  onEvent(0, 'resize', listener, options)
-);
+export const onResize = (listener: (e: any) => any, options?: OnEventOptions) =>
+  onEvent(0, 'resize', listener, options);
 
-export const onScroll = (listener: (e: any) => any, options?: OnEventOptions) => (
-  onEvent(0, 'scroll', listener, { passive: true, ...options })
-);
+export const onScroll = (listener: (e: any) => any, options?: OnEventOptions) =>
+  onEvent(0, 'scroll', listener, { passive: true, ...options });
 
 export const onInterval = (callback: () => void, ms: number): (() => void) => {
   const timer = setInterval(callback, ms);
@@ -80,9 +81,9 @@ export const onInterval = (callback: () => void, ms: number): (() => void) => {
 
 export const onElMove = (
   el: HTMLElement | null,
-  listener: (xywh: Vector4|undefined) => any,
+  listener: (xywh: Vector4 | undefined) => any,
   ms: number = 100,
-  options?: OnEventOptions,
+  options?: OnEventOptions
 ) => {
   if (!el) return () => {};
 

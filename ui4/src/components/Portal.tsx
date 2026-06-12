@@ -13,9 +13,10 @@ export interface PortalOptions extends ElOptions {
   onClose?: () => void;
 }
 
-export const portal = (content: Comp<{ onClose: () => void; el: HTMLElement }>, options?: PortalOptions) => (
-  openPortal(content, options).onClose
-);
+export const portal = (
+  content: Comp<{ onClose: () => void; el: HTMLElement }>,
+  options?: PortalOptions
+) => openPortal(content, options).onClose;
 
 export const Portal = ({ children, options }: { children: Comp; options?: PortalOptions }) => {
   useEffect(() => portal(children, options), [children, options]);
@@ -35,7 +36,7 @@ export const openPortal = (
   setCss('openPortal', css);
 
   const el = setEl(tag, { parent: 'body', ...options });
-  setCls(el, { 'portal': 1, 'portal-init': 1 });
+  setCls(el, { portal: 1, 'portal-init': 1 });
 
   const onClose = () => {
     setCls(el, { 'portal-open': 0, 'portal-close': 1 });

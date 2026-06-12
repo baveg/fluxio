@@ -78,7 +78,7 @@ const getComputedColumns = (cols: DataTableColumns<any, any>) => {
           title: data[0],
           val: data[1],
         }
-        : {
+      : {
           ...data,
         }) as DataTableComputedColumn;
 
@@ -131,7 +131,7 @@ const css = `
 .table .Field {
   width: 100%;
 }
-`
+`;
 
 export const DataTable = (({
   cols,

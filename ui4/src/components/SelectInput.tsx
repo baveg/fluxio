@@ -107,34 +107,28 @@ export const SelectInput = ({
         top: `${bottom + 4}px`,
         left: `${left}px`,
         width: `${width}px`,
-      }
-    }
+      };
+    };
 
-    const { onClose: closePortal, el: portalEl } = openPortal(
-      () => (
-        <div
-          class="select-dropdown-portal fixed z-50 bg-base-100 border border-base-300 rounded-lg shadow-lg p-2 max-h-80 overflow-auto"
-          onMouseDown={(e) => {
-            log.d('dropdown mousedown - stopping propagation');
-            stopEvent(e);
-          }}
-          style={getStyle()}
-        >
-          <SelectContent
-            value={props.value}
-            items={props.items}
-            onPick={handlePick}
-          />
-        </div>
-      )
-    );
+    const { onClose: closePortal, el: portalEl } = openPortal(() => (
+      <div
+        class="select-dropdown-portal fixed z-50 bg-base-100 border border-base-300 rounded-lg shadow-lg p-2 max-h-80 overflow-auto"
+        onMouseDown={(e) => {
+          log.d('dropdown mousedown - stopping propagation');
+          stopEvent(e);
+        }}
+        style={getStyle()}
+      >
+        <SelectContent value={props.value} items={props.items} onPick={handlePick} />
+      </div>
+    ));
 
     // Fonction pour mettre à jour la position du portal
     const updatePosition = () => {
       console.debug('updatePosition');
       const div = portalEl.firstElementChild;
       if (div instanceof HTMLElement) {
-        Object.assign(div.style, getStyle())
+        Object.assign(div.style, getStyle());
       }
     };
 
@@ -167,14 +161,16 @@ export const SelectInput = ({
         onOpen?.();
       }}
     >
-      {icon && comp(icon, { class: "h-4 opacity-50" })}
+      {icon && comp(icon, { class: 'h-4 opacity-50' })}
       {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
       <span class="grow">{item[1] || <span class="opacity-50">{placeholder}</span>}</span>
       {suffix && <span class="opacity-50">{comp(suffix)}</span>}
-      <ChevronDownIcon class={cls(
-        'w-5 h-5 opacity-50 shrink-0 text-grey-500 transition-transform',
-        isOpen ? 'rotate-180' : ''
-      )} />
+      <ChevronDownIcon
+        class={cls(
+          'w-5 h-5 opacity-50 shrink-0 text-grey-500 transition-transform',
+          isOpen ? 'rotate-180' : ''
+        )}
+      />
     </button>
   );
 };

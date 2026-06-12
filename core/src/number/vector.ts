@@ -83,7 +83,10 @@ export const mulVector = <V extends Vector>(a: V, b: V) => opVector<V>(a, b, (a,
 export const mergeVector = <V extends Vector>(a: V, b: Vector<V[0] | undefined>) =>
   opVector<V>(a, b as V, (a, b) => (isDefined(b) ? b : a));
 
-export const eqVector = <V extends Vector>(a: V | null | undefined, b: V | null | undefined): boolean => {
+export const eqVector = <V extends Vector>(
+  a: V | null | undefined,
+  b: V | null | undefined
+): boolean => {
   if (!a || !b) return a === b;
   const l = a.length;
   if (b.length !== l) return false;

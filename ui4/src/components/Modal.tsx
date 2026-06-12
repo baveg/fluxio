@@ -18,7 +18,9 @@ interface ModalInstanceProps {
   dialog: HTMLDialogElement;
 }
 
-const ModalAction = (props: DivProps) => <div {...props} class={cls('modal-action', props.class || props.className)} />;
+const ModalAction = (props: DivProps) => (
+  <div {...props} class={cls('modal-action', props.class || props.className)} />
+);
 
 const ModalBox = ({
   size,
@@ -43,7 +45,10 @@ const ModalBox = ({
 
   return (
     <div class={cls('modal-box')} style={boxStyle}>
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 modal-x-btn" onClick={close}>
+      <button
+        class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 modal-x-btn"
+        onClick={close}
+      >
         ✕
       </button>
       {title && <h3 class="text-lg font-bold modal-title">{title}</h3>}

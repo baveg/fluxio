@@ -1,4 +1,4 @@
-import { sleep } from "./sleep";
+import { sleep } from './sleep';
 
 /**
  * Retries a promise with exponential backoff delay
@@ -8,7 +8,11 @@ import { sleep } from "./sleep";
  * @returns The result of the promise if successful
  * @throws The last error if all retries fail
  */
-export const retry = async <T>(createPromise: () => Promise<T>, retry = 2, delayMs = 0): Promise<T> => {
+export const retry = async <T>(
+  createPromise: () => Promise<T>,
+  retry = 2,
+  delayMs = 0
+): Promise<T> => {
   let error: any;
   for (let i = 0; i < retry; i++) {
     try {

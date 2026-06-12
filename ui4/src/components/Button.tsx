@@ -80,12 +80,7 @@ export const Button = ({
 
   if (href) {
     return (
-      <a
-        href={href}
-        class={className}
-        {...tooltipProps(tooltip)}
-        onClick={onClick}
-      >
+      <a href={href} class={className} {...tooltipProps(tooltip)} onClick={onClick}>
         {content}
       </a>
     );

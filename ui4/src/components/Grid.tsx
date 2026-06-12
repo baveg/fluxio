@@ -104,7 +104,7 @@ const getComputedCols = (cols: GridCols<any, any>) => {
           title: data[0],
           val: data[1],
         }
-        : {
+      : {
           ...data,
         }) as GridComputedCol;
 

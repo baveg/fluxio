@@ -1,10 +1,10 @@
-import { cls } from "@fluxio/core/html/cls";
-import { comp, type Comp } from "../utils/comp";
-import { type DivProps } from "./types";
-import { getTargetEl } from "@fluxio/core/html/getTargetEl";
-import { type Unsubscribe } from "@fluxio/core/types/Unsubscribe";
-import { onHtmlEvent } from "@fluxio/core/html/onEvent";
-import { portal } from "./Portal";
+import { cls } from '@fluxio/core/html/cls';
+import { comp, type Comp } from '../utils/comp';
+import { type DivProps } from './types';
+import { getTargetEl } from '@fluxio/core/html/getTargetEl';
+import { type Unsubscribe } from '@fluxio/core/types/Unsubscribe';
+import { onHtmlEvent } from '@fluxio/core/html/onEvent';
+import { portal } from './Portal';
 
 export interface TooltipProps extends Omit<DivProps, 'title'> {
   target: HTMLElement;

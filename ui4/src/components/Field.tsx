@@ -37,13 +37,13 @@ const valueToRaw = (value: any, type: InputType): string =>
 
 const rawToValue = (raw: string, type: InputType): any =>
   type === 'int' ? toInt(raw)
-    : type === 'float' ? toFloat(raw)
-      : type === 'checkbox' ?
-        raw === '' ?
-          null
-          : toBoolean(raw)
-        : type === 'json' ? jsonParse(raw)
-          : raw;
+  : type === 'float' ? toFloat(raw)
+  : type === 'checkbox' ?
+    raw === '' ?
+      null
+    : toBoolean(raw)
+  : type === 'json' ? jsonParse(raw)
+  : raw;
 
 const useFluxInput = (type: InputType, v$: Flux<any>, delay = 200) => {
   const raw$ = useMemo(() => flux(valueToRaw(v$.get(), type)), [v$]);
@@ -114,7 +114,7 @@ const PasswordInput = (props: ElProps['input']) => {
 const CheckboxInput = ({ error, icon, prefix, suffix, type, value, ...iProps }: InputProps) => {
   return (
     <label class={cls('cursor-pointer label', error && 'input-error')}>
-      {icon && comp(icon, { class: "h-4 opacity-50" })}
+      {icon && comp(icon, { class: 'h-4 opacity-50' })}
       {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
       <input type="checkbox" class="checkbox checkbox-info" checked={!!value} {...iProps} />
       {suffix && <span class="opacity-50">{comp(suffix)}</span>}
@@ -125,13 +125,13 @@ const CheckboxInput = ({ error, icon, prefix, suffix, type, value, ...iProps }: 
 const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps) => {
   return (
     <label class={cls('input input-bordered flex items-center gap-2', error && 'input-error')}>
-      {icon && comp(icon, { class: "h-4 opacity-50" })}
+      {icon && comp(icon, { class: 'h-4 opacity-50' })}
       {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
       {type === 'password' ?
         <PasswordInput {...iProps} />
-        : type === 'multiline' ?
-          <textarea class="textarea textarea-ghost" {...iProps} />
-          : <input class="grow min-w-0" type={type || 'text'} {...iProps} />}
+      : type === 'multiline' ?
+        <textarea class="textarea textarea-ghost" {...iProps} />
+      : <input class="grow min-w-0" type={type || 'text'} {...iProps} />}
       {suffix && <span class="opacity-50">{comp(suffix)}</span>}
     </label>
   );
@@ -156,7 +156,7 @@ const FieldInput = (props: FieldInputProps) => {
     () =>
       onValue && effectiveDelay > 0 ?
         debounce((value: any) => onValue(value), effectiveDelay)
-        : onValue,
+      : onValue,
     [onValue, effectiveDelay]
   );
 
@@ -191,9 +191,9 @@ const FieldInput = (props: FieldInputProps) => {
       )}
       {type === 'select' ?
         <SelectInput {...inputProps} onValue={onValue} />
-        : type === 'checkbox' ?
-          <CheckboxInput {...inputProps} />
-          : <TextInput type={type} {...inputProps} />}
+      : type === 'checkbox' ?
+        <CheckboxInput {...inputProps} />
+      : <TextInput type={type} {...inputProps} />}
       {error && (
         <div class="label">
           <span class="label-text-alt text-error">{error}</span>

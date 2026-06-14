@@ -13,8 +13,8 @@ export const cls = (...args: ClsArg[]): string => {
       continue;
     }
     if (typeof arg === 'object') {
-      const v = arg.class || arg.className || arg.value || String(arg);
-      if (typeof v === 'string' && v) sb.push(v);
+      const v = arg.class || arg.className;
+      if (v) sb.push(String(v));
     }
   }
   return sb.join(' ');

@@ -1,135 +1,152 @@
-import { useEffect } from 'preact/hooks';
-import { X, Trash2, Save } from 'lucide-preact';
+import { Trash2Icon, SaveIcon, XIcon } from 'lucide-preact';
 import { Button } from './Button';
 import { type Vector2 } from '@fluxio/core/types/Vector';
 import { comp, type Comp } from '../utils/comp';
-import { type DivProps } from './types';
 import { cls } from '@fluxio/core/html/cls';
-import { openPortal } from './Portal';
+import { openPortal, PortalOptions } from './Portal';
+import { stopEvent } from '@fluxio/core/html';
+import { DivProps } from './types';
+import { createContext } from 'preact';
+import { useContext, useState } from 'preact/hooks';
+import { toVoid } from '@fluxio/core/cast';
 
-interface ModalInstanceProps {
+interface ModalContextValue {
+  onClose: () => void;
+}
+
+const ModalContext = createContext<ModalContextValue>({ onClose: toVoid });
+
+export const useModalContext = () => useContext(ModalContext);
+
+export interface ModalHeaderProps extends DivProps { }
+export const ModalHeader = ({ children, ...props }: ModalHeaderProps) => {
+  const { onClose } = useModalContext();
+  return (
+    <div {...props} class={cls('ModalHeader', props)}>
+      <h3 class={cls('ModalTitle')}>{children}</h3>
+      <Button class={cls('ModalCloseBtn')} icon={XIcon} onClick={onClose} />
+    </div>
+  )
+}
+
+export interface ModalContentProps extends DivProps { }
+export const ModalContent = (props: ModalContentProps) => (
+  <div {...props} class={cls('ModalContent', props)} />
+)
+
+export interface ModalActionsProps extends DivProps { }
+export const ModalActions = (props: DivProps) => (
+  <div {...props} class={cls('ModalActions', props)} />
+)
+
+export interface ModalProps extends DivProps {
+  onClose: () => void;
+}
+
+export const Modal = ({ onClose, ...props }: ModalProps) => {
+  return (
+    <ModalContext.Provider value={{ onClose }}>
+      <div class={cls('Modal')} onClick={onClose}>
+        <div {...props} class={cls('ModalBox', props)} onClick={stopEvent} />
+      </div >
+    </ModalContext.Provider>
+  );
+};
+
+export interface SimpleModalProps {
   size?: Vector2;
-  title?: string | null;
+  title?: Comp;
   content?: Comp<{ onClose: () => void }>;
   onClose: () => void;
   onCancel?: () => void;
   onSave?: () => void;
-  onDelete?: () => void;
-  dialog: HTMLDialogElement;
+  onRemove?: () => void;
+  onYes?: () => void;
+  onNo?: () => void;
 }
-
-const ModalAction = (props: DivProps) => (
-  <div {...props} class={cls('modal-action', props.class || props.className)} />
-);
-
-const ModalBox = ({
+export const SimpleModal = ({
   size,
   title,
   content,
   onClose,
   onCancel,
   onSave,
-  onDelete,
-  dialog,
-}: ModalInstanceProps) => {
-  const close = () => {
-    dialog.close();
+  onRemove,
+  onYes,
+  onNo,
+}: SimpleModalProps) => {
+  const wc = (cb?: (() => void) | null) => () => {
+    cb?.();
     onClose();
   };
 
-  useEffect(() => {
-    dialog.showModal();
-  }, [dialog]);
-
-  const boxStyle = size ? { width: size[0], height: size[1] } : {};
+  const handleDelete = () => {
+    openModal('Êtes-vous sûr de supprimer ?', undefined, {
+      no: toVoid,
+      yes: wc(onRemove),
+    });
+  };
 
   return (
-    <div class={cls('modal-box')} style={boxStyle}>
-      <button
-        class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 modal-x-btn"
-        onClick={close}
-      >
-        ✕
-      </button>
-      {title && <h3 class="text-lg font-bold modal-title">{title}</h3>}
-      {content}
-      <ModalAction>
-        {onDelete && (
-          <>
-            <Button
-              title="Supprimer"
-              icon={Trash2}
-              error
-              onClick={() => {
-                openModal('Êtes-vous sûr de supprimer ?', undefined, {
-                  onSave: () => {
-                    onDelete!();
-                    close();
-                  },
-                });
-              }}
-            />
-            <div class="flex-1" />
-          </>
-        )}
-        {onCancel && (
-          <Button
-            title="Annuler"
-            icon={X}
-            ghost
-            onClick={() => {
-              onCancel();
-              close();
-            }}
-          />
-        )}
-        {onSave && (
-          <Button
-            title="Enregistrer"
-            icon={Save}
-            primary
-            onClick={() => {
-              onSave();
-              close();
-            }}
-          />
-        )}
-      </ModalAction>
-    </div>
+    <Modal style={size ? { width: size[0], height: size[1] } : {}} onClose={onClose}>
+      <ModalHeader>{title}</ModalHeader>
+      <ModalContent>{content}</ModalContent>
+      {(onRemove || onCancel || onNo || onSave || onYes) && (
+        <ModalActions>
+          {onRemove && (
+            <Button title="Supprimer" icon={Trash2Icon} error onClick={handleDelete} />
+          )}
+          <div class="flex-1" />
+          {onCancel && (
+            <Button title="Annuler" icon={XIcon} ghost onClick={wc(onCancel)} />
+          )}
+          {onNo && (
+            <Button title="Non" icon={SaveIcon} ghost onClick={wc(onNo)} />
+          )}
+          {onSave && (
+            <Button title="Enregistrer" icon={SaveIcon} primary onClick={wc(onSave)} />
+          )}
+          {onYes && (
+            <Button title="Oui" icon={SaveIcon} primary onClick={wc(onYes)} />
+          )}
+        </ModalActions>
+      )}
+    </Modal>
   );
-};
-
-export interface OpenModalOptions {
-  class?: string;
-  size?: Vector2;
-  onCancel?: () => void;
-  onSave?: () => void;
-  onDelete?: () => void;
-  onClose?: () => void;
 }
 
+export interface OpenModalOptions extends Omit<PortalOptions, 'size'> {
+  size?: Vector2;
+  cancel?: () => void;
+  save?: () => void;
+  remove?: () => void;
+  yes?: () => void;
+  no?: () => void;
+}
+
+export type ModalComp = Comp<{
+  onClose?: () => void,
+}>;
+
 export const openModal = (
-  title?: string | null,
-  content?: any | ((close: () => void) => any),
-  { class: modalClass, size, onCancel, onSave, onDelete, onClose: _onClose }: OpenModalOptions = {}
+  title?: Comp,
+  content?: ModalComp,
+  { size, cancel, save, remove, yes, no, ...options }: OpenModalOptions = {}
 ) => {
   return openPortal(
-    ({ onClose, el }) => (
-      <ModalBox
+    ({ onClose }) => (
+      <SimpleModal
         size={size}
         title={title}
         content={comp(content, { onClose })}
         onClose={onClose}
-        onCancel={onCancel}
-        onSave={onSave}
-        onDelete={onDelete}
-        dialog={el as HTMLDialogElement}
+        onCancel={cancel}
+        onSave={save}
+        onRemove={remove}
+        onYes={yes}
+        onNo={no}
       />
     ),
-    {
-      tag: 'dialog',
-      className: cls('modal', modalClass),
-      onClose: _onClose,
-    }
+    options
   );
 };

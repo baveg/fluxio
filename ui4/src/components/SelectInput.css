@@ -1,4 +1,4 @@
-@layer fluxio {
+@layer components {
   .SelectInput {
     @apply input input-bordered w-full;
     @apply flex items-center justify-between gap-2 cursor-pointer;

@@ -9,7 +9,6 @@ import { DivProps } from './types';
 import { createContext } from 'preact';
 import { useContext } from 'preact/hooks';
 import { toVoid } from '@fluxio/core/cast';
-import './Modal.css'
 
 interface ModalContextValue {
   onClose: () => void;

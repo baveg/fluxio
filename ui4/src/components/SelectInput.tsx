@@ -9,7 +9,6 @@ import { getElBounds } from '@fluxio/core/html/getElBounds';
 import { logger } from '@fluxio/core/logger';
 import { stopEvent } from '@fluxio/core/html/stopEvent';
 import { VECTOR4_ZERO } from '@fluxio/core/number/vector';
-import './SelectInput.css';
 
 const log = logger('SelectInput');
 

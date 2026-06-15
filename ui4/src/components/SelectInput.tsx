@@ -9,6 +9,7 @@ import { getElBounds } from '@fluxio/core/html/getElBounds';
 import { logger } from '@fluxio/core/logger';
 import { stopEvent } from '@fluxio/core/html/stopEvent';
 import { VECTOR4_ZERO } from '@fluxio/core/number/vector';
+import './SelectInput.css';
 
 const log = logger('SelectInput');
 
@@ -34,7 +35,7 @@ const SelectContent = ({
   onPick: (value: any) => void;
 }) => {
   return (
-    <div>
+    <div class="SelectContent">
       {items?.map(([v, lbl]) => (
         <div class="relative">
           <Button
@@ -49,7 +50,7 @@ const SelectContent = ({
           </Button>
           {v === value && (
             <Button
-              class="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-red-100 transition-colors"
+              class="SelectClearBtn"
               ghost
               circle
               onClick={(e) => {
@@ -112,7 +113,7 @@ export const SelectInput = ({
 
     const { onClose: closePortal, el: portalEl } = openPortal(() => (
       <div
-        class="select-dropdown-portal fixed z-50 bg-base-100 border border-base-300 rounded-lg shadow-lg p-2 max-h-80 overflow-auto"
+        class="SelectDropdownPortal"
         onMouseDown={(e) => {
           log.d('dropdown mousedown - stopping propagation');
           stopEvent(e);
@@ -152,23 +153,20 @@ export const SelectInput = ({
     <button
       ref={ref}
       type="button"
-      class={cls(
-        'input input-bordered flex items-center justify-between gap-2 cursor-pointer text-left w-full',
-        error && 'input-error'
-      )}
+      class={cls('SelectInput', error && 'input-error')}
       onClick={() => {
         setIsOpen(true);
         onOpen?.();
       }}
     >
       {icon && comp(icon, { class: 'h-4 opacity-50' })}
-      {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
+      {prefix && <span class="SelectInputPrefix">{comp(prefix)}</span>}
       <span class="grow">{item[1] || <span class="opacity-50">{placeholder}</span>}</span>
-      {suffix && <span class="opacity-50">{comp(suffix)}</span>}
+      {suffix && <span class="SelectInputSuffix">{comp(suffix)}</span>}
       <ChevronDownIcon
         class={cls(
-          'w-5 h-5 opacity-50 shrink-0 text-grey-500 transition-transform',
-          isOpen ? 'rotate-180' : ''
+          'SelectInputChevron',
+          isOpen && 'SelectInputChevron-open',
         )}
       />
     </button>

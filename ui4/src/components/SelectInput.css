@@ -1,0 +1,42 @@
+@layer components {
+  .SelectInput {
+    @apply input input-bordered w-full;
+    @apply flex items-center justify-between gap-2 cursor-pointer;
+    @apply cursor-pointer text-left;
+  }
+
+  .SelectInputPrefix {
+    @apply h-4 opacity-50;
+  }
+
+  .SelectInputSuffix {
+    @apply opacity-50;
+  }
+
+  .SelectInputChevron {
+    @apply w-5 h-5 opacity-50 shrink-0 text-grey-500 transition-transform;
+  }
+
+  .SelectInputChevron-open {
+    @apply rotate-180;
+  }
+
+  .SelectDropdownPortal {
+    @apply fixed z-50 shadow p-2 max-h-80 overflow-auto;
+    @apply bg-base-100 border border-base-300 rounded-lg;
+  }
+
+  .SelectBtn.btn {
+    @apply w-full p-3 pr-0 flex items-center justify-start;
+    @apply transition-colors bg-base-100 border-none hover:bg-primary-200;
+  }
+
+  .SelectBtn-active {
+    @apply font-bold;
+  }
+
+  .SelectClearBtn {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 p-1;
+    @apply hover:bg-red-100 transition-colors;
+  }
+}

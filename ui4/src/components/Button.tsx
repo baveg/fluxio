@@ -26,6 +26,7 @@ export interface ButtonProps {
   onClick?: (e: Event) => void;
   children?: any;
   href?: string;
+  target?: "_blank";
 }
 
 export const Button = ({
@@ -51,9 +52,11 @@ export const Button = ({
   onClick,
   children,
   href,
+  target,
 }: ButtonProps) => {
   const className = cls(
     'btn',
+    href && 'btn-link',
     circle && 'btn-circle',
     outline && 'btn-outline',
     primary && 'btn-primary',
@@ -80,7 +83,7 @@ export const Button = ({
 
   if (href) {
     return (
-      <a href={href} class={className} {...tooltipProps(tooltip)} onClick={onClick}>
+      <a href={href} target={target} class={className} {...tooltipProps(tooltip)} onClick={onClick}>
         {content}
       </a>
     );

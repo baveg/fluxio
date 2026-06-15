@@ -1,4 +1,4 @@
-@layer components {
+@layer fluxio {
 
     .Modal {
         @apply fixed inset-0 z-30;

@@ -1,4 +1,4 @@
-@layer components {
+@layer fluxio {
   .Portal {
     transition: all 300ms ease;
   }

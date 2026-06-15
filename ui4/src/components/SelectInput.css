@@ -1,4 +1,4 @@
-@layer components {
+@layer fluxio {
   .SelectInput {
     @apply input input-bordered w-full;
     @apply flex items-center justify-between gap-2 cursor-pointer;
@@ -26,7 +26,7 @@
     @apply bg-base-100 border border-base-300 rounded-lg;
   }
 
-  .SelectBtn.btn {
+  .SelectBtn {
     @apply w-full p-3 flex items-center justify-start;
     @apply transition-colors bg-base-100 border-none hover:bg-primary-200;
   }

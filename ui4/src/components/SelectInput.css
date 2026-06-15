@@ -27,7 +27,7 @@
   }
 
   .SelectBtn.btn {
-    @apply w-full p-3 pr-0 flex items-center justify-start;
+    @apply w-full p-3 flex items-center justify-start;
     @apply transition-colors bg-base-100 border-none hover:bg-primary-200;
   }
 
@@ -36,7 +36,7 @@
   }
 
   .SelectClearBtn {
-    @apply absolute right-3 top-1/2 -translate-y-1/2 p-1;
+    @apply absolute right-0 top-1/2 -translate-y-1/2 p-1;
     @apply hover:bg-red-100 transition-colors;
   }
 }

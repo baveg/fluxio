@@ -69,7 +69,7 @@ export const Button = ({
     xs && 'btn-xs',
     ghost && 'btn-ghost',
     text && 'btn-text',
-    ((Icon && !(title || children)) || square) && 'btn-square',
+    square && 'btn-square',
     extraCls
   );
 

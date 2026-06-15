@@ -10,6 +10,7 @@
         @apply max-w-full max-h-full overflow-hidden rounded-2xl z-40;
         @apply flex flex-col align-top justify-stretch;
         @apply bg-white shadow;
+        transition: all 150ms ease;
     }
 
     .ModalHeader {
@@ -21,7 +22,7 @@
         @apply uppercase font-bold text-blue-950;
     }
 
-    .ModalCloseBtn {
+    .ModalXBtn {
         @apply text-blue-950 text-2xl leading-none hover:text-primary-400;
         @apply btn-circle btn-ghost;
     }
@@ -35,5 +36,45 @@
         @apply min-h-16 w-full max-w-full px-2 py-1;
         @apply flex flex-row items-center justify-end gap-2 bg-base-100;
         @apply border-t border-grey-200;
+    }
+
+    .Portal-init .ModalBox,
+    .Portal-close .ModalBox {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    .Portal-open .ModalBox {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .Modal-right {
+        justify-content: end;
+        transform: none;
+        transition: opacity 0.3s ease-in-out;
+        padding: 0;
+    }
+
+    .Modal-right .ModalBox {
+        height: 100%;
+        max-height: none;
+        border-radius: 0;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .Modal-right .ModalTitle {
+        @apply font-bold text-2xl leading-8;
+    }
+
+    .Portal-init .Modal-right .ModalBox,
+    .Portal-close .Modal-right .ModalBox {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    .Portal-open .Modal-right .ModalBox {
+        opacity: 1;
+        transform: translateX(0);
     }
 }

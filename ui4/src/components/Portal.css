@@ -1,0 +1,14 @@
+@layer components {
+  .Portal {
+    transition: all 300ms ease;
+  }
+
+  .Portal-init,
+  .Portal-close {
+    opacity: 0;
+  }
+
+  .Portal-open {
+    opacity: 1;
+  }
+}

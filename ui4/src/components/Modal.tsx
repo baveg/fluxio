@@ -7,8 +7,9 @@ import { openPortal, PortalOptions } from './Portal';
 import { stopEvent } from '@fluxio/core/html';
 import { DivProps } from './types';
 import { createContext } from 'preact';
-import { useContext, useState } from 'preact/hooks';
+import { useContext } from 'preact/hooks';
 import { toVoid } from '@fluxio/core/cast';
+import './Modal.css'
 
 interface ModalContextValue {
   onClose: () => void;
@@ -24,7 +25,7 @@ export const ModalHeader = ({ children, ...props }: ModalHeaderProps) => {
   return (
     <div {...props} class={cls('ModalHeader', props)}>
       <h3 class={cls('ModalTitle')}>{children}</h3>
-      <Button class={cls('ModalCloseBtn')} icon={XIcon} onClick={onClose} />
+      <Button class={cls('ModalXBtn')} icon={XIcon} onClick={onClose} />
     </div>
   )
 }
@@ -41,12 +42,14 @@ export const ModalActions = (props: DivProps) => (
 
 export interface ModalProps extends DivProps {
   onClose: () => void;
+  overlayClass?: string;
+  right?: boolean;
 }
 
-export const Modal = ({ onClose, ...props }: ModalProps) => {
+export const Modal = ({ onClose, overlayClass, right, ...props }: ModalProps) => {
   return (
     <ModalContext.Provider value={{ onClose }}>
-      <div class={cls('Modal')} onClick={onClose}>
+      <div class={cls('Modal', right && 'Modal-right', overlayClass)} onClick={onClose}>
         <div {...props} class={cls('ModalBox', props)} onClick={stopEvent} />
       </div >
     </ModalContext.Provider>
@@ -63,6 +66,7 @@ export interface SimpleModalProps {
   onRemove?: () => void;
   onYes?: () => void;
   onNo?: () => void;
+  right?: boolean;
 }
 export const SimpleModal = ({
   size,
@@ -74,6 +78,7 @@ export const SimpleModal = ({
   onRemove,
   onYes,
   onNo,
+  right,
 }: SimpleModalProps) => {
   const wc = (cb?: (() => void) | null) => () => {
     cb?.();
@@ -88,7 +93,7 @@ export const SimpleModal = ({
   };
 
   return (
-    <Modal style={size ? { width: size[0], height: size[1] } : {}} onClose={onClose}>
+    <Modal style={size ? { width: size[0], height: size[1] } : {}} onClose={onClose} right={right}>
       <ModalHeader>{title}</ModalHeader>
       <ModalContent>{content}</ModalContent>
       {(onRemove || onCancel || onNo || onSave || onYes) && (
@@ -122,6 +127,7 @@ export interface OpenModalOptions extends Omit<PortalOptions, 'size'> {
   remove?: () => void;
   yes?: () => void;
   no?: () => void;
+  right?: boolean;
 }
 
 export type ModalComp = Comp<{
@@ -131,7 +137,7 @@ export type ModalComp = Comp<{
 export const openModal = (
   title?: Comp,
   content?: ModalComp,
-  { size, cancel, save, remove, yes, no, ...options }: OpenModalOptions = {}
+  { size, cancel, save, remove, yes, no, right, ...options }: OpenModalOptions = {}
 ) => {
   return openPortal(
     ({ onClose }) => (
@@ -145,6 +151,7 @@ export const openModal = (
         onRemove={remove}
         onYes={yes}
         onNo={no}
+        right={right}
       />
     ),
     options

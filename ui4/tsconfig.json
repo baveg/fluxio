@@ -2,7 +2,10 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "lib": ["ES2020", "DOM"],
+    "lib": [
+      "ES2020",
+      "DOM"
+    ],
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "moduleResolution": "bundler",
@@ -15,9 +18,18 @@
     "outDir": "./dist",
     "rootDir": "..",
     "paths": {
-      "@fluxio/core/*": ["../core/src/*"]
+      "@fluxio/core/*": [
+        "../core/src/*"
+      ]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

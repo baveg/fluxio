@@ -6,7 +6,7 @@ import type { Comp } from '../utils/comp';
 import { comp } from '../utils/comp';
 import { setCls } from '@fluxio/core/html/cls';
 import { SECOND } from '@fluxio/core/date/date';
-import { setCss } from '@fluxio/core/html/css';
+import './Portal.css'
 
 export interface PortalOptions extends ElOptions {
   tag?: keyof HTMLElementTagNameMap;
@@ -23,23 +23,15 @@ export const Portal = ({ children, options }: { children: Comp; options?: Portal
   return null;
 };
 
-const css = `
-.portal { transition: opacity 0.2s ease; }
-.portal-init, .portal-close { opacity: 0; }
-.portal-open { opacity: 1; }
-`;
-
 export const openPortal = (
   content: Comp<{ onClose: () => void; el: HTMLElement }>,
   { tag = 'div', onClose: afterOnClose, ...options }: PortalOptions = {}
 ) => {
-  setCss('openPortal', css);
-
   const el = setEl(tag, { parent: 'body', ...options });
-  setCls(el, { portal: 1, 'portal-init': 1 });
+  setCls(el, { Portal: 1, 'Portal-init': 1 });
 
   const onClose = () => {
-    setCls(el, { 'portal-open': 0, 'portal-close': 1 });
+    setCls(el, { 'Portal-open': 0, 'Portal-close': 1 });
 
     setTimeout(() => {
       render(null, el);
@@ -51,7 +43,7 @@ export const openPortal = (
   render(comp(content, { onClose, el }), el);
 
   setTimeout(() => {
-    setCls(el, { 'portal-init': 0, 'portal-open': 1 });
+    setCls(el, { 'Portal-init': 0, 'Portal-open': 1 });
   }, 100);
 
   return { onClose, el };

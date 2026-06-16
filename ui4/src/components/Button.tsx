@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-preact';
+import { Loader2Icon } from 'lucide-preact';
 import { cls } from '@fluxio/core/html/cls';
 import { tooltipProps } from './Tooltip';
 import { type Comp } from '../utils/comp';
@@ -19,6 +20,8 @@ export interface ButtonProps {
   text?: boolean;
   square?: boolean;
   submit?: boolean;
+  reset?: boolean;
+  loading?: boolean;
   disabled?: boolean;
   class?: string;
   title?: string;
@@ -44,6 +47,8 @@ export const Button = ({
   ghost,
   text,
   submit,
+  reset,
+  loading,
   disabled,
   square,
   class: extraCls,
@@ -75,7 +80,8 @@ export const Button = ({
 
   const content = (
     <>
-      {Icon && <Icon size={xs ? 14 : 24} />}
+      {loading && <Loader2Icon size={xs ? 14 : 20} class="animate-spin" />}
+      {!loading && Icon && <Icon size={xs ? 14 : 24} />}
       {title}
       {children}
     </>
@@ -91,8 +97,8 @@ export const Button = ({
 
   return (
     <button
-      type={submit ? 'submit' : 'button'}
-      disabled={disabled}
+      type={submit ? 'submit' : reset ? 'reset' : 'button'}
+      disabled={disabled || loading}
       class={className}
       {...tooltipProps(tooltip)}
       onClick={onClick}

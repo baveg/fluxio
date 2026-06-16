@@ -92,6 +92,7 @@ interface InputProps {
 interface FieldInputProps extends InputProps {
   class?: string;
   label?: string;
+  help?: string;
   delay?: number;
 }
 
@@ -142,7 +143,7 @@ const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps)
 };
 
 const FieldInput = (props: FieldInputProps) => {
-  const { label, class: className, onValue, delay = 400, value: propValue, ...inputProps } = props;
+  const { label, help, class: className, onValue, delay = 400, value: propValue, ...inputProps } = props;
   const { type, error } = inputProps;
 
   // Pas de delay pour les checkboxes et select (interactions instantanées)
@@ -198,9 +199,10 @@ const FieldInput = (props: FieldInputProps) => {
         : type === 'checkbox' ?
           <CheckboxInput {...inputProps} />
           : <TextInput type={type} {...inputProps} />}
-      {error && (
+      {(error || help) && (
         <div class="label">
-          <span class="label-text-alt text-error">{error}</span>
+          {error && <span class="label-text-alt text-error">{error}</span>}
+          {!error && help && <span class="label-text-alt opacity-50">{help}</span>}
         </div>
       )}
     </label>

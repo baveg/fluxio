@@ -26,7 +26,8 @@ export type InputType =
   | 'float'
   | 'json'
   | 'checkbox'
-  | 'color';
+  | 'color'
+  | 'date';
 
 export interface FluxInputOptions<T extends InputType | undefined = undefined> {
   delay?: number;
@@ -86,6 +87,7 @@ interface InputProps {
   value?: any;
   name?: string;
   readonly?: boolean;
+  required?: boolean;
   autoComplete?: string;
 }
 
@@ -143,7 +145,7 @@ const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps)
 };
 
 const FieldInput = (props: FieldInputProps) => {
-  const { label, help, class: className, onValue, delay = 400, value: propValue, ...inputProps } = props;
+  const { label, help, class: className, onValue, delay = 400, value: propValue, required, ...inputProps } = props;
   const { type, error } = inputProps;
 
   // Pas de delay pour les checkboxes et select (interactions instantanées)
@@ -191,7 +193,7 @@ const FieldInput = (props: FieldInputProps) => {
     <label class={cls('form-control w-full', className)}>
       {label && (
         <div class="label">
-          <span class="label-text">{label}</span>
+          <span class="label-text">{label}{required ? ' *' : ''}</span>
         </div>
       )}
       {type === 'select' ?

@@ -14,6 +14,7 @@ import { debounce } from '@fluxio/core/async/debounce';
 import { toVoid } from '@fluxio/core/cast/toVoid';
 import { getInputValue } from '@fluxio/core/html/getInputValue';
 import { SelectInput } from './SelectInput';
+import { stopEvent } from '@fluxio/core/html';
 
 export type InputType =
   | 'select'
@@ -37,13 +38,13 @@ const valueToRaw = (value: any, type: InputType): string =>
 
 const rawToValue = (raw: string, type: InputType): any =>
   type === 'int' ? toInt(raw)
-  : type === 'float' ? toFloat(raw)
-  : type === 'checkbox' ?
-    raw === '' ?
-      null
-    : toBoolean(raw)
-  : type === 'json' ? jsonParse(raw)
-  : raw;
+    : type === 'float' ? toFloat(raw)
+      : type === 'checkbox' ?
+        raw === '' ?
+          null
+          : toBoolean(raw)
+        : type === 'json' ? jsonParse(raw)
+          : raw;
 
 const useFluxInput = (type: InputType, v$: Flux<any>, delay = 200) => {
   const raw$ = useMemo(() => flux(valueToRaw(v$.get(), type)), [v$]);
@@ -102,7 +103,10 @@ const PasswordInput = (props: ElProps['input']) => {
       <button
         type="button"
         class="h-4 opacity-50 hover:opacity-100 cursor-pointer"
-        onClick={() => setShowPassword((v) => !v)}
+        onClick={(e) => {
+          stopEvent(e);
+          setShowPassword((v) => !v);
+        }}
       >
         <Icon class="h-4" />
       </button>
@@ -129,9 +133,9 @@ const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps)
       {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
       {type === 'password' ?
         <PasswordInput {...iProps} />
-      : type === 'multiline' ?
-        <textarea class="textarea textarea-ghost" {...iProps} />
-      : <input class="grow min-w-0" type={type || 'text'} {...iProps} />}
+        : type === 'multiline' ?
+          <textarea class="textarea textarea-ghost" {...iProps} />
+          : <input class="grow min-w-0" type={type || 'text'} {...iProps} />}
       {suffix && <span class="opacity-50">{comp(suffix)}</span>}
     </label>
   );
@@ -156,7 +160,7 @@ const FieldInput = (props: FieldInputProps) => {
     () =>
       onValue && effectiveDelay > 0 ?
         debounce((value: any) => onValue(value), effectiveDelay)
-      : onValue,
+        : onValue,
     [onValue, effectiveDelay]
   );
 
@@ -191,9 +195,9 @@ const FieldInput = (props: FieldInputProps) => {
       )}
       {type === 'select' ?
         <SelectInput {...inputProps} onValue={onValue} />
-      : type === 'checkbox' ?
-        <CheckboxInput {...inputProps} />
-      : <TextInput type={type} {...inputProps} />}
+        : type === 'checkbox' ?
+          <CheckboxInput {...inputProps} />
+          : <TextInput type={type} {...inputProps} />}
       {error && (
         <div class="label">
           <span class="label-text-alt text-error">{error}</span>

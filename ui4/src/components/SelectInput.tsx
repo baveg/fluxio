@@ -88,6 +88,8 @@ export const SelectInput = ({
   props.items = items;
   props.onValue = onValue;
 
+  log.d('render', value, item, items);
+
   useEffect(() => {
     if (!isOpen || !ref.current) return;
 

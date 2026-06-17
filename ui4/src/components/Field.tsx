@@ -15,6 +15,10 @@ import { toVoid } from '@fluxio/core/cast/toVoid';
 import { getInputValue } from '@fluxio/core/html/getInputValue';
 import { SelectInput } from './SelectInput';
 import { stopEvent } from '@fluxio/core/html';
+import { logger } from '@fluxio/core/logger';
+import { useConstant } from '../hooks';
+
+const log = logger('Field');
 
 export type InputType =
   | 'select'
@@ -50,9 +54,22 @@ const rawToValue = (raw: string, type: InputType): any =>
 const useFluxInput = (type: InputType, v$: Flux<any>, delay = 200) => {
   const raw$ = useMemo(() => flux(valueToRaw(v$.get(), type)), [v$]);
 
-  useEffect(() => raw$.debounce(delay).on((raw) => v$.set(rawToValue(raw, type))), [raw$, v$]);
+  const last = useConstant(() => [null] as [any]);
+
+  useEffect(() => {
+    raw$.set(valueToRaw(v$.get(), type));
+    return v$.on((value) => {
+      if (value === last[0]) return;
+      raw$.set(valueToRaw(value, type))
+    });
+  }, [v$, raw$, type]);
+
+  useEffect(() => raw$.debounce(delay).on((raw) => {
+    v$.set(last[0] = rawToValue(raw, type));
+  }), [raw$, v$]);
 
   const value = useFlux(raw$);
+  log.d('render', name, type, value);
 
   const onValue = (value: any) => raw$.set(value);
 
@@ -154,6 +171,8 @@ const FieldInput = (props: FieldInputProps) => {
   // Si on a un delay, on gère un état local pour la saisie
   const [localValue, setLocalValue] = useState(propValue);
 
+  log.d('FieldInput', props.name, props.value, localValue);
+
   // Synchroniser localValue avec propValue quand il change (mais pas pendant la saisie)
   useEffect(() => {
     setLocalValue(propValue);
@@ -218,6 +237,7 @@ interface FieldFluxProps extends FieldInputProps {
 
 const FieldFlux = ({ v$, type, delay, ...rest }: FieldFluxProps) => {
   const inputProps = useFluxInput(type || 'text', v$, delay);
+  log.d('FieldFlux', rest.name, type, inputProps);
   // Le delay est déjà géré par useFluxInput via flux.debounce()
   // On ne passe pas le delay à FieldInput pour éviter un double debounce
   return <FieldInput {...rest} {...inputProps} delay={0} />;

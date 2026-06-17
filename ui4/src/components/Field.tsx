@@ -31,7 +31,11 @@ export type InputType =
   | 'json'
   | 'checkbox'
   | 'color'
-  | 'date';
+  | 'date'
+  | 'datetime'
+  | 'time'
+  | 'month'
+  | 'week';
 
 export interface FluxInputOptions<T extends InputType | undefined = undefined> {
   delay?: number;
@@ -147,6 +151,7 @@ const CheckboxInput = ({ error, icon, prefix, suffix, type, value, ...iProps }: 
 };
 
 const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps) => {
+  const inputType = type === 'datetime' ? 'datetime-local' : type || 'text';
   return (
     <label class={cls('input input-bordered flex items-center gap-2', error && 'input-error')}>
       {icon && comp(icon, { class: 'h-4 w-4 opacity-70' })}
@@ -155,7 +160,7 @@ const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps)
         <PasswordInput {...iProps} />
         : type === 'multiline' ?
           <textarea class="textarea textarea-ghost" {...iProps} />
-          : <input class="grow min-w-0" type={type || 'text'} {...iProps} />}
+          : <input class="grow min-w-0" type={inputType} {...iProps} />}
       {suffix && <span class="h-4 opacity-50">{comp(suffix)}</span>}
     </label>
   );

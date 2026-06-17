@@ -31,7 +31,9 @@
 
     .ModalContent {
         @apply relative flex-1;
-        @apply flex flex-col items-stretch justify-start overflow-x-hidden overflow-y-auto;
+        @apply overflow-x-hidden overflow-y-auto;
+        @apply flex flex-col items-stretch justify-start p-2;
+        box-sizing: border-box;
     }
 
     .ModalActions {

@@ -6,6 +6,7 @@ import type { Comp } from '../utils/comp';
 import { comp } from '../utils/comp';
 import { setCls } from '@fluxio/core/html/cls';
 import { SECOND } from '@fluxio/core/date/date';
+import './Portal.css';
 
 export interface PortalOptions extends ElOptions {
   tag?: keyof HTMLElementTagNameMap;

@@ -1,3 +1,5 @@
+@tailwind components;
+
 @layer components {
   .SelectInput {
     @apply input input-bordered w-full;
@@ -14,7 +16,7 @@
   }
 
   .SelectInputChevron {
-    @apply w-5 h-5 opacity-50 shrink-0 text-grey-500 transition-transform;
+    @apply w-5 h-5 opacity-50 shrink-0 text-gray-500 transition-transform;
   }
 
   .SelectInputChevron-open {
@@ -28,7 +30,7 @@
 
   .SelectBtn {
     @apply w-full p-3 flex items-center justify-start;
-    @apply transition-colors bg-base-100 border-none hover:bg-primary-200;
+    @apply transition-colors bg-base-100 border-none hover:bg-primary/20;
   }
 
   .SelectBtn-active {

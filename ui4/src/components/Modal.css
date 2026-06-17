@@ -1,3 +1,5 @@
+@tailwind components;
+
 @layer components {
 
     .Modal {
@@ -9,33 +11,33 @@
     .ModalBox {
         @apply max-w-full max-h-full overflow-hidden rounded-2xl z-40;
         @apply flex flex-col align-top justify-stretch;
-        @apply bg-white shadow;
+        @apply bg-base-300 shadow;
         transition: all 150ms ease;
     }
 
     .ModalHeader {
         @apply flex items-center justify-between pl-4 pr-0 py-1;
-        @apply border-b border-grey-200;
+        @apply border-b border-base-100;
     }
 
     .ModalTitle {
-        @apply uppercase font-bold text-blue-950;
+        @apply uppercase font-bold text-base-content;
     }
 
     .ModalXBtn {
-        @apply text-blue-950 text-2xl leading-none hover:text-primary-400;
+        @apply text-base-content text-2xl leading-none hover:text-primary;
         @apply btn-circle btn-ghost;
     }
 
     .ModalContent {
         @apply relative flex-1;
-        @apply flex flex-col items-stretch justify-start overflow-x-hidden overflow-y-auto px-4 py-2;
+        @apply flex flex-col items-stretch justify-start overflow-x-hidden overflow-y-auto;
     }
 
     .ModalActions {
         @apply min-h-16 w-full max-w-full px-2 py-1;
-        @apply flex flex-row items-center justify-end gap-2 bg-base-100;
-        @apply border-t border-grey-200;
+        @apply flex flex-row items-center justify-end gap-2 bg-base-300;
+        @apply border-t border-base-100;
     }
 
     .Portal-init .ModalBox,

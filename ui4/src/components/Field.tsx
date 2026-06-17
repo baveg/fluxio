@@ -14,9 +14,11 @@ import { debounce } from '@fluxio/core/async/debounce';
 import { toVoid } from '@fluxio/core/cast/toVoid';
 import { getInputValue } from '@fluxio/core/html/getInputValue';
 import { SelectInput } from './SelectInput';
-import { stopEvent } from '@fluxio/core/html';
+import { getTargetEl, stopEvent } from '@fluxio/core/html';
 import { logger } from '@fluxio/core/logger';
 import { useConstant } from '../hooks';
+import { defer } from '@fluxio/core/async';
+import { isNil } from '@fluxio/core/check';
 
 const log = logger('Field');
 
@@ -139,21 +141,60 @@ const PasswordInput = (props: ElProps['input']) => {
   );
 };
 
-const CheckboxInput = ({ error, icon, prefix, suffix, type, value, ...iProps }: InputProps) => {
+interface CheckboxInputProps extends InputProps {
+  onValue?: (value: any, e?: Event) => void;
+}
+
+const CheckboxInput = ({ error, icon, prefix, suffix, type, value, onChange, onInput, onValue, ...iProps }: CheckboxInputProps) => {
+  log.d('CheckboxInput render', { value, iProps });
+  const handleClick = (e: Event) => {
+    stopEvent(e);
+    defer(() => {
+      const el = e.target as HTMLInputElement;
+      const prev = el.checked;
+      const next = !prev;
+      console.debug('CheckboxInput handleClick', prev, next, el, e);
+      el.checked = next;
+      el.indeterminate = false;
+      if (onValue) onValue(next, e);
+    });
+  };
+
+  console.debug('CheckboxInput render', value); // {...iProps}
+
   return (
     <label class={cls('cursor-pointer label', error && 'input-error')}>
       {icon && comp(icon, { class: 'h-4 opacity-50' })}
       {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
-      <input type="checkbox" class="checkbox checkbox-info" checked={!!value} {...iProps} />
+      <input
+        type="checkbox"
+        class="checkbox checkbox-info"
+        checked={toBoolean(value)}
+        indeterminate={isNil(value)}
+        onClick={handleClick}
+      />
       {suffix && <span class="opacity-50">{comp(suffix)}</span>}
     </label>
   );
 };
 
+// const hasPickerList = ['date', 'datetime', 'time', 'month', 'week'];
+// const hasPickerMap = by(hasPickerList, toMe, toTrue);
+// const hasPicker = (type?: string) => (type && hasPickerMap[type]) || false;
+
+const handleLabelClick = (e: MouseEvent) => {
+  console.debug('handleLabelClick', e);
+  const input = (e.currentTarget as HTMLLabelElement).querySelector('input');
+  if (!input) return;
+  if (!input.showPicker) return;
+  input.showPicker();
+  stopEvent(e);
+};
+
 const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps) => {
   const inputType = type === 'datetime' ? 'datetime-local' : type || 'text';
   return (
-    <label class={cls('input input-bordered flex items-center gap-2', error && 'input-error')}>
+    <label class={cls('input input-bordered flex items-center gap-2', error && 'input-error')} onClick={handleLabelClick}>
       {icon && comp(icon, { class: 'h-4 w-4 opacity-70' })}
       {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
       {type === 'password' ?
@@ -223,7 +264,7 @@ const FieldInput = (props: FieldInputProps) => {
       {type === 'select' ?
         <SelectInput {...inputProps} onValue={onValue} />
         : type === 'checkbox' ?
-          <CheckboxInput {...inputProps} />
+          <CheckboxInput {...inputProps} onValue={onValue} />
           : <TextInput type={type} {...inputProps} />}
       {(error || help) && (
         <div class="label">

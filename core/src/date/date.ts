@@ -162,6 +162,21 @@ export const getYear = (d: DateLike) => toDate(d).getFullYear();
 /** Set year - setYear('2025-02-09', 2026) -> 2026-02-09 */
 export const setYear = (d: DateLike, v: number) => updateDate(d, (d) => d.setFullYear(v));
 
+/** Calculate age from birthdate - getAge('1990-02-09', '2025-02-09') -> 35 */
+export const getAge = (birth: DateLike, now: DateLike = serverDate()): number => {
+  const birthDate = toDate(birth);
+  const nowDate = toDate(now);
+
+  let age = getYear(nowDate) - getYear(birthDate);
+  const monthDiff = getMonth(nowDate) - getMonth(birthDate);
+
+  if (monthDiff < 0 || (monthDiff === 0 && getMonthDay(nowDate) < getMonthDay(birthDate))) {
+    age--;
+  }
+
+  return age;
+};
+
 ///// TIME /////
 
 /** Get timestamp in milliseconds - getTime('2025-02-09') -> 1739059200000 */

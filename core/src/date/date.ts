@@ -162,19 +162,35 @@ export const getYear = (d: DateLike) => toDate(d).getFullYear();
 /** Set year - setYear('2025-02-09', 2026) -> 2026-02-09 */
 export const setYear = (d: DateLike, v: number) => updateDate(d, (d) => d.setFullYear(v));
 
-/** Calculate age from birthdate - getAge('1990-02-09', '2025-02-09') -> 35 */
-export const getAge = (birth: DateLike, now: DateLike = serverDate()): number => {
-  const birthDate = toDate(birth);
-  const nowDate = toDate(now);
+/** Calculate full years between two dates - diffInYears('1990-02-09', '2025-02-09') -> 35 */
+export const diffInYears = (from: DateLike, to: DateLike = serverDate()): number => {
+  const a = toDate(from);
+  const b = toDate(to);
 
-  let age = getYear(nowDate) - getYear(birthDate);
-  const monthDiff = getMonth(nowDate) - getMonth(birthDate);
+  let years = getYear(b) - getYear(a);
+  const monthDiff = getMonth(b) - getMonth(a);
 
-  if (monthDiff < 0 || (monthDiff === 0 && getMonthDay(nowDate) < getMonthDay(birthDate))) {
-    age--;
+  if (monthDiff < 0 || (monthDiff === 0 && getMonthDay(b) < getMonthDay(a))) {
+    years--;
   }
 
-  return age;
+  return years;
+};
+
+/** Calculate age from birthdate - getAge('1990-02-09', '2025-02-09') -> 35 */
+export const getAge = diffInYears;
+
+/** Calculate full months between two dates - diffInMonths('2020-01-15', '2025-02-09') -> 60 */
+export const diffInMonths = (from: DateLike, to: DateLike = serverDate()): number => {
+  const a = toDate(from);
+  const b = toDate(to);
+
+  let months = (getYear(b) - getYear(a)) * 12 + (getMonth(b) - getMonth(a));
+  if (getMonthDay(b) < getMonthDay(a)) {
+    months--;
+  }
+
+  return months;
 };
 
 ///// TIME /////

@@ -14,11 +14,12 @@ import { debounce } from '@fluxio/core/async/debounce';
 import { toVoid } from '@fluxio/core/cast/toVoid';
 import { getInputValue } from '@fluxio/core/html/getInputValue';
 import { SelectInput } from './SelectInput';
-import { getTargetEl, stopEvent } from '@fluxio/core/html';
+import { stopEvent } from '@fluxio/core/html';
 import { logger } from '@fluxio/core/logger';
 import { useConstant } from '../hooks';
 import { defer } from '@fluxio/core/async';
 import { isNil } from '@fluxio/core/check';
+import './Field.css';
 
 const log = logger('Field');
 
@@ -128,15 +129,15 @@ const PasswordInput = (props: ElProps['input']) => {
     <>
       <button
         type="button"
-        class="h-4 opacity-50 hover:opacity-100 cursor-pointer"
+        class="PasswordToggleBtn"
         onClick={(e) => {
           stopEvent(e);
           setShowPassword((v) => !v);
         }}
       >
-        <Icon class="h-4" />
+        <Icon class="PasswordToggleIcon" />
       </button>
-      <input class="grow" {...props} type={showPassword ? 'text' : 'password'} />
+      <input class="PasswordInput" {...props} type={showPassword ? 'text' : 'password'} />
     </>
   );
 };
@@ -163,17 +164,17 @@ const CheckboxInput = ({ error, icon, prefix, suffix, type, value, onChange, onI
   console.debug('CheckboxInput render', value); // {...iProps}
 
   return (
-    <label class={cls('cursor-pointer label', error && 'input-error')}>
-      {icon && comp(icon, { class: 'h-4 opacity-50' })}
-      {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
+    <label class={cls('CheckboxLabel', error && 'input-error')}>
+      {icon && comp(icon, { class: 'CheckboxIcon' })}
+      {prefix && <span class="CheckboxPrefix">{comp(prefix)}</span>}
       <input
         type="checkbox"
-        class="checkbox checkbox-info"
+        class="CheckboxInput"
         checked={toBoolean(value)}
         indeterminate={isNil(value)}
         onClick={handleClick}
       />
-      {suffix && <span class="opacity-50">{comp(suffix)}</span>}
+      {suffix && <span class="CheckboxSuffix">{comp(suffix)}</span>}
     </label>
   );
 };
@@ -194,15 +195,15 @@ const handleLabelClick = (e: MouseEvent) => {
 const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps) => {
   const inputType = type === 'datetime' ? 'datetime-local' : type || 'text';
   return (
-    <label class={cls('input input-bordered flex items-center gap-2 outline-none focus-within:outline-none', error && 'input-error')} onClick={handleLabelClick}>
-      {icon && comp(icon, { class: 'h-4 w-4 opacity-70' })}
-      {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
+    <label class={cls('FieldInput', error && 'input-error')} onClick={handleLabelClick}>
+      {icon && comp(icon, { class: 'FieldIcon' })}
+      {prefix && <span class="FieldPrefix">{comp(prefix)}</span>}
       {type === 'password' ?
         <PasswordInput {...iProps} />
         : type === 'multiline' ?
-          <textarea class="textarea textarea-ghost outline-none focus:outline-none" {...iProps} />
-          : <input class="grow min-w-0 outline-none focus:outline-none" type={inputType} {...iProps} />}
-      {suffix && <span class="h-4 opacity-50">{comp(suffix)}</span>}
+          <textarea class="FieldTextarea" {...iProps} />
+          : <input class="FieldText" type={inputType} {...iProps} />}
+      {suffix && <span class="FieldSuffix">{comp(suffix)}</span>}
     </label>
   );
 };
@@ -255,10 +256,10 @@ const FieldInput = (props: FieldInputProps) => {
   }
 
   return (
-    <label class={cls('form-control w-full', className)}>
+    <label class={cls('FieldControl', `FieldControl-${type}`, className)}>
       {label && (
-        <div class="label">
-          <span class="label-text">{label}{required ? ' *' : ''}</span>
+        <div class="FieldLabel">
+          <span class="FieldLabelText">{label}{required ? ' *' : ''}</span>
         </div>
       )}
       {type === 'select' ?
@@ -267,9 +268,10 @@ const FieldInput = (props: FieldInputProps) => {
           <CheckboxInput {...inputProps} onValue={onValue} />
           : <TextInput type={type} {...inputProps} />}
       {(error || help) && (
-        <div class="label">
-          {error && <span class="label-text-alt text-error">{error}</span>}
-          {!error && help && <span class="label-text-alt opacity-50">{help}</span>}
+        <div class="FieldAlt">
+          <span class={error ? 'FieldError' : 'FieldHelp'}>
+            {error || help}
+          </span>
         </div>
       )}
     </label>

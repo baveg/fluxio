@@ -3,23 +3,26 @@
 @layer components {
   .Portal {
     @apply fixed inset-0 z-30 pointer-events-none;
+    @apply transition-all;
+    @apply opacity-0;
   }
 
   .Portal>* {
     @apply pointer-events-auto;
   }
 
-  .Portal-init,
+  /* .Portal-init,
   .Portal-close {
     @apply opacity-0;
-  }
+  } */
 
   .Portal-open {
     @apply opacity-100;
-    transition: all 300ms ease-out;
+    /* transition: all 300ms ease-out; */
+    /* @apply transition-all; */
   }
 
-  .Portal-close {
+  /* .Portal-close {
     transition: all 300ms ease-in;
-  }
+  } */
 }

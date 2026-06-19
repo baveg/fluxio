@@ -1,0 +1,83 @@
+@tailwind components;
+
+@layer components {
+  .FieldControl {
+    @apply form-control w-full;
+  }
+
+  .FieldLabel {
+    @apply label pb-0.5;
+  }
+
+  .FieldLabelText {
+    @apply label-text;
+  }
+
+  .FieldAlt {
+    @apply label pt-0.5;
+  }
+
+  .FieldError {
+    @apply label-text-alt text-error;
+  }
+
+  .FieldHelp {
+    @apply label-text-alt opacity-50;
+  }
+
+  .PasswordToggleBtn {
+    @apply h-4 opacity-50 hover:opacity-100 cursor-pointer;
+  }
+
+  .PasswordToggleIcon {
+    @apply h-4;
+  }
+
+  .PasswordInput {
+    @apply grow;
+  }
+
+  .CheckboxLabel {
+    @apply cursor-pointer label;
+  }
+
+  .CheckboxIcon {
+    @apply h-4 opacity-50;
+  }
+
+  .CheckboxPrefix {
+    @apply h-4 opacity-50;
+  }
+
+  .CheckboxInput {
+    @apply checkbox checkbox-info;
+  }
+
+  .CheckboxSuffix {
+    @apply opacity-50;
+  }
+
+  .FieldInput {
+    @apply input input-bordered flex items-center gap-2 outline-none focus-within:outline-none;
+  }
+
+  .FieldIcon {
+    @apply h-4 w-4 opacity-70;
+  }
+
+  .FieldPrefix {
+    @apply opacity-50;
+  }
+
+  .FieldTextarea {
+    @apply textarea textarea-ghost outline-none focus:outline-none;
+  }
+
+  .FieldText {
+    @apply grow min-w-0 outline-none focus:outline-none;
+  }
+
+  .FieldSuffix {
+    @apply opacity-50;
+  }
+}

@@ -37,8 +37,8 @@ const SelectList = ({
   return (
     <div class="SelectList">
       {items?.map(([v, lbl]) => (
-        <div class="relative">
-          <Button
+        <div class="SelectItem">
+          <button
             class={cls('SelectBtn', v === value && 'SelectBtn-active')}
             onClick={(e) => {
               log.d('SelectBtn clicked', { value: v, isActive: v === value });
@@ -47,19 +47,18 @@ const SelectList = ({
             }}
           >
             {comp(lbl)}
-          </Button>
+          </button>
           {v === value && (
-            <Button
+            <button
               class="SelectClear"
-              ghost
-              circle
               onClick={(e) => {
                 log.d('Clear button (X) clicked', { currentValue: value });
                 stopEvent(e);
                 onPick(null);
               }}
-              icon={XIcon}
-            />
+            >
+              <XIcon />
+            </button>
           )}
         </div>
       ))}
@@ -108,7 +107,7 @@ export const SelectInput = ({
       const [left, bottom, width] = getElBounds(buttonEl) || VECTOR4_ZERO;
       return {
         // top: `${bottom + 4}px`,
-        top: `${bottom}px`,
+        top: `${bottom - 1}px`,
         left: `${left}px`,
         width: `${width}px`,
       };
@@ -143,7 +142,7 @@ export const SelectInput = ({
     };
 
     // Timer pour rafraîchir la position
-    const u1 = onInterval(updatePosition, 100);
+    const u1 = onInterval(updatePosition, 500);
 
     return () => {
       u1();
@@ -166,16 +165,11 @@ export const SelectInput = ({
         if (!isOpen) onOpen?.();
       }}
     >
-      {icon && comp(icon, { class: 'h-4 opacity-50' })}
+      {icon && comp(icon, { class: 'SelectIcon' })}
       {prefix && <span class="SelectPrefix">{comp(prefix)}</span>}
-      <span class="grow">{item[1] || <span class="opacity-50">{placeholder}</span>}</span>
+      <span class="grow">{item[1] || <span class="SelectPlaceholder">{placeholder}</span>}</span>
       {suffix && <span class="SelectSuffix">{comp(suffix)}</span>}
-      <ChevronDownIcon
-        class={cls(
-          'SelectChevron',
-          isOpen && 'SelectChevron-open',
-        )}
-      />
+      <ChevronDownIcon class={cls('SelectChevron', isOpen && 'SelectChevron-open')} />
     </button>
   );
 };

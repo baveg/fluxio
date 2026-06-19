@@ -107,7 +107,8 @@ export const SelectInput = ({
     const getStyle = () => {
       const [left, bottom, width] = getElBounds(buttonEl) || VECTOR4_ZERO;
       return {
-        top: `${bottom + 4}px`,
+        // top: `${bottom + 4}px`,
+        top: `${bottom}px`,
         left: `${left}px`,
         width: `${width}px`,
       };
@@ -155,7 +156,11 @@ export const SelectInput = ({
     <button
       ref={ref}
       type="button"
-      class={cls('SelectInput', error && 'input-error')}
+      class={cls(
+        'SelectInput',
+        isOpen && 'SelectInput-open',
+        error && 'input-error'
+      )}
       onClick={() => {
         setIsOpen(true);
         onOpen?.();

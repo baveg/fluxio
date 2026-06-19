@@ -1,16 +1,19 @@
 @tailwind components;
 
 @layer components {
-  .Portal {
-    transition: all 300ms ease;
-  }
 
   .Portal-init,
   .Portal-close {
     opacity: 0;
+    pointer-events: none;
   }
 
   .Portal-open {
     opacity: 1;
+    transition: all 200ms ease-out;
+  }
+
+  .Portal-close {
+    transition: all 500ms ease-in;
   }
 }

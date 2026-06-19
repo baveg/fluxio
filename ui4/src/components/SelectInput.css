@@ -24,8 +24,8 @@
   }
 
   .SelectDropdownPortal {
-    @apply fixed z-50 shadow p-2 max-h-80 overflow-auto;
-    @apply bg-base-100 border border-base-300 rounded-lg;
+    @apply overflow-hidden fixed z-50;
+    transition: all 150ms ease;
   }
 
   .SelectBtn {
@@ -40,5 +40,27 @@
   .SelectClearBtn {
     @apply absolute right-0 top-1/2 -translate-y-1/2 p-1;
     @apply hover:bg-red-100 transition-colors;
+  }
+
+  .SelectContent {
+    @apply shadow p-2 max-h-80 overflow-auto;
+    @apply bg-base-100 border border-base-300 rounded-lg;
+    transition: all 150ms ease;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .Portal-init .SelectContent,
+  .Portal-close .SelectContent {
+    transform: translateY(-100%);
+  }
+
+  .Portal-open .SelectContent {
+    transform: translateY(0%);
+  }
+
+  .SelectInput-open {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 }

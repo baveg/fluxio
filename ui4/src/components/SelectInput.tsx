@@ -50,7 +50,7 @@ const SelectList = ({
           </Button>
           {v === value && (
             <Button
-              class="SelectClearBtn"
+              class="SelectClear"
               ghost
               circle
               onClick={(e) => {
@@ -167,13 +167,13 @@ export const SelectInput = ({
       }}
     >
       {icon && comp(icon, { class: 'h-4 opacity-50' })}
-      {prefix && <span class="SelectInputPrefix">{comp(prefix)}</span>}
+      {prefix && <span class="SelectPrefix">{comp(prefix)}</span>}
       <span class="grow">{item[1] || <span class="opacity-50">{placeholder}</span>}</span>
-      {suffix && <span class="SelectInputSuffix">{comp(suffix)}</span>}
+      {suffix && <span class="SelectSuffix">{comp(suffix)}</span>}
       <ChevronDownIcon
         class={cls(
-          'SelectInputChevron',
-          isOpen && 'SelectInputChevron-open',
+          'SelectChevron',
+          isOpen && 'SelectChevron-open',
         )}
       />
     </button>

@@ -8,19 +8,19 @@
     @apply outline-none focus:outline-none;
   }
 
-  .SelectInputPrefix {
+  .SelectPrefix {
     @apply h-4 opacity-50;
   }
 
-  .SelectInputSuffix {
+  .SelectSuffix {
     @apply opacity-50;
   }
 
-  .SelectInputChevron {
+  .SelectChevron {
     @apply w-5 h-5 opacity-50 shrink-0 text-gray-500 transition-transform;
   }
 
-  .SelectInputChevron-open {
+  .SelectChevron-open {
     @apply rotate-180;
   }
 
@@ -61,7 +61,7 @@
     @apply font-bold;
   }
 
-  .SelectClearBtn {
+  .SelectClear {
     @apply absolute right-0 top-1/2 -translate-y-1/2 p-1;
     @apply hover:bg-red-100 transition-colors;
   }

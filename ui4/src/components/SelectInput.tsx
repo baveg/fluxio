@@ -25,7 +25,7 @@ interface SelectInputProps {
   onOpen?: () => void;
 }
 
-const SelectContent = ({
+const SelectList = ({
   value,
   items,
   onPick,
@@ -35,7 +35,7 @@ const SelectContent = ({
   onPick: (value: any) => void;
 }) => {
   return (
-    <div class="SelectContent">
+    <div class="SelectList">
       {items?.map(([v, lbl]) => (
         <div class="relative">
           <Button
@@ -114,23 +114,29 @@ export const SelectInput = ({
       };
     };
 
-    const { onClose: closePortal, el: portalEl } = openPortal(() => (
-      <div
-        class="SelectDropdownPortal"
-        onMouseDown={(e) => {
-          log.d('dropdown mousedown - stopping propagation');
-          stopEvent(e);
-        }}
-        style={getStyle()}
-      >
-        <SelectContent value={props.value} items={props.items} onPick={handlePick} />
+    const { onClose: closePortal, el: portalEl } = openPortal(({ onClose }) => (
+      <div class="SelectMask" onClick={(e) => {
+        stopEvent(e);
+        onClose();
+        setIsOpen(false);
+      }}>
+        <div
+          class="SelectBox"
+          onMouseDown={(e) => {
+            log.d('dropdown mousedown - stopping propagation');
+            stopEvent(e);
+          }}
+          style={getStyle()}
+        >
+          <SelectList value={props.value} items={props.items} onPick={handlePick} />
+        </div>
       </div>
     ));
 
     // Fonction pour mettre à jour la position du portal
     const updatePosition = () => {
       console.debug('updatePosition');
-      const div = portalEl.firstElementChild;
+      const div = portalEl.firstElementChild?.firstElementChild;
       if (div instanceof HTMLElement) {
         Object.assign(div.style, getStyle());
       }
@@ -139,15 +145,8 @@ export const SelectInput = ({
     // Timer pour rafraîchir la position
     const u1 = onInterval(updatePosition, 100);
 
-    // Gestion du clic en dehors
-    const u2 = onClickOutside(portalEl, () => {
-      log.d('Click outside detected');
-      setIsOpen(false);
-    });
-
     return () => {
       u1();
-      u2();
       closePortal();
     };
   }, [isOpen]);
@@ -161,9 +160,10 @@ export const SelectInput = ({
         isOpen && 'SelectInput-open',
         error && 'input-error'
       )}
-      onClick={() => {
-        setIsOpen(true);
-        onOpen?.();
+      onClick={(e) => {
+        stopEvent(e);
+        setIsOpen(!isOpen);
+        if (!isOpen) onOpen?.();
       }}
     >
       {icon && comp(icon, { class: 'h-4 opacity-50' })}

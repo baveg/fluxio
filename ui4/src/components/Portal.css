@@ -1,19 +1,25 @@
 @tailwind components;
 
 @layer components {
+  .Portal {
+    @apply fixed inset-0 z-30 pointer-events-none;
+  }
+
+  .Portal>* {
+    @apply pointer-events-auto;
+  }
 
   .Portal-init,
   .Portal-close {
-    opacity: 0;
-    pointer-events: none;
+    @apply opacity-0;
   }
 
   .Portal-open {
-    opacity: 1;
-    transition: all 200ms ease-out;
+    @apply opacity-100;
+    transition: all 300ms ease-out;
   }
 
   .Portal-close {
-    transition: all 500ms ease-in;
+    transition: all 300ms ease-in;
   }
 }

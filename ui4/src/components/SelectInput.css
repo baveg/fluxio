@@ -5,6 +5,7 @@
     @apply input input-bordered w-full;
     @apply flex items-center justify-between gap-2 cursor-pointer;
     @apply cursor-pointer text-left;
+    @apply outline-none focus:outline-none;
   }
 
   .SelectInputPrefix {
@@ -23,9 +24,32 @@
     @apply rotate-180;
   }
 
-  .SelectDropdownPortal {
+  .SelectMask {
+    @apply fixed inset-0 bg-black/50 z-30;
+  }
+
+  .SelectBox {
     @apply overflow-hidden fixed z-50;
-    transition: all 150ms ease;
+    transition: all 100ms ease;
+  }
+
+  .SelectList {
+    @apply shadow p-2 max-h-80 overflow-auto;
+    @apply bg-base-100 border border-base-300 rounded-lg rounded-t-none;
+    transition: all 300ms ease;
+  }
+
+  .Portal-init .SelectList,
+  .Portal-close .SelectList {
+    @apply -translate-y-full;
+  }
+
+  .Portal-open .SelectList {
+    @apply translate-y-0;
+  }
+
+  .SelectInput-open {
+    @apply z-40 rounded-b-none;
   }
 
   .SelectBtn {
@@ -40,27 +64,5 @@
   .SelectClearBtn {
     @apply absolute right-0 top-1/2 -translate-y-1/2 p-1;
     @apply hover:bg-red-100 transition-colors;
-  }
-
-  .SelectContent {
-    @apply shadow p-2 max-h-80 overflow-auto;
-    @apply bg-base-100 border border-base-300 rounded-lg;
-    transition: all 150ms ease;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-
-  .Portal-init .SelectContent,
-  .Portal-close .SelectContent {
-    transform: translateY(-100%);
-  }
-
-  .Portal-open .SelectContent {
-    transform: translateY(0%);
-  }
-
-  .SelectInput-open {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
   }
 }

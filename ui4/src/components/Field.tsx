@@ -194,14 +194,14 @@ const handleLabelClick = (e: MouseEvent) => {
 const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps) => {
   const inputType = type === 'datetime' ? 'datetime-local' : type || 'text';
   return (
-    <label class={cls('input input-bordered flex items-center gap-2', error && 'input-error')} onClick={handleLabelClick}>
+    <label class={cls('input input-bordered flex items-center gap-2 outline-none focus-within:outline-none', error && 'input-error')} onClick={handleLabelClick}>
       {icon && comp(icon, { class: 'h-4 w-4 opacity-70' })}
       {prefix && <span class="h-4 opacity-50">{comp(prefix)}</span>}
       {type === 'password' ?
         <PasswordInput {...iProps} />
         : type === 'multiline' ?
-          <textarea class="textarea textarea-ghost" {...iProps} />
-          : <input class="grow min-w-0" type={inputType} {...iProps} />}
+          <textarea class="textarea textarea-ghost outline-none focus:outline-none" {...iProps} />
+          : <input class="grow min-w-0 outline-none focus:outline-none" type={inputType} {...iProps} />}
       {suffix && <span class="h-4 opacity-50">{comp(suffix)}</span>}
     </label>
   );

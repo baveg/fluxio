@@ -37,7 +37,7 @@ export const openPortal = (
       render(null, el);
       el.remove();
       if (afterOnClose) afterOnClose();
-    }, SECOND);
+    }, 350);
   };
 
   render(comp(content, { onClose, el }), el);

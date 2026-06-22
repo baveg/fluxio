@@ -23,7 +23,11 @@ export const Tooltip = ({ target, children, class: extraCls, ...props }: Tooltip
     <div
       {...props}
       class={cls('absolute select-none pointer-events-none z-[9999]', extraCls)}
-      style={{ top, left, width, height }}
+      // pointer-events inline : la classe `pointer-events-none` est sinon écrasée par
+      // la règle `.Portal > * { pointer-events-auto }`, ce qui fait que ce div (placé
+      // pile sur la cible) capte la souris → mouseleave → tooltip détruite → recréée
+      // en boucle (clignotement). Le style inline a priorité sur la classe.
+      style={{ top, left, width, height, pointerEvents: 'none' }}
     >
       <div class={cls('absolute left-1/2 -m-1 w-2 h-2 bg-base-100 rotate-45', arrowPos)} />
       <div

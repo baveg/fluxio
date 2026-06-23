@@ -58,7 +58,7 @@
   }
 
   .CheckboxInput {
-    @apply checkbox checkbox-info;
+    @apply checkbox checkbox-primary;
   }
 
   .CheckboxSuffix {

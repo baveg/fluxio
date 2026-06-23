@@ -18,7 +18,6 @@ import { stopEvent } from '@fluxio/core/html';
 import { logger } from '@fluxio/core/logger';
 import { useConstant } from '../hooks';
 import { defer } from '@fluxio/core/async';
-import { isNil } from '@fluxio/core/check';
 import './Field.css';
 
 const log = logger('Field');
@@ -120,6 +119,8 @@ interface FieldInputProps extends InputProps {
   label?: string;
   help?: string;
   delay?: number;
+  // Dispose le label à gauche et le champ à droite (layout horizontal)
+  row?: boolean;
 }
 
 const PasswordInput = (props: ElProps['input']) => {
@@ -171,7 +172,7 @@ const CheckboxInput = ({ error, icon, prefix, suffix, type, value, onChange, onI
         type="checkbox"
         class="CheckboxInput"
         checked={toBoolean(value)}
-        indeterminate={isNil(value)}
+        indeterminate={false}
         onClick={handleClick}
       />
       {suffix && <span class="CheckboxSuffix">{comp(suffix)}</span>}
@@ -209,7 +210,7 @@ const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps)
 };
 
 const FieldInput = (props: FieldInputProps) => {
-  const { label, help, class: className, onValue, delay = 400, value: propValue, required, ...inputProps } = props;
+  const { label, help, class: className, row, onValue, delay = 400, value: propValue, required, ...inputProps } = props;
   const { type, error } = inputProps;
 
   // Pas de delay pour les checkboxes et select (interactions instantanées)
@@ -256,7 +257,7 @@ const FieldInput = (props: FieldInputProps) => {
   }
 
   return (
-    <label class={cls('FieldControl', `FieldControl-${type}`, className)}>
+    <label class={cls('FieldControl', `FieldControl-${type}`, row && 'Field-row', className)}>
       {label && (
         <div class="FieldLabel">
           <span class="FieldLabelText">{label}{required ? ' *' : ''}</span>

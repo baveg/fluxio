@@ -5,9 +5,27 @@
     @apply form-control w-full;
   }
 
+  .FieldControl.Field-row {
+    @apply flex-row items-center justify-between gap-3;
+  }
+
+  .FieldControl.Field-row .FieldLabel {
+    @apply pb-0;
+  }
+
+  .FieldControl-checkbox.Field-row {
+    @apply flex-row-reverse items-center justify-end gap-2 px-2;
+  }
+
+  .FieldControl-checkbox.Field-row .FieldLabel {
+    @apply p-0 min-h-0 w-auto;
+  }
+
   .FieldLabel {
     @apply label pb-0.5;
   }
+
+
 
   .FieldLabelText {
     @apply label-text;
@@ -50,7 +68,14 @@
   }
 
   .CheckboxInput {
-    @apply checkbox checkbox-info;
+    @apply checkbox;
+    /* Remplissage orange de la marque quand la case est cochée (mécanisme daisyUI) */
+    --chkbg: theme('colors.primary.400');
+    --chkfg: #fff;
+  }
+
+  .CheckboxInput:checked {
+    @apply border-primary-400;
   }
 
   .CheckboxSuffix {

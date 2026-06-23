@@ -1,7 +1,7 @@
 import type { Dictionary } from '../types/Dictionary';
 import { req } from './req';
 import type { ReqOptions } from './types';
-import { getStorage } from '../storage/DataStorage';
+import { getStorage } from '../storage/getStorage';
 import { isFileOrBlob } from '../check/isFileOrBlob';
 import { logger } from '../logger';
 

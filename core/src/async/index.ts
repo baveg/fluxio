@@ -2,6 +2,8 @@ export * from './debounce';
 export * from './defer';
 export * from './onInterval';
 export * from './onTimeout';
+export * from './parallel';
+export * from './resolve';
 export * from './retry';
 export * from './sleep';
 export * from './throttle';

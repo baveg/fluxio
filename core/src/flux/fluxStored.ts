@@ -20,7 +20,7 @@ export const fluxStored = <T>(
     let isStoredInit = false;
     let stored: T | undefined;
 
-    storage.get(key).then((value) => {
+    storage.get<T>(key).then((value) => {
       isStoredInit = true;
 
       stored = value !== undefined && clean ? clean(value) : value;

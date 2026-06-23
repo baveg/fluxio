@@ -25,8 +25,12 @@
     }
 
     .ModalXBtn {
-        @apply text-base-content text-2xl leading-none hover:text-primary;
+        @apply text-base-content text-2xl leading-none;
         @apply btn-circle btn-ghost;
+    }
+
+    .ModalXBtn:hover {
+        color: hsl(var(--p));
     }
 
     .ModalContent {

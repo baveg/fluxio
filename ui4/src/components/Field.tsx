@@ -18,7 +18,6 @@ import { stopEvent } from '@fluxio/core/html';
 import { logger } from '@fluxio/core/logger';
 import { useConstant } from '../hooks';
 import { defer } from '@fluxio/core/async';
-import { isNil } from '@fluxio/core/check';
 import './Field.css';
 
 const log = logger('Field');
@@ -80,15 +79,6 @@ const useFluxInput = (type: InputType, v$: Flux<any>, delay = 200) => {
   log.d('render', name, type, value);
 
   const onValue = (value: any) => raw$.set(value);
-
-  if (type === 'checkbox' || type === 'toggle') {
-    return {
-      type,
-      checked: value === 'true',
-      indeterminate: value === '',
-      onValue,
-    };
-  }
 
   return {
     type,
@@ -158,7 +148,8 @@ const CheckboxInput = ({ error, icon, prefix, suffix, type, value, onChange, onI
       const next = !prev;
       console.debug('CheckboxInput handleClick', prev, next, el, e);
       el.checked = next;
-      el.indeterminate = false;
+      // el.indeterminate = false;
+      // indeterminate={isEmpty(value)}
       if (onValue) onValue(next, e);
     });
   };
@@ -176,7 +167,7 @@ const CheckboxInput = ({ error, icon, prefix, suffix, type, value, onChange, onI
           type === 'toggle' && 'CheckboxInput-toggle'
         )}
         checked={toBoolean(value)}
-        indeterminate={isNil(value)}
+        indeterminate={false}
         onClick={handleClick}
       />
       {suffix && <span class="CheckboxSuffix">{comp(suffix)}</span>}

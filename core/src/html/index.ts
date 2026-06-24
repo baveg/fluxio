@@ -3,6 +3,7 @@ export * from './addJsFile';
 export * from './attributes';
 export * from './autoHide';
 export * from './autoScrollEnd';
+export * from './browser';
 export * from './clipboard';
 export * from './cls';
 export * from './createEl';

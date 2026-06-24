@@ -61,6 +61,10 @@
     @apply checkbox checkbox-primary;
   }
 
+  .CheckboxInput-toggle {
+    @apply toggle toggle-primary;
+  }
+
   .CheckboxSuffix {
     @apply opacity-50;
   }

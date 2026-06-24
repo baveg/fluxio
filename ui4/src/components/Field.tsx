@@ -33,6 +33,7 @@ export type InputType =
   | 'float'
   | 'json'
   | 'checkbox'
+  | 'toggle'
   | 'color'
   | 'date'
   | 'datetime'
@@ -51,7 +52,7 @@ const valueToRaw = (value: any, type: InputType): string =>
 const rawToValue = (raw: string, type: InputType): any =>
   type === 'int' ? toInt(raw)
     : type === 'float' ? toFloat(raw)
-      : type === 'checkbox' ?
+      : (type === 'checkbox' || type === 'toggle') ?
         raw === '' ?
           null
           : toBoolean(raw)
@@ -80,7 +81,7 @@ const useFluxInput = (type: InputType, v$: Flux<any>, delay = 200) => {
 
   const onValue = (value: any) => raw$.set(value);
 
-  if (type === 'checkbox') {
+  if (type === 'checkbox' || type === 'toggle') {
     return {
       type,
       checked: value === 'true',
@@ -170,7 +171,10 @@ const CheckboxInput = ({ error, icon, prefix, suffix, type, value, onChange, onI
       {prefix && <span class="CheckboxPrefix">{comp(prefix)}</span>}
       <input
         type="checkbox"
-        class="CheckboxInput"
+        class={cls(
+          'CheckboxInput',
+          type === 'toggle' && 'CheckboxInput-toggle'
+        )}
         checked={toBoolean(value)}
         indeterminate={isNil(value)}
         onClick={handleClick}
@@ -214,7 +218,7 @@ const FieldInput = (props: FieldInputProps) => {
   const { type, error } = inputProps;
 
   // Pas de delay pour les checkboxes et select (interactions instantanées)
-  const effectiveDelay = type === 'checkbox' || type === 'select' ? 0 : delay;
+  const effectiveDelay = type === 'checkbox' || type === 'toggle' || type === 'select' ? 0 : delay;
 
   // Si on a un delay, on gère un état local pour la saisie
   const [localValue, setLocalValue] = useState(propValue);
@@ -265,7 +269,7 @@ const FieldInput = (props: FieldInputProps) => {
       )}
       {type === 'select' ?
         <SelectInput {...inputProps} onValue={onValue} />
-        : type === 'checkbox' ?
+        : (type === 'checkbox' || type === 'toggle') ?
           <CheckboxInput {...inputProps} onValue={onValue} />
           : <TextInput type={type} {...inputProps} />}
       {(error || help) && (

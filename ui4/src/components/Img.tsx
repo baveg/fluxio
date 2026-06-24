@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useState, useRef } from 'preact/hooks';
 import { setUrlParams } from '@fluxio/core/url/setUrlParams';
 import { ElProps } from './types';
 import { isBoolean } from '@fluxio/core/check';
 import { isOnLine$ } from '@fluxio/core/url';
-import { useFlux } from '../hooks';
+import { useFlux, useIsVisible } from '../hooks';
 
 export type ImgProps = ElProps['img'] & {
   thumbUrl?: string;
@@ -32,20 +32,28 @@ export const Img = ({
   const cachedThumbUrl = withCached(thumbUrl || url, thumbCached === false ? false : (thumbCached || cached));
   const cachedUrl = withCached(url, cached);
   const [loaded, setLoaded] = useState('');
+  const imgRef = useRef<HTMLImageElement>(null);
+  const isVisible = useIsVisible(imgRef);
   const isOnLine = useFlux(isOnLine$);
 
+  // Chargement de l'image HD quand visible
   useEffect(() => {
-    if (!cachedUrl || !isOnLine || loaded === cachedUrl) return;
+    if (!cachedUrl || !isOnLine || !isVisible || loaded === cachedUrl) return;
 
     const img = new window.Image();
     img.src = cachedUrl;
     img.onload = () => setLoaded(cachedUrl);
-  }, [cachedUrl, isOnLine, loaded]);
+  }, [cachedUrl, isOnLine, isVisible, loaded]);
+
+  const currentSrc = loaded || cachedThumbUrl || src;
+
+  console.debug('render', { isVisible, isOnLine, cachedThumbUrl, cachedUrl, loaded, src, currentSrc })
 
   return (
     <img
       {...props}
-      src={loaded || cachedThumbUrl || src}
+      ref={imgRef}
+      src={currentSrc}
       loading={loading}
       decoding={decoding}
       alt={alt}

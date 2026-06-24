@@ -5,6 +5,7 @@ export * from './useConstant';
 export * from './useCss';
 export * from './useFlux';
 export * from './useInterval';
+export * from './useIsVisible';
 export * from './useOver';
 export * from './usePromise';
 export * from './useSingleton';

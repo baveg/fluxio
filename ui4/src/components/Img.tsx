@@ -36,6 +36,14 @@ export const Img = ({
   const isVisible = useIsVisible(imgRef);
   const isOnLine = useFlux(isOnLine$);
 
+  // Préchargement du thumb immédiatement
+  useEffect(() => {
+    if (!cachedThumbUrl || !isOnLine) return;
+
+    const img = new window.Image();
+    img.src = cachedThumbUrl;
+  }, [cachedThumbUrl, isOnLine]);
+
   // Chargement de l'image HD quand visible
   useEffect(() => {
     if (!cachedUrl || !isOnLine || !isVisible || loaded === cachedUrl) return;

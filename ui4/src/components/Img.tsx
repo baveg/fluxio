@@ -31,7 +31,7 @@ export const Img = ({
 }: ImgProps) => {
   const cachedThumbUrl = withCached(thumbUrl || url, thumbCached === false ? false : (thumbCached || cached));
   const cachedUrl = withCached(url, cached);
-  const [loaded, setLoaded] = useState('');
+  const [currentSrc, setCurrentSrc] = useState(cachedThumbUrl || src);
   const imgRef = useRef<HTMLImageElement>(null);
   const isVisible = useIsVisible(imgRef);
   const isOnLine = useFlux(isOnLine$);
@@ -42,20 +42,19 @@ export const Img = ({
 
     const img = new window.Image();
     img.src = cachedThumbUrl;
+    img.onload = () => setCurrentSrc(cachedThumbUrl);
   }, [cachedThumbUrl, isOnLine]);
 
   // Chargement de l'image HD quand visible
   useEffect(() => {
-    if (!cachedUrl || !isOnLine || !isVisible || loaded === cachedUrl) return;
+    if (!cachedUrl || !isOnLine || !isVisible || currentSrc === cachedUrl) return;
 
     const img = new window.Image();
     img.src = cachedUrl;
-    img.onload = () => setLoaded(cachedUrl);
-  }, [cachedUrl, isOnLine, isVisible, loaded]);
+    img.onload = () => setCurrentSrc(cachedUrl);
+  }, [cachedUrl, isOnLine, isVisible, currentSrc]);
 
-  const currentSrc = loaded || cachedThumbUrl || src;
-
-  console.debug('render', { isVisible, isOnLine, cachedThumbUrl, cachedUrl, loaded, src, currentSrc })
+  console.debug('render', { isVisible, isOnLine, cachedThumbUrl, cachedUrl, src, currentSrc })
 
   return (
     <img

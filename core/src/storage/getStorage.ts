@@ -160,9 +160,15 @@ export const dbStorage = async (name: string): Promise<DataStore> => {
   };
 };
 
+let storageProvider = (name: string) => dbStorage(name).catch(() => jsonStorage(name) || ramStorage(name));
+
+export const setStorageProvider = (factory: typeof storageProvider) => {
+  storageProvider = factory;
+}
+
 export const newStorage = (name: string): DataStore => {
   log.d('new', name);
-  const p = dbStorage(name).catch(() => jsonStorage(name) || ramStorage(name));
+  const p = storageProvider(name);
   return {
     name,
     get: (key: string) => p.then(s => s.get(key)),

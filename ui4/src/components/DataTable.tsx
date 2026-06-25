@@ -153,7 +153,7 @@ export const DataTable = (({
   };
 
   return (
-    <div {...props} class={cls('overflow-x-auto', props)}>
+    <div {...props} class={cls('DataTable', props)}>
       <table class="table">
         <thead>
           <tr>

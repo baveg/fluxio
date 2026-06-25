@@ -5,16 +5,30 @@
         @apply overflow-x-auto;
     }
 
+    .DataTable tr:nth-child(even) {
+        background-color: oklch(var(--b2) / 0.1);
+    }
+
     .DataTable tr.row-success {
-        color: hsl(var(--su));
+        background-color: oklch(var(--su) / 0.1);
+        color: oklch(var(--su));
+    }
+    .DataTable tr.row-success:nth-child(even) {
+        background-color: oklch(var(--su) / 0.15);
     }
 
     .DataTable tr.row-error {
-        color: hsl(var(--er));
+        background-color: oklch(var(--er) / 0.1);
+        color: oklch(var(--er));
     }
-
-    .DataTable tr.row-selected {
-        background-color: hsl(var(--b3));
+    .DataTable tr.row-error:nth-child(even) {
+        background-color: oklch(var(--er) / 0.15);
+    }
+    
+    .DataTable tr.row-selected,
+    .DataTable tr:hover {
+        background-color: oklch(var(--p));
+        color: oklch(var(--p));
     }
 
     .DataTable td input,

@@ -27,7 +27,6 @@
     
     .DataTable tr.row-selected,
     .DataTable tr:hover {
-        background-color: oklch(var(--p));
         color: oklch(var(--p));
     }
 

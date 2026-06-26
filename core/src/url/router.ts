@@ -18,7 +18,9 @@ export const extractBaseUrl = (url: string) =>
   (url.replace('://', '::').split('/', 1)[0] || '').replace('::', '://');
 
 export const extractUrlSegments = (url: string) =>
-  removeIndex((url.replace('://', '').split('?', 1)[0] || '').split('/'), 0);
+  // On coupe avant la query (?) ET le fragment (#) : un ancrage type `#pricing-section`
+  // ne doit pas devenir un segment de route (sinon route bidon → mauvaise page).
+  removeIndex((url.replace('://', '').split(/[?#]/, 1)[0] || '').split('/'), 0);
 
 // URL Streams
 

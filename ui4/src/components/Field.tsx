@@ -252,7 +252,7 @@ const FieldInput = (props: FieldInputProps) => {
   }
 
   return (
-    <label class={cls('Field', `Field-${type}`, row && 'Field-row', className)}>
+    <label class={cls('Field', `Field-${type||'text'}`, row && 'Field-row', className)}>
       {label && (
         <div class="FieldLabel">
           <span class="FieldLabelText">{label}{required ? ' *' : ''}</span>

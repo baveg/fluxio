@@ -16,12 +16,12 @@
     }
 
     .ModalHeader {
-        @apply flex items-center justify-between pl-4 pr-0 py-1;
+        @apply flex items-center justify-between p-1;
         @apply border-b border-base-100;
     }
 
     .ModalTitle {
-        @apply uppercase font-bold text-base-content;
+        @apply uppercase font-bold text-base-content pl-3;
     }
 
     .ModalXBtn {

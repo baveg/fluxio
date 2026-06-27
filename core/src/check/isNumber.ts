@@ -9,4 +9,6 @@ export const isNegative = (v: any): v is number => isFloat(v) && v < 0;
 
 export const isUFloat = (v: any): v is number => isFloat(v) && v >= 0;
 
+export const isPositive = isUFloat;
+
 export const isUInt = (v: any): v is number => isInt(v) && v >= 0;

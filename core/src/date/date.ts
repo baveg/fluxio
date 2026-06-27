@@ -163,7 +163,7 @@ export const getYear = (d: DateLike) => toDate(d).getFullYear();
 export const setYear = (d: DateLike, v: number) => updateDate(d, (d) => d.setFullYear(v));
 
 /** Calculate full years between two dates - diffInYears('1990-02-09', '2025-02-09') -> 35 */
-export const diffInYears = (from: DateLike, to: DateLike = serverDate()): number => {
+export const diffInYears = (from: DateLike, to: DateLike): number => {
   const a = toDate(from);
   const b = toDate(to);
 
@@ -181,7 +181,7 @@ export const diffInYears = (from: DateLike, to: DateLike = serverDate()): number
 export const getAge = diffInYears;
 
 /** Calculate full months between two dates - diffInMonths('2020-01-15', '2025-02-09') -> 60 */
-export const diffInMonths = (from: DateLike, to: DateLike = serverDate()): number => {
+export const diffInMonths = (from: DateLike, to: DateLike): number => {
   const a = toDate(from);
   const b = toDate(to);
 
@@ -192,6 +192,31 @@ export const diffInMonths = (from: DateLike, to: DateLike = serverDate()): numbe
 
   return months;
 };
+
+/** Calculate days between two dates - diffInDays('2025-02-01', '2025-02-09') -> 8 */
+export const diffInDays = (from: DateLike, to: DateLike): number => (
+  floor((getTime(startOfDay(from)) - getTime(startOfDay(to))) / DAY)
+);
+
+/** Calculate hours between two dates - diffInHours('2025-02-09T10:00Z', '2025-02-09T15:00Z') -> 5 */
+export const diffInHours = (from: DateLike, to: DateLike): number => (
+  floor((getTime(to) - getTime(from)) / HOUR)
+);
+
+/** Calculate minutes between two dates - diffInMinutes('2025-02-09T10:00Z', '2025-02-09T10:30Z') -> 30 */
+export const diffInMinutes = (from: DateLike, to: DateLike): number => (
+  floor((getTime(to) - getTime(from)) / MINUTE)
+);
+
+/** Calculate seconds between two dates - diffInSeconds('2025-02-09T10:00:00Z', '2025-02-09T10:00:45Z') -> 45 */
+export const diffInSeconds = (from: DateLike, to: DateLike): number => (
+  floor((getTime(to) - getTime(from)) / SECOND)
+);
+
+/** Calculate milliseconds between two dates - diffInMs('2025-02-09T10:00:00.000Z', '2025-02-09T10:00:00.500Z') -> 500 */
+export const diffInMs = (from: DateLike, to: DateLike): number => (
+  getTime(to) - getTime(from)
+);
 
 ///// TIME /////
 

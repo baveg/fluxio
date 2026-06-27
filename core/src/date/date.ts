@@ -195,7 +195,7 @@ export const diffInMonths = (from: DateLike, to: DateLike): number => {
 
 /** Calculate days between two dates - diffInDays('2025-02-01', '2025-02-09') -> 8 */
 export const diffInDays = (from: DateLike, to: DateLike): number => (
-  floor((getTime(startOfDay(from)) - getTime(startOfDay(to))) / DAY)
+  floor((getTime(startOfDay(to)) - getTime(startOfDay(from))) / DAY)
 );
 
 /** Calculate hours between two dates - diffInHours('2025-02-09T10:00Z', '2025-02-09T15:00Z') -> 5 */

@@ -163,7 +163,7 @@ export const getYear = (d: DateLike) => toDate(d).getFullYear();
 export const setYear = (d: DateLike, v: number) => updateDate(d, (d) => d.setFullYear(v));
 
 /** Calculate full years between two dates - diffInYears('1990-02-09', '2025-02-09') -> 35 */
-export const diffInYears = (from: DateLike, to: DateLike): number => {
+export const diffInYears = (from: DateLike, to: DateLike = serverDate()): number => {
   const a = toDate(from);
   const b = toDate(to);
 

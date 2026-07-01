@@ -1,6 +1,6 @@
 export const extractVersion = (text: string): string => text.match(/\d+(?:\.\d+)+/)?.[0] ?? text;
 
-export const versionGte = (installed: string, required: string): boolean => {
+export const versionGte = (installed: string | undefined | null, required: string): boolean => {
   if (!installed) return false;
   const a = extractVersion(installed).split('.').map(Number);
   const b = extractVersion(required).split('.').map(Number);

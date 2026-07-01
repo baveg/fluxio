@@ -17,3 +17,4 @@ export * from './tr';
 export * from './truncate';
 export * from './upper';
 export * from './uuid';
+export * from './version';

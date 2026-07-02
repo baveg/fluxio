@@ -8,7 +8,7 @@ export const jsonStringify = (
   value: any,
   replacer?: ((this: any, key: string, value: any) => any) | undefined,
   space?: string | number | undefined,
-  depth: number = 3,
+  depth: number = 1,
 ): string => {
   try {
     return JSON.stringify(value, replacer, space);
@@ -30,12 +30,13 @@ export const jsonStringify = (
 
 export const jsonParse = (
   text: string | null | undefined,
-  reviver?: ((this: any, key: string, value: any) => any) | undefined
+  reviver?: ((this: any, key: string, value: any) => any) | undefined,
+  errorValue: any = null,
 ): any => {
   try {
     return text ? JSON.parse(text, reviver) : null;
   } catch (e) {
     log.e('parse', e);
-    return null;
+    return errorValue;
   }
 };

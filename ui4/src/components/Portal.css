@@ -7,7 +7,7 @@
     @apply opacity-0;
   }
 
-  .Portal>* {
+  .Portal > * {
     @apply pointer-events-auto;
   }
 

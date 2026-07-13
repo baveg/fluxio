@@ -24,8 +24,7 @@ export const toDate = (<TDef>(v: any, defVal?: TDef): Date | TDef | undefined =>
     const parts = v.split(':').map(Number);
     v = new Date();
     v.setHours(parts[0], parts[1], parts[2] || 0, 0);
-  }
-  else if (!isDate(v)) {
+  } else if (!isDate(v)) {
     v = new Date(v);
   }
   return isValidDate(v) ? v : defVal;

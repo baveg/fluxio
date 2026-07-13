@@ -1,42 +1,42 @@
 @tailwind components;
 
 @layer components {
-    .DataTable {
-        @apply overflow-x-auto;
-    }
+  .DataTable {
+    @apply overflow-x-auto;
+  }
 
-    .DataTable tr:nth-child(even) {
-        background-color: oklch(var(--b2) / 0.1);
-    }
+  .DataTable tr:nth-child(even) {
+    background-color: oklch(var(--b2) / 0.1);
+  }
 
-    .DataTable tr.row-success {
-        background-color: oklch(var(--su) / 0.1);
-        color: oklch(var(--su));
-    }
-    .DataTable tr.row-success:nth-child(even) {
-        background-color: oklch(var(--su) / 0.15);
-    }
+  .DataTable tr.row-success {
+    background-color: oklch(var(--su) / 0.1);
+    color: oklch(var(--su));
+  }
+  .DataTable tr.row-success:nth-child(even) {
+    background-color: oklch(var(--su) / 0.15);
+  }
 
-    .DataTable tr.row-error {
-        background-color: oklch(var(--er) / 0.1);
-        color: oklch(var(--er));
-    }
-    .DataTable tr.row-error:nth-child(even) {
-        background-color: oklch(var(--er) / 0.15);
-    }
-    
-    .DataTable tr.row-selected,
-    .DataTable tr:hover {
-        color: oklch(var(--p));
-    }
+  .DataTable tr.row-error {
+    background-color: oklch(var(--er) / 0.1);
+    color: oklch(var(--er));
+  }
+  .DataTable tr.row-error:nth-child(even) {
+    background-color: oklch(var(--er) / 0.15);
+  }
 
-    .DataTable td input,
-    .DataTable th input {
-        background: transparent;
-        border: 0;
-    }
+  .DataTable tr.row-selected,
+  .DataTable tr:hover {
+    color: oklch(var(--p));
+  }
 
-    .DataTable .Field {
-        width: 100%;
-    }
+  .DataTable td input,
+  .DataTable th input {
+    background: transparent;
+    border: 0;
+  }
+
+  .DataTable .Field {
+    width: 100%;
+  }
 }

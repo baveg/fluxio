@@ -29,7 +29,7 @@ export interface ButtonProps {
   onClick?: (e: Event) => void;
   children?: any;
   href?: string;
-  target?: "_blank";
+  target?: '_blank';
 }
 
 export const Button = ({
@@ -97,7 +97,12 @@ export const Button = ({
 
   return (
     <button
-      type={submit ? 'submit' : reset ? 'reset' : 'button'}
+      type={
+        submit ? 'submit'
+        : reset ?
+          'reset'
+        : 'button'
+      }
       disabled={disabled || loading}
       class={className}
       {...tooltipProps(tooltip)}

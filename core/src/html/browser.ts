@@ -1,5 +1,4 @@
-import { glb } from "../glb";
-
+import { glb } from '../glb';
 
 /**
  * Nettoie complètement le stockage du navigateur
@@ -15,7 +14,7 @@ export const clearBrowser = () => {
   sessionStorage?.clear?.();
 
   // Nettoyer les cookies
-  document?.cookie?.split(';').forEach(cookie => {
+  document?.cookie?.split(';').forEach((cookie) => {
     const name = cookie.split('=')[0]?.trim();
     if (name) {
       document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
@@ -23,8 +22,8 @@ export const clearBrowser = () => {
   });
 
   // Nettoyer IndexedDB (si utilisé par Pinia)
-  indexedDB?.databases?.().then(databases => {
-    databases.forEach(db => {
+  indexedDB?.databases?.().then((databases) => {
+    databases.forEach((db) => {
       if (db.name) indexedDB.deleteDatabase(db.name);
     });
   });
@@ -33,4 +32,4 @@ export const clearBrowser = () => {
 export const reloadBrowser = () => {
   const { location } = glb;
   location?.reload?.();
-}
+};

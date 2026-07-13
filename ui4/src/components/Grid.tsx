@@ -58,8 +58,7 @@ export type GridCol<T extends {} = any, C extends {} = any> = {
 };
 
 export type ArrayGridCol<T extends {} = any, C extends {} = any> =
-  | [GridColTitle, GridColVal<T, C>]
-  | [GridColTitle, GridColVal<T, C>, GridCol<T>];
+  [GridColTitle, GridColVal<T, C>] | [GridColTitle, GridColVal<T, C>, GridCol<T>];
 
 export type GridComputedCol = GridCol & {
   key: string;

@@ -194,29 +194,23 @@ export const diffInMonths = (from: DateLike, to: DateLike): number => {
 };
 
 /** Calculate days between two dates - diffInDays('2025-02-01', '2025-02-09') -> 8 */
-export const diffInDays = (from: DateLike, to: DateLike): number => (
-  floor((getTime(startOfDay(to)) - getTime(startOfDay(from))) / DAY)
-);
+export const diffInDays = (from: DateLike, to: DateLike): number =>
+  floor((getTime(startOfDay(to)) - getTime(startOfDay(from))) / DAY);
 
 /** Calculate hours between two dates - diffInHours('2025-02-09T10:00Z', '2025-02-09T15:00Z') -> 5 */
-export const diffInHours = (from: DateLike, to: DateLike): number => (
-  floor((getTime(to) - getTime(from)) / HOUR)
-);
+export const diffInHours = (from: DateLike, to: DateLike): number =>
+  floor((getTime(to) - getTime(from)) / HOUR);
 
 /** Calculate minutes between two dates - diffInMinutes('2025-02-09T10:00Z', '2025-02-09T10:30Z') -> 30 */
-export const diffInMinutes = (from: DateLike, to: DateLike): number => (
-  floor((getTime(to) - getTime(from)) / MINUTE)
-);
+export const diffInMinutes = (from: DateLike, to: DateLike): number =>
+  floor((getTime(to) - getTime(from)) / MINUTE);
 
 /** Calculate seconds between two dates - diffInSeconds('2025-02-09T10:00:00Z', '2025-02-09T10:00:45Z') -> 45 */
-export const diffInSeconds = (from: DateLike, to: DateLike): number => (
-  floor((getTime(to) - getTime(from)) / SECOND)
-);
+export const diffInSeconds = (from: DateLike, to: DateLike): number =>
+  floor((getTime(to) - getTime(from)) / SECOND);
 
 /** Calculate milliseconds between two dates - diffInMs('2025-02-09T10:00:00.000Z', '2025-02-09T10:00:00.500Z') -> 500 */
-export const diffInMs = (from: DateLike, to: DateLike): number => (
-  getTime(to) - getTime(from)
-);
+export const diffInMs = (from: DateLike, to: DateLike): number => getTime(to) - getTime(from);
 
 ///// TIME /////
 

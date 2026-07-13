@@ -19,8 +19,8 @@ export const DEFAULT_STORE = 'default';
 
 export interface DataStore {
   name: string;
-  get: <T=unknown>(key: string) => Promise<T>;
-  set: <T=unknown>(key: string, value: T) => Promise<void>;
+  get: <T = unknown>(key: string) => Promise<T>;
+  set: <T = unknown>(key: string, value: T) => Promise<void>;
   rm: (key: string) => Promise<void>;
   keys: () => Promise<string[]>;
   clear: () => Promise<void>;
@@ -88,16 +88,14 @@ export const jsonStorage = (name: string): DataStore | undefined => {
     return resolve(keys);
   };
 
-  const clear = () => keys().then(
-    ks => parallel(ks.map(k => rm(k))).then(toVoid)
-  )
+  const clear = () => keys().then((ks) => parallel(ks.map((k) => rm(k))).then(toVoid));
 
   return { name, get, set, rm, keys, clear };
 };
 
 export const dbStorage = async (name: string): Promise<DataStore> => {
   const indexedDB = glb.indexedDB;
-  if (!indexedDB) throw toError('no db');;
+  if (!indexedDB) throw toError('no db');
 
   log.d('db', name);
 
@@ -107,8 +105,8 @@ export const dbStorage = async (name: string): Promise<DataStore> => {
       r.onerror = () => reject(r.error);
     });
   };
-  
-  let _db: Promise<IDBDatabase>|null = null;
+
+  let _db: Promise<IDBDatabase> | null = null;
   const openDb = async (recreate = false) => {
     if (!_db || recreate) {
       const openRequest = indexedDB.open(name, 1);
@@ -120,9 +118,14 @@ export const dbStorage = async (name: string): Promise<DataStore> => {
     return _db;
   };
 
-  const action = async <T>(name: String, key: String, cb: (store: IDBObjectStore) => IDBRequest<T>, isReadonly = false) => {
+  const action = async <T>(
+    name: String,
+    key: String,
+    cb: (store: IDBObjectStore) => IDBRequest<T>,
+    isReadonly = false
+  ) => {
     let err;
-    for (let i=0; i<3; i++) {
+    for (let i = 0; i < 3; i++) {
       try {
         log.d(name, key);
         const db = await openDb(i > 0);
@@ -130,20 +133,20 @@ export const dbStorage = async (name: string): Promise<DataStore> => {
           .transaction(DB_STORE, isReadonly ? 'readonly' : 'readwrite')
           .objectStore(DB_STORE);
         return await toPromise(cb(store));
-      }
-      catch (e) {
+      } catch (e) {
         err = e;
         log.w(name, key, e);
       }
     }
     throw err;
-  }
+  };
 
-  const get = (key: string) => action('get', key, s => s.get(key), true);
-  const set = (key: string, value: any) => action('set', key, s => s.put(value, key)).then(toVoid);
-  const rm = (key: string) => action('delete', key, s => s.delete(key));
-  const keys = () => action('keys', '', s => s.getAllKeys(), true).then((k) => k.map(toString));
-  const clear = () => action('clear', '', s => s.clear(), true);
+  const get = (key: string) => action('get', key, (s) => s.get(key), true);
+  const set = (key: string, value: any) =>
+    action('set', key, (s) => s.put(value, key)).then(toVoid);
+  const rm = (key: string) => action('delete', key, (s) => s.delete(key));
+  const keys = () => action('keys', '', (s) => s.getAllKeys(), true).then((k) => k.map(toString));
+  const clear = () => action('clear', '', (s) => s.clear(), true);
 
   await set('__', { ok: 1 });
   const test = await get('__');
@@ -160,26 +163,26 @@ export const dbStorage = async (name: string): Promise<DataStore> => {
   };
 };
 
-let storageProvider = (name: string) => dbStorage(name).catch(() => jsonStorage(name) || ramStorage(name));
+let storageProvider = (name: string) =>
+  dbStorage(name).catch(() => jsonStorage(name) || ramStorage(name));
 
 export const setStorageProvider = (factory: typeof storageProvider) => {
   storageProvider = factory;
-}
+};
 
 export const newStorage = (name: string): DataStore => {
   log.d('new', name);
   const p = storageProvider(name);
   return {
     name,
-    get: (key: string) => p.then(s => s.get(key)),
-    set: (key: string, value: any) => p.then(s => s.set(key, value)),
-    rm: (key: string) => p.then(s => s.rm(key)),
-    keys: () => p.then(s => s.keys()),
-    clear: () => p.then(s => s.clear()),
+    get: (key: string) => p.then((s) => s.get(key)),
+    set: (key: string, value: any) => p.then((s) => s.set(key, value)),
+    rm: (key: string) => p.then((s) => s.rm(key)),
+    keys: () => p.then((s) => s.keys()),
+    clear: () => p.then((s) => s.clear()),
   };
 };
 
 export const storageByName: Dictionary<DataStore> = {};
-export const getStorage = (name: string = DEFAULT_STORE): DataStore => (
-  storageByName[name] || (storageByName[name] = newStorage(name))
-);
+export const getStorage = (name: string = DEFAULT_STORE): DataStore =>
+  storageByName[name] || (storageByName[name] = newStorage(name));

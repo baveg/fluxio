@@ -1,19 +1,23 @@
-import { toInt } from "../cast/toNumber";
-import { toStr } from "../cast/toString";
-import { max } from "../number/max";
+import { toInt } from '../cast/toNumber';
+import { toStr } from '../cast/toString';
+import { max } from '../number/max';
 
 /**
  * Extracts the first dotted version number (e.g. "2.7.0") found in a string.
  * Requires at least one dot, so bare numbers like "5" won't match.
  */
-export const extractVersion = (v: string | undefined | null): string => toStr(v).match(/\d+(?:\.\d+)+/)?.[0] || '';
+export const extractVersion = (v: string | undefined | null): string =>
+  toStr(v).match(/\d+(?:\.\d+)+/)?.[0] || '';
 
 /**
  * Returns true if `v` is a version >= `min`.
  * Missing trailing components are treated as 0 (so "2.7" >= "2.7.0").
  * Returns false if either string has no extractable version.
  */
-export const versionGte = (v: string | undefined | null, min: string | undefined | null): boolean => {
+export const versionGte = (
+  v: string | undefined | null,
+  min: string | undefined | null
+): boolean => {
   if (!v) return false;
   const vs = extractVersion(v);
   const ms = extractVersion(min);

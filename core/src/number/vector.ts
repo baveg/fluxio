@@ -218,15 +218,17 @@ export const cloneVector = <T>(vector: Vector<T>) => [...vector] as WVector<T>;
  * toVector3(5, 0); // [5, 0, 0]
  * ```
  */
-const getToVector = <T extends Vector>(length: number) => (vector: any, defaultValue?: T[0]): T => {
-  const vec = isArray(vector) ? vector : [vector];
-  const r = [];
-  for (let i = 0; i < length; i++) {
-    const v = vec[i];
-    r[i] = isDefined(v) ? v : defaultValue;
-  }
-  return r as unknown as T;
-}
+const getToVector =
+  <T extends Vector>(length: number) =>
+  (vector: any, defaultValue?: T[0]): T => {
+    const vec = isArray(vector) ? vector : [vector];
+    const r = [];
+    for (let i = 0; i < length; i++) {
+      const v = vec[i];
+      r[i] = isDefined(v) ? v : defaultValue;
+    }
+    return r as unknown as T;
+  };
 
 /**
  * Converts a value into a `Vector1`, filling missing components with `defaultValue`.

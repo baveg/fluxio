@@ -114,11 +114,14 @@ export const SelectInput = ({
     };
 
     const { onClose: closePortal, el: portalEl } = openPortal(({ onClose }) => (
-      <div class="SelectMask" onClick={(e) => {
-        stopEvent(e);
-        onClose();
-        setIsOpen(false);
-      }}>
+      <div
+        class="SelectMask"
+        onClick={(e) => {
+          stopEvent(e);
+          onClose();
+          setIsOpen(false);
+        }}
+      >
         <div
           class="SelectBox"
           onMouseDown={(e) => {
@@ -154,11 +157,7 @@ export const SelectInput = ({
     <button
       ref={ref}
       type="button"
-      class={cls(
-        'SelectInput',
-        isOpen && 'SelectInput-open',
-        error && 'input-error'
-      )}
+      class={cls('SelectInput', isOpen && 'SelectInput-open', error && 'input-error')}
       onClick={(e) => {
         stopEvent(e);
         setIsOpen(!isOpen);

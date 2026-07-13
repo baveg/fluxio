@@ -19,7 +19,7 @@ const ModalContext = createContext<ModalContextValue>({ onClose: toVoid });
 
 export const useModalContext = () => useContext(ModalContext);
 
-export interface ModalHeaderProps extends DivProps { }
+export interface ModalHeaderProps extends DivProps {}
 export const ModalHeader = ({ children, ...props }: ModalHeaderProps) => {
   const { onClose } = useModalContext();
   return (
@@ -27,18 +27,18 @@ export const ModalHeader = ({ children, ...props }: ModalHeaderProps) => {
       <h3 class={cls('ModalTitle')}>{children}</h3>
       <Button class={cls('ModalXBtn')} icon={XIcon} onClick={onClose} />
     </div>
-  )
-}
+  );
+};
 
-export interface ModalContentProps extends DivProps { }
+export interface ModalContentProps extends DivProps {}
 export const ModalContent = (props: ModalContentProps) => (
   <div {...props} class={cls('ModalContent', props)} />
-)
+);
 
-export interface ModalActionsProps extends DivProps { }
+export interface ModalActionsProps extends DivProps {}
 export const ModalActions = (props: DivProps) => (
   <div {...props} class={cls('ModalActions', props)} />
-)
+);
 
 export interface ModalProps extends DivProps {
   onClose: () => void;
@@ -51,7 +51,7 @@ export const Modal = ({ onClose, overlayClass, right, ...props }: ModalProps) =>
     <ModalContext.Provider value={{ onClose }}>
       <div class={cls('Modal', right && 'Modal-right', overlayClass)} onClick={onClose}>
         <div {...props} class={cls('ModalBox', props)} onClick={stopEvent} />
-      </div >
+      </div>
     </ModalContext.Provider>
   );
 };
@@ -98,27 +98,17 @@ export const SimpleModal = ({
       <ModalContent>{content}</ModalContent>
       {(onRemove || onCancel || onNo || onSave || onYes) && (
         <ModalActions>
-          {onRemove && (
-            <Button title="Supprimer" icon={Trash2Icon} error onClick={handleDelete} />
-          )}
+          {onRemove && <Button title="Supprimer" icon={Trash2Icon} error onClick={handleDelete} />}
           <div class="flex-1" />
-          {onCancel && (
-            <Button title="Annuler" icon={XIcon} ghost onClick={wc(onCancel)} />
-          )}
-          {onNo && (
-            <Button title="Non" icon={SaveIcon} ghost onClick={wc(onNo)} />
-          )}
-          {onSave && (
-            <Button title="Enregistrer" icon={SaveIcon} primary onClick={wc(onSave)} />
-          )}
-          {onYes && (
-            <Button title="Oui" icon={SaveIcon} primary onClick={wc(onYes)} />
-          )}
+          {onCancel && <Button title="Annuler" icon={XIcon} ghost onClick={wc(onCancel)} />}
+          {onNo && <Button title="Non" icon={SaveIcon} ghost onClick={wc(onNo)} />}
+          {onSave && <Button title="Enregistrer" icon={SaveIcon} primary onClick={wc(onSave)} />}
+          {onYes && <Button title="Oui" icon={SaveIcon} primary onClick={wc(onYes)} />}
         </ModalActions>
       )}
     </Modal>
   );
-}
+};
 
 export interface OpenModalOptions extends Omit<PortalOptions, 'size'> {
   size?: Vector2;
@@ -131,7 +121,7 @@ export interface OpenModalOptions extends Omit<PortalOptions, 'size'> {
 }
 
 export type ModalComp = Comp<{
-  onClose?: () => void,
+  onClose?: () => void;
 }>;
 
 export const openModal = (

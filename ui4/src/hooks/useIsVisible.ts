@@ -26,7 +26,7 @@ const getElement = <T extends Element>(refOrElement?: RefOrElement<T>): T | null
 export const useIsVisible = <T extends Element>(
   ref?: RefOrElement<T>,
   root?: RefOrElement<Element>,
-  threshold: number = 0,
+  threshold: number = 0
 ): boolean => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -48,14 +48,11 @@ export const useIsVisible = <T extends Element>(
       options.threshold = threshold;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      options
-    );
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+      }
+    }, options);
 
     observer.observe(element);
     return () => observer.disconnect();

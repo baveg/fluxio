@@ -4,4 +4,4 @@ export const floor = (number: number, digits?: number): number => {
     return Math.floor(base * number) / base;
   }
   return Math.floor(number);
-}
+};

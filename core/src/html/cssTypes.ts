@@ -221,14 +221,7 @@ export interface CssStyle {
   animationName?: string;
   animationDuration?: CssNumber;
   animationTimingFunction?:
-    | 'linear'
-    | 'ease'
-    | 'ease-in'
-    | 'ease-out'
-    | 'ease-in-out'
-    | 'step-start'
-    | 'step-end'
-    | string;
+    'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'step-start' | 'step-end' | string;
   animationDelay?: CssNumber;
   animationIterationCount?: 'infinite' | CssNumber;
   animationDirection?: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse';
@@ -265,13 +258,7 @@ export interface CssStyle {
     | 'zoom-out'
     | string;
   pointerEvents?:
-    | 'auto'
-    | 'none'
-    | 'visiblePainted'
-    | 'visibleFill'
-    | 'visibleStroke'
-    | 'visible'
-    | 'all';
+    'auto' | 'none' | 'visiblePainted' | 'visibleFill' | 'visibleStroke' | 'visible' | 'all';
   userSelect?: 'auto' | 'none' | 'text' | 'contain' | 'all';
   touchAction?:
     | 'auto'

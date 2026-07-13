@@ -1,88 +1,87 @@
 @tailwind components;
 
 @layer components {
+  .Modal {
+    @apply fixed inset-0 z-20;
+    @apply flex items-center justify-center p-4;
+    @apply bg-black/50;
+  }
 
-    .Modal {
-        @apply fixed inset-0 z-20;
-        @apply flex items-center justify-center p-4;
-        @apply bg-black/50;
-    }
+  .ModalBox {
+    @apply max-w-full max-h-full overflow-hidden rounded-2xl z-30;
+    @apply flex flex-col align-top justify-stretch;
+    @apply bg-base-100 shadow;
+    transition: all 150ms ease;
+  }
 
-    .ModalBox {
-        @apply max-w-full max-h-full overflow-hidden rounded-2xl z-30;
-        @apply flex flex-col align-top justify-stretch;
-        @apply bg-base-100 shadow;
-        transition: all 150ms ease;
-    }
+  .ModalHeader {
+    @apply flex items-center justify-between p-1;
+    @apply border-b border-base-100;
+  }
 
-    .ModalHeader {
-        @apply flex items-center justify-between p-1;
-        @apply border-b border-base-100;
-    }
+  .ModalTitle {
+    @apply uppercase font-bold text-base-content pl-3;
+  }
 
-    .ModalTitle {
-        @apply uppercase font-bold text-base-content pl-3;
-    }
+  .ModalXBtn {
+    @apply text-base-content text-2xl leading-none;
+    @apply btn-circle btn-ghost;
+  }
 
-    .ModalXBtn {
-        @apply text-base-content text-2xl leading-none;
-        @apply btn-circle btn-ghost;
-    }
+  .ModalXBtn:hover {
+    color: hsl(var(--p));
+  }
 
-    .ModalXBtn:hover {
-        color: hsl(var(--p));
-    }
+  .ModalContent {
+    @apply relative flex-1;
+    @apply overflow-x-hidden overflow-y-auto;
+    @apply flex flex-col items-stretch justify-start p-2;
+    box-sizing: border-box;
+  }
 
-    .ModalContent {
-        @apply relative flex-1;
-        @apply overflow-x-hidden overflow-y-auto;
-        @apply flex flex-col items-stretch justify-start p-2;
-        box-sizing: border-box;
-    }
+  .ModalActions {
+    @apply min-h-16 w-full max-w-full px-2 py-1;
+    @apply flex flex-row flex-wrap items-center justify-end gap-2 bg-base-100;
+    @apply border-t border-base-100;
+  }
 
-    .ModalActions {
-        @apply min-h-16 w-full max-w-full px-2 py-1;
-        @apply flex flex-row flex-wrap items-center justify-end gap-2 bg-base-100;
-        @apply border-t border-base-100;
-    }
+  .Portal-init .ModalBox,
+  .Portal-close .ModalBox {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
 
-    .Portal-init .ModalBox,
-    .Portal-close .ModalBox {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
+  .Portal-open .ModalBox {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-    .Portal-open .ModalBox {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  .Modal-right {
+    justify-content: end;
+    transform: none;
+    transition: opacity 0.3s ease-in-out;
+    padding: 0;
+  }
 
-    .Modal-right {
-        justify-content: end;
-        transform: none;
-        transition: opacity 0.3s ease-in-out;
-        padding: 0;
-    }
+  .Modal-right .ModalBox {
+    height: 100%;
+    max-height: none;
+    border-radius: 0;
+    transition: transform 0.3s ease-in-out;
+  }
 
-    .Modal-right .ModalBox {
-        height: 100%;
-        max-height: none;
-        border-radius: 0;
-        transition: transform 0.3s ease-in-out;
-    }
+  .Modal-right .ModalTitle {
+    @apply font-bold text-2xl leading-8;
+  }
 
-    .Modal-right .ModalTitle {
-        @apply font-bold text-2xl leading-8;
-    }
+  .Portal-init .Modal-right .ModalBox,
+  .Portal-close .Modal-right .ModalBox {
+    opacity: 0;
+    transform: translateX(100%);
+  }
 
-    .Portal-init .Modal-right .ModalBox,
-    .Portal-close .Modal-right .ModalBox {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-
-    .Portal-open .Modal-right .ModalBox {
-        opacity: 1;
-        transform: translateX(0);
-    }
+  .Portal-open .Modal-right .ModalBox {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

@@ -1,6 +1,6 @@
-import { pipe } from "../flux/Flux";
-import { glb } from "../glb";
-import { onEvent } from "../html/onEvent";
+import { pipe } from '../flux/Flux';
+import { glb } from '../glb';
+import { onEvent } from '../html/onEvent';
 
 const nav = glb.navigator;
 

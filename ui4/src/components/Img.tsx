@@ -10,13 +10,18 @@ export type ImgProps = ElProps['img'] & {
   thumbCached?: boolean;
   url?: string;
   cached?: boolean | number;
-}
+};
 
-const withCached = (url: string | undefined, cached: boolean | number) => (
-  (url && cached) ? setUrlParams(url, {
-    cached: isBoolean(cached) ? (cached ? 1 : 0) : cached
-  }) : url
-);
+const withCached = (url: string | undefined, cached: boolean | number) =>
+  url && cached ?
+    setUrlParams(url, {
+      cached:
+        isBoolean(cached) ?
+          cached ? 1
+          : 0
+        : cached,
+    })
+  : url;
 
 export const Img = ({
   thumbUrl,
@@ -29,7 +34,10 @@ export const Img = ({
   alt,
   ...props
 }: ImgProps) => {
-  const cachedThumbUrl = withCached(thumbUrl || url, thumbCached === false ? false : (thumbCached || cached));
+  const cachedThumbUrl = withCached(
+    thumbUrl || url,
+    thumbCached === false ? false : thumbCached || cached
+  );
   const cachedUrl = withCached(url, cached);
   const [currentSrc, setCurrentSrc] = useState(cachedThumbUrl || src);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -54,7 +62,7 @@ export const Img = ({
     img.onload = () => setCurrentSrc(cachedUrl);
   }, [cachedUrl, isOnLine, isVisible, currentSrc]);
 
-  console.debug('render', { isVisible, isOnLine, cachedThumbUrl, cachedUrl, src, currentSrc })
+  console.debug('render', { isVisible, isOnLine, cachedThumbUrl, cachedUrl, src, currentSrc });
 
   return (
     <img

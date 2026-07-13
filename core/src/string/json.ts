@@ -8,7 +8,7 @@ export const jsonStringify = (
   value: any,
   replacer?: ((this: any, key: string, value: any) => any) | undefined,
   space?: string | number | undefined,
-  depth: number = 1,
+  depth: number = 1
 ): string => {
   try {
     return JSON.stringify(value, replacer, space);
@@ -16,12 +16,12 @@ export const jsonStringify = (
     log.w('stringify error', value, e);
     if (isArray(value)) {
       if (!depth) return '[]';
-      const copy = value.map(v => jsonParse(jsonStringify(v, replacer, space, depth - 1)));
+      const copy = value.map((v) => jsonParse(jsonStringify(v, replacer, space, depth - 1)));
       return jsonStringify(copy);
     }
     if (isObject(value)) {
       if (!depth) return '{}';
-      const copy = by(value, null, v => jsonParse(jsonStringify(v, replacer, space, depth - 1)));
+      const copy = by(value, null, (v) => jsonParse(jsonStringify(v, replacer, space, depth - 1)));
       return jsonStringify(copy);
     }
     return String(value);
@@ -31,7 +31,7 @@ export const jsonStringify = (
 export const jsonParse = (
   text: string | null | undefined,
   reviver?: ((this: any, key: string, value: any) => any) | undefined,
-  errorValue: any = null,
+  errorValue: any = null
 ): any => {
   try {
     return text ? JSON.parse(text, reviver) : null;

@@ -1,4 +1,4 @@
-import { isFunction } from "../check/isFunction";
+import { isFunction } from '../check/isFunction';
 
 type P<T> = Promise<T> | (() => Promise<T>);
 
@@ -7,16 +7,25 @@ interface Parallel {
   <A, B>(promises: [P<A>, P<B>], concurrency?: number): Promise<[A, B]>;
   <A, B, C>(promises: [P<A>, P<B>, P<C>], concurrency?: number): Promise<[A, B, C]>;
   <A, B, C, D>(promises: [P<A>, P<B>, P<C>, P<D>], concurrency?: number): Promise<[A, B, C, D]>;
-  <A, B, C, D, E>(promises: [P<A>, P<B>, P<C>, P<D>, P<E>], concurrency?: number): Promise<[A, B, C, D, E]>;
-  <A, B, C, D, E, F>(promises: [P<A>, P<B>, P<C>, P<D>, P<E>, P<F>], concurrency?: number): Promise<[A, B, C, D, E, F]>;
-  <A, B, C, D, E, F, G>(promises: [P<A>, P<B>, P<C>, P<D>, P<E>, P<F>, P<G>], concurrency?: number): Promise<[A, B, C, D, E, F, G]>;
-  <A, B, C, D, E, F, G, H>(promises: [P<A>, P<B>, P<C>, P<D>, P<E>, P<F>, P<G>, P<H>], concurrency?: number): Promise<[A, B, C, D, E, F, G, H]>;
+  <A, B, C, D, E>(
+    promises: [P<A>, P<B>, P<C>, P<D>, P<E>],
+    concurrency?: number
+  ): Promise<[A, B, C, D, E]>;
+  <A, B, C, D, E, F>(
+    promises: [P<A>, P<B>, P<C>, P<D>, P<E>, P<F>],
+    concurrency?: number
+  ): Promise<[A, B, C, D, E, F]>;
+  <A, B, C, D, E, F, G>(
+    promises: [P<A>, P<B>, P<C>, P<D>, P<E>, P<F>, P<G>],
+    concurrency?: number
+  ): Promise<[A, B, C, D, E, F, G]>;
+  <A, B, C, D, E, F, G, H>(
+    promises: [P<A>, P<B>, P<C>, P<D>, P<E>, P<F>, P<G>, P<H>],
+    concurrency?: number
+  ): Promise<[A, B, C, D, E, F, G, H]>;
 }
 
-export const parallel = (async <T>(
-  promises: P<T>[],
-  concurrency: number = 3
-): Promise<T[]> => {
+export const parallel = (async <T>(promises: P<T>[], concurrency: number = 3): Promise<T[]> => {
   const results: T[] = new Array(promises.length);
   let i = 0;
   let running = 0;
@@ -44,7 +53,7 @@ export const parallel = (async <T>(
             run();
           })
           .catch((e) => {
-            if (!err) reject(err = e);
+            if (!err) reject((err = e));
           });
       }
     };

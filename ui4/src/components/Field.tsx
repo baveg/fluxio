@@ -50,13 +50,13 @@ const valueToRaw = (value: any, type: InputType): string =>
 
 const rawToValue = (raw: string, type: InputType): any =>
   type === 'int' ? toInt(raw)
-    : type === 'float' ? toFloat(raw)
-      : (type === 'checkbox' || type === 'toggle') ?
-        raw === '' ?
-          null
-          : toBoolean(raw)
-        : type === 'json' ? jsonParse(raw)
-          : raw;
+  : type === 'float' ? toFloat(raw)
+  : type === 'checkbox' || type === 'toggle' ?
+    raw === '' ?
+      null
+    : toBoolean(raw)
+  : type === 'json' ? jsonParse(raw)
+  : raw;
 
 const useFluxInput = (type: InputType, v$: Flux<any>, delay = 200) => {
   const raw$ = useMemo(() => flux(valueToRaw(v$.get(), type)), [v$]);
@@ -67,13 +67,17 @@ const useFluxInput = (type: InputType, v$: Flux<any>, delay = 200) => {
     raw$.set(valueToRaw(v$.get(), type));
     return v$.on((value) => {
       if (value === last[0]) return;
-      raw$.set(valueToRaw(value, type))
+      raw$.set(valueToRaw(value, type));
     });
   }, [v$, raw$, type]);
 
-  useEffect(() => raw$.debounce(delay).on((raw) => {
-    v$.set(last[0] = rawToValue(raw, type));
-  }), [raw$, v$]);
+  useEffect(
+    () =>
+      raw$.debounce(delay).on((raw) => {
+        v$.set((last[0] = rawToValue(raw, type)));
+      }),
+    [raw$, v$]
+  );
 
   const value = useFlux(raw$);
   log.d('render', name, type, value);
@@ -138,7 +142,18 @@ interface CheckboxInputProps extends InputProps {
   onValue?: (value: any, e?: Event) => void;
 }
 
-const CheckboxInput = ({ error, icon, prefix, suffix, type, value, onChange, onInput, onValue, ...iProps }: CheckboxInputProps) => {
+const CheckboxInput = ({
+  error,
+  icon,
+  prefix,
+  suffix,
+  type,
+  value,
+  onChange,
+  onInput,
+  onValue,
+  ...iProps
+}: CheckboxInputProps) => {
   log.d('CheckboxInput render', { value, iProps });
   const handleClick = (e: Event) => {
     stopEvent(e);
@@ -162,10 +177,7 @@ const CheckboxInput = ({ error, icon, prefix, suffix, type, value, onChange, onI
       {prefix && <span class="CheckboxPrefix">{comp(prefix)}</span>}
       <input
         type="checkbox"
-        class={cls(
-          'CheckboxInput',
-          type === 'toggle' && 'CheckboxInput-toggle'
-        )}
+        class={cls('CheckboxInput', type === 'toggle' && 'CheckboxInput-toggle')}
         checked={toBoolean(value)}
         indeterminate={false}
         onClick={handleClick}
@@ -196,16 +208,26 @@ const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps)
       {prefix && <span class="FieldPrefix">{comp(prefix)}</span>}
       {type === 'password' ?
         <PasswordInput {...iProps} />
-        : type === 'multiline' ?
-          <textarea class="FieldTextarea" {...iProps} />
-          : <input class="FieldText" type={inputType} {...iProps} />}
+      : type === 'multiline' ?
+        <textarea class="FieldTextarea" {...iProps} />
+      : <input class="FieldText" type={inputType} {...iProps} />}
       {suffix && <span class="FieldSuffix">{comp(suffix)}</span>}
     </label>
   );
 };
 
 const FieldInput = (props: FieldInputProps) => {
-  const { label, help, class: className, row, onValue, delay = 400, value: propValue, required, ...inputProps } = props;
+  const {
+    label,
+    help,
+    class: className,
+    row,
+    onValue,
+    delay = 400,
+    value: propValue,
+    required,
+    ...inputProps
+  } = props;
   const { type, error } = inputProps;
 
   // Pas de delay pour les checkboxes et select (interactions instantanées)
@@ -225,7 +247,7 @@ const FieldInput = (props: FieldInputProps) => {
     () =>
       onValue && effectiveDelay > 0 ?
         debounce((value: any) => onValue(value), effectiveDelay)
-        : onValue,
+      : onValue,
     [onValue, effectiveDelay]
   );
 
@@ -252,22 +274,23 @@ const FieldInput = (props: FieldInputProps) => {
   }
 
   return (
-    <label class={cls('Field', `Field-${type||'text'}`, row && 'Field-row', className)}>
+    <label class={cls('Field', `Field-${type || 'text'}`, row && 'Field-row', className)}>
       {label && (
         <div class="FieldLabel">
-          <span class="FieldLabelText">{label}{required ? ' *' : ''}</span>
+          <span class="FieldLabelText">
+            {label}
+            {required ? ' *' : ''}
+          </span>
         </div>
       )}
       {type === 'select' ?
         <SelectInput {...inputProps} onValue={onValue} />
-        : (type === 'checkbox' || type === 'toggle') ?
-          <CheckboxInput {...inputProps} onValue={onValue} />
-          : <TextInput type={type} {...inputProps} />}
+      : type === 'checkbox' || type === 'toggle' ?
+        <CheckboxInput {...inputProps} onValue={onValue} />
+      : <TextInput type={type} {...inputProps} />}
       {(error || help) && (
         <div class="FieldAlt">
-          <span class={error ? 'FieldError' : 'FieldHelp'}>
-            {error || help}
-          </span>
+          <span class={error ? 'FieldError' : 'FieldHelp'}>{error || help}</span>
         </div>
       )}
     </label>

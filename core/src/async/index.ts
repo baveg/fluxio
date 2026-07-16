@@ -7,4 +7,6 @@ export * from './resolve';
 export * from './retry';
 export * from './sleep';
 export * from './throttle';
+export * from './withCache';
+export * from './withRetry';
 export * from './withTimeout';

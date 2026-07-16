@@ -1,5 +1,5 @@
-import { FIVE_MINUTES } from "../date/date";
-import { jsonStringify } from "../string/json";
+import { FIVE_MINUTES } from '../date/date';
+import { jsonStringify } from '../string/json';
 
 /**
  * Memoizes an async factory per set of arguments, with TTL expiration.
@@ -16,13 +16,13 @@ import { jsonStringify } from "../string/json";
  * @param factory   Async function to cache, keyed by its arguments.
  * @param expireIn  TTL per entry in ms. Defaults to `FIVE_MINUTES`.
  */
-export const withCache = <F extends ((...args: any[]) => Promise<any>)>(
+export const withCache = <F extends (...args: any[]) => Promise<any>>(
   factory: F,
   expireIn = FIVE_MINUTES
 ): F & {
-  reload: F,
-  set(...args: [...Parameters<F>, value: ReturnType<F> | undefined]): void,
-  clear(): void
+  reload: F;
+  set(...args: [...Parameters<F>, value: ReturnType<F> | undefined]): void;
+  clear(): void;
 } => {
   let cacheMap: Record<string, [number, Promise<any>]> = {};
 
@@ -40,7 +40,7 @@ export const withCache = <F extends ((...args: any[]) => Promise<any>)>(
       if (cacheMap[key][0] > Date.now()) return;
       delete cacheMap[key];
     }
-  }
+  };
 
   const get = ((...args: any[]) => {
     cleanExpired();
@@ -53,19 +53,19 @@ export const withCache = <F extends ((...args: any[]) => Promise<any>)>(
     if (cache) return cache[1];
 
     const promise = factory(...args);
-    cacheMap[key] = [Date.now()+expireIn, promise];
+    cacheMap[key] = [Date.now() + expireIn, promise];
     return promise;
   }) as F & {
-    reload: F,
-    set(...args: [...Parameters<F>, value: ReturnType<F> | undefined]): void,
-    clear(): void
+    reload: F;
+    set(...args: [...Parameters<F>, value: ReturnType<F> | undefined]): void;
+    clear(): void;
   };
 
   get.reload = ((...args) => {
     cleanExpired();
     const key = getCacheKey(args);
     const promise = factory(...args);
-    cacheMap[key] = [Date.now()+expireIn, promise];
+    cacheMap[key] = [Date.now() + expireIn, promise];
     return promise;
   }) as F;
 
@@ -75,7 +75,7 @@ export const withCache = <F extends ((...args: any[]) => Promise<any>)>(
     const promise = args.pop();
     const key = getCacheKey(args);
     if (promise === undefined) delete cacheMap[key];
-    else cacheMap[key] = [Date.now()+expireIn, promise];
+    else cacheMap[key] = [Date.now() + expireIn, promise];
   };
 
   get.clear = () => {

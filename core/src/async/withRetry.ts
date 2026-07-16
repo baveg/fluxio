@@ -1,4 +1,4 @@
-import { SECOND } from "../date/date";
+import { SECOND } from '../date/date';
 import { sleep } from './sleep';
 
 /**
@@ -10,10 +10,10 @@ import { sleep } from './sleep';
  * @returns The result of the promise if successful
  * @throws The last error if all retries fail
  */
-export const withRetry = <F extends ((...args: any[]) => Promise<any>)>(
+export const withRetry = <F extends (...args: any[]) => Promise<any>>(
   factory: F,
   retry: number = 3,
-  delayMs = SECOND/2
+  delayMs = SECOND / 2
 ): F => {
   return (async (...args: any[]) => {
     let error: any;

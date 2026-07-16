@@ -1,7 +1,5 @@
-export * from './glb';
 export * from './array';
 export * from './async';
-export * from './cache';
 export * from './cast';
 export * from './check';
 export * from './color';
@@ -18,3 +16,4 @@ export * from './storage';
 export * from './string';
 export * from './types';
 export * from './url';
+export * from './glb';

@@ -3,6 +3,7 @@ import { Vector4 } from '../types';
 import { getElBounds } from './getElBounds';
 import { throttle } from '../async/throttle';
 import { eqVector } from '../number/vector';
+import { onInterval } from '../async/onInterval';
 
 export interface OnEventOptions {
   once?: boolean;
@@ -73,11 +74,6 @@ export const onResize = (listener: (e: any) => any, options?: OnEventOptions) =>
 
 export const onScroll = (listener: (e: any) => any, options?: OnEventOptions) =>
   onEvent(0, 'scroll', listener, { passive: true, ...options });
-
-export const onInterval = (callback: () => void, ms: number): (() => void) => {
-  const timer = setInterval(callback, ms);
-  return () => clearInterval(timer);
-};
 
 export const onElMove = (
   el: HTMLElement | null,

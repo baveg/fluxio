@@ -10,6 +10,7 @@ import { isBetween } from '../check/isBetween';
 import { retry } from '../async/retry';
 import { sleep } from '../async/sleep';
 import { createUrl } from '../url/createUrl';
+import { isString } from '../check/isString';
 
 const reqLog = logger('req');
 
@@ -22,11 +23,15 @@ const acceptMap: Partial<Record<ReqResponseType, string>> = {
   arraybuffer: '*/*',
 };
 
-export const req = async <T>(options: ReqOptions<T>): Promise<T> => {
-  const log = options.log || reqLog;
-  // log.d('req', options);
+interface Req {
+  <T>(url: string, options?: ReqOptions<T>): Promise<T>;
+  <T>(options: ReqOptions<T>): Promise<T>;
+}
 
-  const o = { ...options };
+export const req = (async <T>(uO: string | ReqOptions<T>, options?: ReqOptions<T>): Promise<T> => {
+  // log.d('req', options);
+  const o: ReqOptions<T> = isString(uO) ? { url: uO, ...options } : { ...uO };
+  const log = o.log || reqLog;
 
   if (o.base) o.base(o);
   if (!o.url) {
@@ -116,4 +121,4 @@ export const req = async <T>(options: ReqOptions<T>): Promise<T> => {
   }
 
   return ctx.data as T;
-};
+}) as Req;

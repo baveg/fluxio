@@ -5,7 +5,7 @@
  * @returns
  */
 export const randString = (
-  count: number,
+  count: number = 24,
   chars: string = 'abcdefghjkpqrstwxyzABCDEFGHJKPQRSTWXYZ23456789'
 ) => {
   const charset = chars.split('');

@@ -13,7 +13,7 @@ export const withRetry = <F extends (...args: any[]) => Promise<any>>(
   factory: F,
   retry: number = 10,
   delayMs = 1000,
-  firstMs = 200,
+  firstMs = 200
 ): F => {
   return (async (...args: any[]) => {
     let error: any;

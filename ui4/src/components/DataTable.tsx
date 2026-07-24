@@ -183,12 +183,26 @@ export const DataTable = (({
               >
                 {onSelect && (
                   <td class="p-0">
-                    <Button icon={PointerIcon} ghost xs onClick={() => onSelect(item)} />
+                    <Button
+                      icon={PointerIcon}
+                      outline
+                      primary
+                      square
+                      class="!w-10 !h-10 !min-h-10 !rounded-md hover:!text-white"
+                      onClick={() => onSelect(item)}
+                    />
                   </td>
                 )}
                 {onEdit && (
                   <td class="p-0">
-                    <Button icon={EditIcon} ghost xs onClick={() => onEdit(item)} />
+                    <Button
+                      icon={EditIcon}
+                      outline
+                      primary
+                      square
+                      class="!w-10 !h-10 !min-h-10 !rounded-md hover:!text-white"
+                      onClick={() => onEdit(item)}
+                    />
                   </td>
                 )}
                 {visibleColumns.map((col) => (

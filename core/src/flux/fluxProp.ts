@@ -19,6 +19,8 @@ export const fluxProp = <T extends {}, P extends keyof T>(
       const item = source.get();
       if (isItem(item) && item[prop] === value) return;
       source.set({ ...item, [prop]: value } as T);
-    }
+    },
+    undefined,
+    true
   );
 };

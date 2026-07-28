@@ -213,9 +213,10 @@ export class Flux<T = any> {
   pipe<U = T>(
     onSync: PipeOnSync<U, T>,
     onSet: PipeOnSet<U, T> = toVoid,
-    onInit: PipeOnInit<U, T> = toVoid
+    onInit: PipeOnInit<U, T> = toVoid,
+    pull = false
   ) {
-    return new Pipe<U, T>(this, onSync, onSet, onInit);
+    return new Pipe<U, T>(this, onSync, onSet, onInit, pull);
   }
 
   /**
@@ -241,7 +242,9 @@ export class Flux<T = any> {
         (value, pipe) => {
           this.set(reverse(value, pipe));
         }
-      : undefined
+      : undefined,
+      undefined,
+      true
     );
   }
 
@@ -267,7 +270,9 @@ export class Flux<T = any> {
             .then(this.setter())
             .catch((error) => this.setError(error));
         }
-      : undefined
+      : undefined,
+      undefined,
+      true
     );
   }
 
@@ -323,12 +328,17 @@ export class Flux<T = any> {
    * @returns A new Pipe that only emits filtered values
    */
   filter(predicate: (value: T) => boolean) {
-    return this.pipe((pipe) => {
-      const value = this.get();
-      if (predicate(value)) {
-        pipe.set(value);
-      }
-    }, undefined);
+    return this.pipe(
+      (pipe) => {
+        const value = this.get();
+        if (predicate(value)) {
+          pipe.set(value);
+        }
+      },
+      undefined,
+      undefined,
+      true
+    );
   }
 
   /**
@@ -358,7 +368,8 @@ export class Pipe<T = any, U = T> extends Flux<T> {
     public readonly source: PipeSource<T, U>,
     public readonly onSync: PipeOnSync<T, U>,
     public readonly onSet: PipeOnSet<T, U> = toVoid,
-    public readonly onInit: PipeOnInit<T, U> = toVoid
+    public readonly onInit: PipeOnInit<T, U> = toVoid,
+    public readonly pull = false
   ) {
     super(undefined as T);
     if (isFlux(source)) {
@@ -370,6 +381,9 @@ export class Pipe<T = any, U = T> extends Flux<T> {
     if (!this.isInit) {
       this.isInit = true;
       this.onInit(this);
+      this.onSync(this);
+    } else if (this.pull && !this.sourceOff) {
+      // No live subscription to re-sync us: re-derive from source on every read.
       this.onSync(this);
     }
     return super.get();

@@ -5,3 +5,5 @@ export const glb = (
     // @ts-ignore: `global` exists in Node.js but not in browser typings
   : typeof global !== 'undefined' ? global
   : {}) as typeof window & { [name: string]: any };
+
+export const G = glb;

@@ -23,3 +23,5 @@ export const toBoolean = (<T = boolean>(v: any, defVal?: T | boolean): boolean |
   : isNil(v) ? defVal
   : isDefined((v = boolMap[String(v).toLowerCase()])) ? (v as boolean)
   : defVal) as ToBool;
+
+export const toBool = toBoolean;

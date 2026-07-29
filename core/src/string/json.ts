@@ -4,6 +4,31 @@ import { by } from '../object/by';
 
 export const log = logger('json');
 
+export const toJsonReplacer = (k: string, v: any) => {
+	if (v instanceof Uint8Array) return { Uint8Array: v.length };
+	if (v instanceof Error) return { name: v.name, message: v.message };
+	return v;
+}
+
+export const toJson = (v: any) => {
+	try {
+		return JSON.stringify(v, toJsonReplacer);
+	}
+	catch (e) {
+    log.e('toJson', e);
+		return String(v);
+	}
+}
+
+export const fromJson = (json: string | null | undefined): any => {
+  try {
+    return json ? JSON.parse(json) : undefined;
+  } catch (e) {
+    log.e('fromJson', e);
+    return undefined;
+  }
+};
+
 export const jsonStringify = (
   value: any,
   replacer?: ((this: any, key: string, value: any) => any) | undefined,

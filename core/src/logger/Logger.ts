@@ -22,6 +22,8 @@ export const logToConsole = (tag: string, level: LogLevel, ...args: any[]) => {
 let log = logToConsole;
 export const setLog = (value: typeof log) => { log = value };
 
+export const logTag = (tag: string, level: LogLevel, ...args: any[]) => log(tag, level, ...args);
+
 const fun = (tag: string, level: LogLevel) => {
   return (...args: any[]) => {
     try { log(tag, level, ...args) } catch (e) {}

@@ -1,50 +1,38 @@
-export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+export type LogLevel = 'd' | 'i' | 'w' | 'e';
 
 export interface Logger {
-  d: (...args: any[]) => void;
-  i: (...args: any[]) => void;
-  w: (...args: any[]) => void;
-  e: (...args: any[]) => void;
+  (...args: any[]): void;
+  d(...args: any[]): void;
+  i(...args: any[]): void;
+  w(...args: any[]): void;
+  e(...args: any[]): void;
 }
 
-export const getLogIcon = (level: LogLevel) =>
-  level === 'warn' ? '⚠️'
-  : level === 'error' ? '❌'
-  : '';
+export const logLevelMap = {
+  d: 'debug',
+  i: 'info',
+  w: 'warn',
+  e: 'error',
+} as const;
 
-export const logDefault = (name: string, level: LogLevel, args: any[]) => {
-  if (typeof console === 'object' && level in console) {
-    const icon = getLogIcon(level);
-    if (icon) {
-      console[level](icon, name, ...args);
-    } else {
-      console[level](name, ...args);
-    }
+export const logToConsole = (tag: string, level: LogLevel, ...args: any[]) => {
+  (console as any)[logLevelMap[level]](tag, ...args);
+};
+
+let log = logToConsole;
+export const setLog = (value: typeof log) => { log = value };
+
+const fun = (tag: string, level: LogLevel) => {
+  return (...args: any[]) => {
+    try { log(tag, level, ...args) } catch (e) {}
   }
-};
-
-let log = logDefault;
-
-export const setLog = (value: typeof log) => {
-  log = value;
-};
-
-const counts: Record<string, number> = {};
+}
 
 export const logger = (tag: string): Logger => {
-  const count = (counts[tag] = (counts[tag] || 0) + 1);
-
-  const name = count === 1 ? `[${tag}]` : `[${tag}${count}]`;
-  const l =
-    (level: LogLevel) =>
-    (...args: any[]) =>
-      log(name, level, args);
-
-  return { d: l('debug'), i: l('info'), w: l('warn'), e: l('error') };
-};
-
-const n = () => {};
-
-export const voidLogger = { d: n, i: n, w: n, e: n };
-
-export const globalLogger = logger('global');
+  const d = fun(tag, 'd') as Logger;
+  d.d = d;
+  d.i = fun(tag, 'i');
+  d.w = fun(tag, 'w');
+  d.e = fun(tag, 'e');
+  return d;
+}

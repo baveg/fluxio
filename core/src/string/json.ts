@@ -2,7 +2,7 @@ import { isArray, isObject } from '../check';
 import { logger } from '../logger/Logger';
 import { by } from '../object/by';
 
-export const log = logger('json');
+const log = logger('json');
 
 export const toJsonReplacer = (k: string, v: any) => {
 	if (v instanceof Uint8Array) return { Uint8Array: v.length };

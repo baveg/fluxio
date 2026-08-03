@@ -19,15 +19,13 @@ export const logToConsole = (tag: string, level: LogLevel, ...args: any[]) => {
   (console as any)[logLevelMap[level]](tag, ...args);
 };
 
-let log = logToConsole;
-export const setLog = (value: typeof log) => { log = value };
+let _log = logToConsole;
+export const setLog = (value: typeof _log) => { _log = value };
 
-export const logTag = (tag: string, level: LogLevel, ...args: any[]) => log(tag, level, ...args);
+export const logTag = (tag: string, level: LogLevel, ...args: any[]) => _log(tag, level, ...args);
 
 const fun = (tag: string, level: LogLevel) => {
-  return (...args: any[]) => {
-    try { log(tag, level, ...args) } catch (e) {}
-  }
+  return (...args: any[]) => _log(tag, level, ...args);
 }
 
 export const logger = (tag: string): Logger => {
@@ -38,3 +36,5 @@ export const logger = (tag: string): Logger => {
   d.e = fun(tag, 'e');
   return d;
 }
+
+export const log = logger('');

@@ -22,12 +22,14 @@ export const toJson = (v: any) => {
 
 export const fromJson = (json: string | null | undefined): any => {
   try {
-    return json ? JSON.parse(json) : undefined;
+    return json ? JSON.parse(json.toString()) : undefined;
   } catch (e) {
     log.e('fromJson', e);
     return undefined;
   }
 };
+
+export const jsonClone = (v: any): any => fromJson(toJson(v));
 
 export const jsonStringify = (
   value: any,

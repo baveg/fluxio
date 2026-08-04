@@ -5,8 +5,10 @@ import { by } from '../object/by';
 const log = logger('json');
 
 export const toJsonReplacer = (k: string, v: any) => {
-	if (v instanceof Uint8Array) return { Uint8Array: v.length };
-	if (v instanceof Error) return { name: v.name, message: v.message };
+	if (v instanceof Uint8Array)
+    return { Uint8Array: v.length };
+	if (v instanceof Error)
+    return { name: v.name, message: v.message, code: (v as any).code };
 	return v;
 }
 

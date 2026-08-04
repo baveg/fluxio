@@ -38,3 +38,34 @@ export const logger = (tag: string): Logger => {
 }
 
 export const log = logger('');
+
+export const logFun = <T extends (...args: any[]) => any>(
+  fun: T,
+  log: Logger,
+  funName = fun.name
+): T => {
+  return ((...args: Parameters<T>) => {
+    try {
+      log(funName, ...args);
+      const result = fun(...args);
+
+      if (result instanceof Promise) {
+        return result
+          .then(asyncResult => {
+            log(funName, ...args, '-> resolve', asyncResult);
+            return asyncResult;
+          })
+          .catch(asyncError => {
+            log.e(funName, ...args, '-> reject', asyncError);
+            throw asyncError;
+          });
+      }
+
+      log(funName, ...args, '-> return', result);
+      return result;
+    } catch (error) {
+      log.e(funName, ...args, '-> error', error);
+      throw error;
+    }
+  }) as T;
+};

@@ -22,7 +22,7 @@ export const logToConsole = (tag: string, level: LogLevel, ...args: any[]) => {
 let _log = logToConsole;
 export const setLog = (value: typeof _log) => { _log = value };
 
-export const logTag = (tag: string, level: LogLevel, ...args: any[]) => _log(tag, level, ...args);
+export const rawLog = (tag: string, level: LogLevel, ...args: any[]) => _log(tag, level, ...args);
 
 const fun = (tag: string, level: LogLevel) => {
   return (...args: any[]) => _log(tag, level, ...args);

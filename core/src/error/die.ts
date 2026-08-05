@@ -1,4 +1,4 @@
-import { toError } from "../cast/toError"
+import { toError } from "../cast/toError";
 
 /**
  * Throws the given value as an `Error`, converting it first if necessary.
@@ -12,4 +12,6 @@ import { toError } from "../cast/toError"
  * @example
  * const x = value ?? die("value is required")
  */
-export const die = (error: any): never => { throw toError(error) }
+export const die = (error: any, message?: string, name?: string): never => {
+    throw toError(error, message, name);
+}

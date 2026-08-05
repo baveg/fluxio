@@ -1,4 +1,5 @@
 import { isArray, isObject } from '../check';
+import { die } from '../error/die';
 import { logger } from '../logger/Logger';
 import { by } from '../object/by';
 
@@ -8,7 +9,12 @@ export const toJsonReplacer = (k: string, v: any) => {
 	if (v instanceof Uint8Array)
     return { Uint8Array: v.length };
 	if (v instanceof Error)
-    return { name: v.name, message: v.message, code: (v as any).code };
+    return {
+      name: v.name,
+      message: v.message,
+      code: (v as any).code,
+      data: (v as any).data,
+    };
 	return v;
 }
 

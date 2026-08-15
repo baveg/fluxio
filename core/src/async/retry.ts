@@ -1,4 +1,5 @@
-import { withRetry } from './withRetry';
+import { toTrue } from "../cast/toTrue";
+import { withRetry } from "./withRetry";
 
 /**
  * Retries a promise-returning function with a delay between attempts
@@ -13,5 +14,6 @@ export const retry = <T>(
   factory: () => Promise<T>,
   retries = 10,
   delayMs = 1000,
-  firstMs = 100
-): Promise<T> => withRetry(factory, retries, delayMs, firstMs)();
+  firstMs = 100,
+  retryIf: (e: Error, ...args: any[]) => boolean = toTrue,
+): Promise<T> => withRetry(factory, retries, delayMs, firstMs, retryIf)();

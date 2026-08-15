@@ -1,4 +1,6 @@
-import { sleep } from './sleep';
+import { toError } from "../cast";
+import { toTrue } from "../cast/toTrue";
+import { sleep } from "./sleep";
 
 /**
  * Retries a promise-returning function with a delay between attempts
@@ -13,7 +15,8 @@ export const withRetry = <F extends (...args: any[]) => Promise<any>>(
   factory: F,
   retries = 10,
   delayMs = 1000,
-  firstMs = 100
+  firstMs = 100,
+  retryIf: (e: Error, ...args: any[]) => boolean = toTrue,
 ): F => {
   return (async (...args: any[]) => {
     let error: any;
@@ -22,6 +25,7 @@ export const withRetry = <F extends (...args: any[]) => Promise<any>>(
         return await factory(...args);
       } catch (e) {
         error = e;
+        if (!retryIf(toError(e), ...args)) break;
         if (i < retries - 1) {
           await sleep(i === 0 ? firstMs : delayMs);
         }

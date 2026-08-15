@@ -88,7 +88,7 @@ export const serverDate = () => new Date(serverTime());
 ///// MILLISECOND /////
 
 /** Get milliseconds (0-999) - getMs('2025-02-09T15:04:05.123Z') -> 123 */
-export const getMs = (d: DateLike) => toDate(d).getMilliseconds();
+export const getMs = (d?: DateLike) => toDate(d).getMilliseconds();
 
 /** Set milliseconds - setMs('2025-02-09T15:04:05.000Z', 500) -> 2025-02-09T15:04:05.500Z */
 export const setMs = (d: DateLike, v: number) =>
@@ -97,7 +97,7 @@ export const setMs = (d: DateLike, v: number) =>
 ///// SECOND /////
 
 /** Get seconds (0-59) - getSeconds('2025-02-09T15:04:30Z') -> 30 */
-export const getSeconds = (d: DateLike) => toDate(d).getSeconds();
+export const getSeconds = (d?: DateLike) => toDate(d).getSeconds();
 
 /** Set seconds - setSeconds('2025-02-09T15:04:00Z', 45) -> 2025-02-09T15:04:45Z */
 export const setSeconds = (d: DateLike, v: number) =>
@@ -106,7 +106,7 @@ export const setSeconds = (d: DateLike, v: number) =>
 ///// MINUTE /////
 
 /** Get minutes (0-59) - getMinutes('2025-02-09T15:30Z') -> 30 */
-export const getMinutes = (d: DateLike) => toDate(d).getMinutes();
+export const getMinutes = (d?: DateLike) => toDate(d).getMinutes();
 
 /** Set minutes - setMinutes('2025-02-09T15:00Z', 45) -> 2025-02-09T15:45Z */
 export const setMinutes = (d: DateLike, v: number) =>
@@ -115,7 +115,7 @@ export const setMinutes = (d: DateLike, v: number) =>
 ///// HOUR /////
 
 /** Get hours (0-23) - getHours('2025-02-09T15:30Z') -> 15 */
-export const getHours = (d: DateLike) => toDate(d).getHours();
+export const getHours = (d?: DateLike) => toDate(d).getHours();
 
 /** Set hours - setHours('2025-02-09T10:30Z', 15) -> 2025-02-09T15:30Z */
 export const setHours = (d: DateLike, v: number) =>
@@ -124,7 +124,7 @@ export const setHours = (d: DateLike, v: number) =>
 ///// MONTH DAY /////
 
 /** Get day of month (1-31) - getMonthDay('2025-02-09') -> 9 */
-export const getMonthDay = (d: DateLike) => toDate(d).getDate();
+export const getMonthDay = (d?: DateLike) => toDate(d).getDate();
 
 /** Set day of month - setMonthDay('2025-02-09', 15) -> 2025-02-15 */
 export const setMonthDay = (d: DateLike, v: number) =>
@@ -140,7 +140,7 @@ export const setWeekDay = (d: DateLike, v: number) =>
   addDay((d = toDate(d)), v - getWeekDay(d));
 
 /** Get ISO week day (1=Monday, 7=Sunday) - getISODay('2025-02-10') -> 1 (Monday) */
-export const getISODay = (d: DateLike) => getWeekDay(d) || 7;
+export const getISODay = (d?: DateLike) => getWeekDay(d) || 7;
 
 ///// MONTH /////
 
@@ -227,10 +227,10 @@ export const diffInMs = (from: DateLike, to: DateLike): number =>
 ///// TIME /////
 
 /** Get timestamp in milliseconds - getTime('2025-02-09') -> 1739059200000 */
-export const getTime = (d: DateLike) => toDate(d).getTime();
+export const getTime = (d?: DateLike) => toDate(d).getTime();
 
 /** Get milliseconds since start of day - getDayTime('2025-02-09T15:30Z') -> 55800000 */
-export const getDayTime = (d: DateLike) =>
+export const getDayTime = (d?: DateLike) =>
   (d = toDate(d)).getTime() - startOfDay(d).getTime();
 
 ///// ADD /////
@@ -313,7 +313,7 @@ export const formatDay = (d?: DateLike): DayName | "" =>
   dayIndexToName(getWeekDay(d));
 
 /** Format date as Mar */
-export const formatDayShort = (d: DateLike) => dayIndexToShort(getWeekDay(d));
+export const formatDayShort = (d?: DateLike) => dayIndexToShort(getWeekDay(d));
 
 ///// MONTH NAME /////
 
@@ -368,21 +368,22 @@ export const monthToIndex = (month: string) => {
 };
 
 /** Format date as Février */
-export const formatMonth = (d: DateLike) => monthIndexToName(getMonth(d));
+export const formatMonth = (d?: DateLike) => monthIndexToName(getMonth(d));
 
 /** Format date as Fév */
-export const formatShortMonth = (d: DateLike) => monthIndexToShort(getMonth(d));
+export const formatShortMonth = (d?: DateLike) =>
+  monthIndexToShort(getMonth(d));
 
 ///// FORMAT /////
 
 /** Format date as "Mardi, 9 Février 2025" */
-export const formatDate = (d: DateLike) =>
+export const formatDate = (d?: DateLike) =>
   d
     ? `${formatDay((d = toDate(d)))}, ${getMonthDay(d)} ${formatMonth(d)} ${getYear(d)}`
     : "";
 
 /** Format date as "9 Fév 2025" */
-export const formatShortDate = (d: DateLike) =>
+export const formatShortDate = (d?: DateLike) =>
   `${getMonthDay((d = toDate(d)))} ${formatShortMonth(d)} ${getYear(d)}`;
 
 /** Format milliseconds as "15:04" ou "15:04:05" without timezone conversion */
@@ -416,11 +417,11 @@ export const formatDuration = (
 };
 
 /** Format date as "Mardi, 9 Février 2025 15:04:05" */
-export const formatDateTime = (d: DateLike) =>
+export const formatDateTime = (d?: DateLike) =>
   `${formatDate((d = toDate(d)))} ${formatTime(d)}`;
 
 /** Format date as "9 Fév 2025 15:04" */
-export const formatShortDateTime = (d: DateLike) =>
+export const formatShortDateTime = (d?: DateLike) =>
   `${formatShortDate((d = toDate(d)))} ${formatTime(d)}`;
 
 ///// PARSE /////
@@ -485,41 +486,41 @@ export const updateDate = (d: DateLike, update: (date: Date) => void) => {
 };
 
 /** Get start of day (00:00:00.000) - startOfDay('2025-02-09T15:30Z') -> 2025-02-09T00:00:00.000Z */
-export const startOfDay = (d: DateLike): Date =>
+export const startOfDay = (d?: DateLike): Date =>
   updateDate(d, (d) => d.setHours(0, 0, 0, 0));
 
 /** Get end of day (23:59:59.999) - endOfDay('2025-02-09T15:30Z') -> 2025-02-09T23:59:59.999Z */
-export const endOfDay = (d: DateLike): Date =>
+export const endOfDay = (d?: DateLike): Date =>
   updateDate(d, (d) => d.setHours(23, 59, 59, 999));
 
 /** Get start of week (Monday 00:00) - startOfWeek('2025-02-09') -> 2025-02-03T00:00:00.000Z */
-export const startOfWeek = (d: DateLike, startDay = 1): Date =>
+export const startOfWeek = (d?: DateLike, startDay = 1): Date =>
   addDay((d = startOfDay(d)), normalizeIndex(startDay - getWeekDay(d), 7) - 7);
 
 /** Get end of week (Sunday 23:59) - endOfWeek('2025-02-09') -> 2025-02-09T23:59:59.999Z */
-export const endOfWeek = (d: DateLike, startDay = 1): Date =>
+export const endOfWeek = (d?: DateLike, startDay = 1): Date =>
   addDay((d = startOfDay(d)), normalizeIndex(startDay + 6 - getWeekDay(d), 7));
 
 /** Get start of month (1st day 00:00) - startOfMonth('2025-02-15') -> 2025-02-01T00:00:00.000Z */
-export const startOfMonth = (d: DateLike): Date =>
+export const startOfMonth = (d?: DateLike): Date =>
   new Date(getYear((d = toDate(d))), getMonth(d), 1, 0, 0, 0, 0);
 
 /** Get end of month (last day 23:59) - endOfMonth('2025-02-15') -> 2025-02-28T23:59:59.999Z */
-export const endOfMonth = (d: DateLike): Date =>
+export const endOfMonth = (d?: DateLike): Date =>
   new Date(getYear((d = toDate(d))), getMonth(d) + 1, 0, 23, 59, 59, 999);
 
 /** Get start of year (Jan 1st 00:00) - startOfYear('2025-06-15') -> 2025-01-01T00:00:00.000Z */
-export const startOfYear = (d: DateLike): Date =>
+export const startOfYear = (d?: DateLike): Date =>
   new Date(getYear(d), 0, 1, 0, 0, 0, 0);
 
 /** Get end of year (Dec 31st 23:59) - endOfYear('2025-06-15') -> 2025-12-31T23:59:59.999Z */
-export const endOfYear = (d: DateLike): Date =>
+export const endOfYear = (d?: DateLike): Date =>
   new Date(getYear(d), 11, 31, 23, 59, 59, 999);
 
 ///// WEEK NUMBER /////
 
 /** Get ISO 8601 week number (1-53) - getISOWeek('2025-02-09') -> 6 */
-export const getISOWeek = (d: DateLike): number => {
+export const getISOWeek = (d?: DateLike): number => {
   const target = cloneDate(d);
   const dayNr = getISODay(target) - 1; // 0=Monday, 6=Sunday
   setMonthDay(target, getMonthDay(target) - dayNr + 3);
@@ -533,7 +534,7 @@ export const getISOWeek = (d: DateLike): number => {
 };
 
 /** Format date as ISO 8601 - toDateISO('2025-02-09T15:04:05Z') -> "2025-02-09T15:04:05.000Z" */
-export const toDateISO = (d: DateLike): string => toDate(d).toISOString();
+export const toDateISO = (d?: DateLike): string => toDate(d).toISOString();
 export const formatISO = toDateISO;
 
 /** Check if date is expired - isExpired('2025-02-09', DAY) -> true if now > 2025-02-10 */

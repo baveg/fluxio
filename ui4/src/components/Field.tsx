@@ -123,6 +123,7 @@ const PasswordInput = (props: ElProps['input']) => {
   const Icon = showPassword ? EyeOffIcon : EyeIcon;
   return (
     <>
+      <input class="PasswordInput" {...props} type={showPassword ? 'text' : 'password'} />
       <button
         type="button"
         class="PasswordToggleBtn"
@@ -133,7 +134,6 @@ const PasswordInput = (props: ElProps['input']) => {
       >
         <Icon class="PasswordToggleIcon" />
       </button>
-      <input class="PasswordInput" {...props} type={showPassword ? 'text' : 'password'} />
     </>
   );
 };

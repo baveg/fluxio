@@ -42,7 +42,7 @@
   }
 
   .PasswordInput {
-    @apply grow;
+    @apply grow min-w-0;
   }
 
   .CheckboxLabel {

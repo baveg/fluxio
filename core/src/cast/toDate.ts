@@ -1,5 +1,8 @@
-import { isDate, isValidDate } from '../check/isDate';
-import { isString } from '../check/isString';
+import { isDate, isValidDate } from "../check/isDate";
+import { isNil } from "../check/isNil";
+import { isString } from "../check/isString";
+import { isUndef } from "../check/isUndefined";
+import { die } from "../error/die";
 
 interface ToDate {
   (v: any): Date;
@@ -18,14 +21,18 @@ interface ToDate {
  * toDate('15:30:45') -> Date object (today at 15:30:45)
  * toDate('invalid', new Date(0)) -> new Date(0)
  */
-export const toDate = (<TDef>(v: any, defVal?: TDef): Date | TDef | undefined => {
+export const toDate = (<TDef>(
+  v?: any,
+  defVal?: TDef,
+): Date | TDef | undefined => {
+  if (isNil(v)) return isUndef(defVal) ? new Date() : defVal;
   // Handle time format HH:MM:SS or HH:MM
   if (isString(v) && /^\d{2}:\d{2}(:\d{2})?$/.test(v)) {
-    const parts = v.split(':').map(Number);
+    const parts = v.split(":").map(Number);
     v = new Date();
     v.setHours(parts[0], parts[1], parts[2] || 0, 0);
   } else if (!isDate(v)) {
     v = new Date(v);
   }
-  return isValidDate(v) ? v : defVal;
+  return isValidDate(v) ? v : die("invalid-date");
 }) as ToDate;

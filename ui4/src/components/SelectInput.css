@@ -53,7 +53,7 @@
   }
 
   .SelectBtn {
-    @apply w-full p-3 flex items-center justify-start;
+    @apply w-full p-3 flex items-center justify-start text-left;
     @apply transition-colors bg-base-100 border-none hover:bg-primary/20;
   }
 

@@ -2,6 +2,7 @@ export * from './base64toBlob';
 export * from './blobToBase64';
 export * from './base64Url';
 export * from './cases';
+export * from './cp1252';
 export * from './humanize';
 export * from './isSearched';
 export * from './json';

@@ -79,6 +79,17 @@ export const tooltipProps = (content: Comp) => {
         onMouseOver: (event: Event) => {
           createTooltip(event, content);
         },
+        // Le tactile ne déclenche pas mouseover : sans ce onClick, la tooltip ne
+        // s'affiche jamais sur mobile. stopPropagation (seulement — pas
+        // preventDefault, tooltipProps est aussi posé sur des <label>/<a> dont le
+        // comportement natif au clic doit rester intact, cf. UploadButton/Button)
+        // empêche le clic de remonter jusqu'au listener global "click ailleurs
+        // ferme la tooltip" (voir createTooltip ci-dessus) — sinon ce même clic,
+        // en bullant jusqu'à <body>, détruirait la tooltip juste après l'avoir créée.
+        onClick: (event: Event) => {
+          event.stopPropagation?.();
+          createTooltip(event, content);
+        },
       }
     : {};
 };

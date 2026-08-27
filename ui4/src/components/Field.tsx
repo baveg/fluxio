@@ -107,12 +107,13 @@ interface InputProps {
   name?: string;
   readonly?: boolean;
   required?: boolean;
+  disabled?: boolean;
   autoComplete?: string;
 }
 
 interface FieldInputProps extends InputProps {
   class?: string;
-  label?: string;
+  label?: Comp;
   help?: string;
   delay?: number;
   row?: boolean;
@@ -176,6 +177,7 @@ const CheckboxInput = ({
       {icon && comp(icon, { class: 'CheckboxIcon' })}
       {prefix && <span class="CheckboxPrefix">{comp(prefix)}</span>}
       <input
+        {...iProps}
         type="checkbox"
         class={cls('CheckboxInput', type === 'toggle' && 'CheckboxInput-toggle')}
         checked={toBoolean(value)}
@@ -278,7 +280,7 @@ const FieldInput = (props: FieldInputProps) => {
       {label && (
         <div class="FieldLabel">
           <span class="FieldLabelText">
-            {label}
+            {comp(label)}
             {required ? ' *' : ''}
           </span>
         </div>

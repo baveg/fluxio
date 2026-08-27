@@ -9,8 +9,13 @@
     @apply flex-row items-center justify-between gap-3;
   }
 
+  /* flex-row-reverse pour afficher la case avant le texte (le label est rendu
+     avant la case dans le DOM) ; justify-end (au lieu de justify-between hérité
+     de .Field-row) pour que les deux restent collés au lieu d'être écartés aux
+     extrémités du conteneur pleine largeur — items-start pour un texte qui
+     peut passer sur plusieurs lignes (ex: case à cocher CGV/CGU). */
   .Field-checkbox.Field-row {
-    @apply flex-row-reverse;
+    @apply flex-row-reverse justify-end items-start;
   }
 
   .FieldLabel {

@@ -15,7 +15,7 @@ import './SelectInput.css';
 const log = logger('SelectInput');
 
 interface SelectInputProps {
-  error?: string;
+  error?: string | boolean;
   icon?: Comp;
   prefix?: Comp;
   suffix?: Comp;

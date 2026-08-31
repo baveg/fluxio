@@ -95,7 +95,8 @@ interface InputProps {
   type?: InputType;
   placeholder?: string;
   items?: [any, Comp][];
-  error?: string;
+  // string => bordure rouge + message sous le champ ; true => bordure rouge seule
+  error?: string | boolean;
   icon?: Comp;
   prefix?: Comp;
   suffix?: Comp;
@@ -290,9 +291,11 @@ const FieldInput = (props: FieldInputProps) => {
       : type === 'checkbox' || type === 'toggle' ?
         <CheckboxInput {...inputProps} onValue={onValue} />
       : <TextInput type={type} {...inputProps} />}
-      {(error || help) && (
+      {((typeof error === 'string' && error) || help) && (
         <div class="FieldAlt">
-          <span class={error ? 'FieldError' : 'FieldHelp'}>{error || help}</span>
+          <span class={error ? 'FieldError' : 'FieldHelp'}>
+            {(typeof error === 'string' && error) || help}
+          </span>
         </div>
       )}
     </label>

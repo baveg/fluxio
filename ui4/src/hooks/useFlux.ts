@@ -7,8 +7,8 @@ type NFlux<T> = Flux<T> | string | number | boolean | false | null | undefined;
 type NFluxDictionary<T> = FluxDictionary<T> | null | undefined;
 
 interface UseFlux {
-  <T = any>(flux: Flux<T>): T;
-  <T = any>(flux: NFlux<T>): T | undefined;
+  <T>(flux: Flux<T>): T;
+  <T>(flux: NFlux<T>): T | undefined;
 }
 export const useFlux = (<T = any>(flux: NFlux<T>): T | undefined => {
   const [state, setState] = useState(isFlux(flux) ? flux.get() : undefined);
@@ -25,8 +25,8 @@ export const useFlux = (<T = any>(flux: NFlux<T>): T | undefined => {
 }) as UseFlux;
 
 interface UseFluxState {
-  <T = any>(flux: Flux<T>): [T, (next: T) => void];
-  <T = any>(flux: NFlux<T>): [T | undefined, (next: T) => void];
+  <T>(flux: Flux<T>): [T, (next: T) => void];
+  <T>(flux: NFlux<T>): [T | undefined, (next: T) => void];
 }
 export const useFluxState = (<T = any>(flux: Flux<T>): [T, (next: T) => void] => {
   const [state, setState] = useState(flux && flux.get());

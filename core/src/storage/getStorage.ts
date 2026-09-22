@@ -163,8 +163,10 @@ export const dbStorage = async (name: string): Promise<DataStore> => {
   };
 };
 
-let storageProvider = (name: string) =>
+export const DEFAULT_STORAGE_PROVIDER = (name: string) =>
   dbStorage(name).catch(() => jsonStorage(name) || ramStorage(name));
+
+let storageProvider = DEFAULT_STORAGE_PROVIDER;
 
 export const setStorageProvider = (factory: typeof storageProvider) => {
   storageProvider = factory;

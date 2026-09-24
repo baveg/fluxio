@@ -24,7 +24,6 @@ let cssColors: Dictionary<string> = {};
 
 export const getCssColors = () => cssColors;
 
-type V = number | string | (number | string)[];
 type S = CssStyle;
 
 let animId = 0;
@@ -38,7 +37,7 @@ const animToCss = (v: StyleAnim, s: S, styles: Dictionary<CssStyle | string>) =>
   let { name } = v;
   if (!name) name = `fluxio${animId++}`;
 
-  const sb = [];
+  const sb: string[] = [];
   for (const key in keyframes) {
     const keyframe = keyframes[key];
     if (keyframe) {
@@ -318,7 +317,7 @@ export const cssFunMap = {
     s.alignItems = fConvert(a[0], 'center');
     s.justifyContent = fConvert(a[1], 'between');
   },
-  rowWrap: (v: 1, s: S) => {
+  rowWrap: (_v: 1, s: S) => {
     s.display = 'flex';
     s.flexDirection = 'row';
     s.flexWrap = 'wrap';
@@ -408,7 +407,7 @@ export const getCssProp = (prop: string) =>
 
 export const styleToCss = (style: string | CssStyle) => {
   if (isString(style)) return style;
-  const sb = [];
+  const sb: string[] = [];
   for (const prop in style) {
     const value = (style as any)[prop];
     sb.push(`${getCssProp(prop)}:${value};`);
@@ -418,7 +417,7 @@ export const styleToCss = (style: string | CssStyle) => {
 };
 
 export const stylesToCss = (styles: Dictionary<CssStyle | string> = {}) => {
-  const sb = [];
+  const sb: string[] = [];
   for (const query in styles) {
     const output = styles[query];
     if (output && !isEmpty(output)) {
@@ -474,7 +473,7 @@ export const Css = (key: string, styles?: StylesValue) => {
       isInit = true;
     }
 
-    const sb = [];
+    const sb: string[] = [];
 
     for (const arg of args) {
       if (isString(arg)) {

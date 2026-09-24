@@ -9,7 +9,7 @@ import type { Listener } from '../types/Listener';
 import type { NextState } from '../types';
 import { toError } from '../cast';
 
-export type PipeSource<T, U> = Flux<U> | ((listener: () => void) => Unsubscribe);
+export type PipeSource<_T, U> = Flux<U> | ((listener: () => void) => Unsubscribe);
 export type PipeOnSync<T, U> = (pipe: Pipe<T, U>) => void;
 export type PipeOnSet<T, U> = (value: T, pipe: Pipe<T, U>) => void;
 export type PipeOnInit<T, U> = (pipe: Pipe<T, U>) => void;
@@ -125,7 +125,7 @@ export class Flux<T = any> {
     return this.s || (this.s = this.set.bind(this));
   }
 
-  onListeners(thens: Listener<T>[], catches: Listener<Error>[]) {}
+  onListeners(_thens: Listener<T>[], _catches: Listener<Error>[]) {}
 
   /**
    * Subscribe to value changes.

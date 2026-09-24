@@ -1,11 +1,10 @@
 import { isArray, isObject } from '../check';
-import { die } from '../error/die';
 import { logger } from '../logger/Logger';
 import { by } from '../object/by';
 
 const log = logger('json');
 
-export const toJsonReplacer = (k: string, v: any) => {
+export const toJsonReplacer = (_k: string, v: any) => {
 	if (v instanceof Uint8Array)
     return { Uint8Array: v.length };
 	if (v instanceof Error)

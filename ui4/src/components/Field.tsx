@@ -110,6 +110,8 @@ interface InputProps {
   required?: boolean;
   disabled?: boolean;
   autoComplete?: string;
+  sm?: boolean;
+  xs?: boolean;
 }
 
 interface FieldInputProps extends InputProps {
@@ -154,6 +156,8 @@ const CheckboxInput = ({
   onChange,
   onInput,
   onValue,
+  sm,
+  xs,
   ...iProps
 }: CheckboxInputProps) => {
   log.d('CheckboxInput render', { value, iProps });
@@ -203,10 +207,13 @@ const handleLabelClick = (e: MouseEvent) => {
   stopEvent(e);
 };
 
-const TextInput = ({ error, icon, prefix, suffix, type, ...iProps }: InputProps) => {
+const TextInput = ({ error, icon, prefix, suffix, type, sm, xs, ...iProps }: InputProps) => {
   const inputType = type === 'datetime' ? 'datetime-local' : type || 'text';
   return (
-    <label class={cls('FieldInput', error && 'input-error')} onClick={handleLabelClick}>
+    <label
+      class={cls('FieldInput', sm && 'input-sm', xs && 'input-xs', error && 'input-error')}
+      onClick={handleLabelClick}
+    >
       {icon && comp(icon, { class: 'FieldIcon' })}
       {prefix && <span class="FieldPrefix">{comp(prefix)}</span>}
       {type === 'password' ?

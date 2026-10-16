@@ -1,3 +1,4 @@
+export * from './combineOffs';
 export * from './debounce';
 export * from './defer';
 export * from './onInterval';

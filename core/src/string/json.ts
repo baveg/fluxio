@@ -7,13 +7,13 @@ const log = logger('json');
 export const toJsonReplacer = (_k: string, v: any) => {
 	if (v instanceof Uint8Array)
     return { Uint8Array: v.length };
-	if (v instanceof Error)
-    return {
-      name: v.name,
-      message: v.message,
-      code: (v as any).code,
-      data: (v as any).data,
-    };
+	if (v instanceof Error) {
+    const { name, message, code, data } = v as any;
+    const error: any = { name, message };
+    if (code !== undefined) error.code = code;
+    if (data !== undefined) error.data = data;
+    return error;
+  }
 	return v;
 }
 

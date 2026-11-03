@@ -1,5 +1,5 @@
-import { toTrue } from "../cast/toTrue";
-import { withRetry } from "./withRetry";
+import { toTrue } from '../cast/toTrue';
+import { withRetry } from './withRetry';
 
 export const retry = <T>(
   factory: () => Promise<T>,

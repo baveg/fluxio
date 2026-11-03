@@ -12,7 +12,7 @@ export const must = <T>(
   value: any,
   check: Check = isNotNil,
   prop: string = 'this',
-  error: MustError = (prop) => `${prop} is not valid`
+  error: MustError = (prop) => `${prop} is not valid`,
 ): T => {
   if (!check(value)) {
     throw toError(isFunction(error) ? error(prop) : error);

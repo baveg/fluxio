@@ -3,7 +3,7 @@ import type { Dictionary } from '../types/Dictionary';
 
 export const keepIf = <T = any>(
   items: Dictionary<T>,
-  predicate?: (value: T, key: string, dictionary: Dictionary<T>) => boolean
+  predicate?: (value: T, key: string, dictionary: Dictionary<T>) => boolean,
 ) => {
   if (!predicate) return items;
   for (const key in items) {

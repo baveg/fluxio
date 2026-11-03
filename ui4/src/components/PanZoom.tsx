@@ -210,13 +210,9 @@ export class PanZoomController {
 
       if (!curr1 || !curr2 || !last1 || !last2) return;
 
-      const currDistance = Math.sqrt(
-        Math.pow(curr2[0] - curr1[0], 2) + Math.pow(curr2[1] - curr1[1], 2)
-      );
+      const currDistance = Math.sqrt(Math.pow(curr2[0] - curr1[0], 2) + Math.pow(curr2[1] - curr1[1], 2));
 
-      const lastDistance = Math.sqrt(
-        Math.pow(last2[0] - last1[0], 2) + Math.pow(last2[1] - last1[1], 2)
-      );
+      const lastDistance = Math.sqrt(Math.pow(last2[0] - last1[0], 2) + Math.pow(last2[1] - last1[1], 2));
 
       if (lastDistance > 0) {
         const scale = currDistance / lastDistance;

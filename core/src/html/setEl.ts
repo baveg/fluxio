@@ -7,11 +7,7 @@ import { createEl } from './createEl';
 import type { CssStyle } from './cssTypes';
 import { setStyle } from './style';
 
-type HTMLAllElement = HTMLDivElement &
-  HTMLInputElement &
-  HTMLVideoElement &
-  HTMLImageElement &
-  HTMLHeadingElement;
+type HTMLAllElement = HTMLDivElement & HTMLInputElement & HTMLVideoElement & HTMLImageElement & HTMLHeadingElement;
 
 export type ElOptions = Omit<Omit<Partial<HTMLAllElement>, 'children'>, 'style'> & {
   readonly reset?: boolean;

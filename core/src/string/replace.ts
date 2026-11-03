@@ -7,14 +7,10 @@
 export const replace = (val: string, replaceBySearch: Record<string, any>): string => {
   val = String(val);
   if ((val as any).replaceAll) {
-    for (const key in replaceBySearch)
-      val = (val as any).replaceAll(key, replaceBySearch[key] as string);
+    for (const key in replaceBySearch) val = (val as any).replaceAll(key, replaceBySearch[key] as string);
     return val;
   }
   for (const key in replaceBySearch)
-    val = val.replace(
-      new RegExp(key.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1'), 'g'),
-      replaceBySearch[key]
-    );
+    val = val.replace(new RegExp(key.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1'), 'g'), replaceBySearch[key]);
   return val;
 };

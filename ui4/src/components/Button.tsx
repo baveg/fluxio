@@ -75,7 +75,7 @@ export const Button = ({
     ghost && 'btn-ghost',
     text && 'btn-text',
     square && 'btn-square',
-    extraCls
+    extraCls,
   );
 
   const content = (

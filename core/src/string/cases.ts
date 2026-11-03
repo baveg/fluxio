@@ -8,8 +8,7 @@ import { firstUpper } from './upper';
  * pascalToKebabCase('HelloWorld') // 'hello-world'
  * pascalToKebabCase('XMLHttpRequest') // 'x-m-l-http-request'
  */
-export const pascalToKebabCase = (v: string): string =>
-  v.replace(/[A-Z]/g, (chr) => `-${chr}`).toLowerCase();
+export const pascalToKebabCase = (v: string): string => v.replace(/[A-Z]/g, (chr) => `-${chr}`).toLowerCase();
 
 /**
  * Extracts words from any case format

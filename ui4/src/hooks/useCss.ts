@@ -13,6 +13,6 @@ export const useCss = (css: string | (() => string), deps?: any[]) => {
         setCss(key, null);
       };
     },
-    deps || [css]
+    deps || [css],
   );
 };

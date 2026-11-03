@@ -9,13 +9,7 @@ import { isItem } from '../check/isItem';
 import { pascalToKebabCase } from '../string/cases';
 import { isFunction } from '../check/isFunction';
 import { isEmpty } from '../check/isEmpty';
-import type {
-  StyleAnim,
-  CssStyle,
-  StyleFlexAlign,
-  StyleFlexDirection,
-  StyleFlexJustify,
-} from './cssTypes';
+import type { StyleAnim, CssStyle, StyleFlexAlign, StyleFlexDirection, StyleFlexJustify } from './cssTypes';
 import { isDefined } from '../check';
 import { toNumber } from '../cast';
 import { getValues } from '../object/getValues';
@@ -77,8 +71,7 @@ const addTransform = (v: string, s: S) => {
   s.transform = s.transform ? `${s.transform} ${v}` : v;
 };
 
-const transformProp = (prop: string) => (v: number | string, s: S) =>
-  addTransform(`${prop}(${v})`, s);
+const transformProp = (prop: string) => (v: number | string, s: S) => addTransform(`${prop}(${v})`, s);
 
 type Rem = string | number;
 const rem = (v: Rem): string => (typeof v === 'number' ? `${v}rem` : String(v));
@@ -372,7 +365,7 @@ export type Style = Omit<CssStyle, keyof StyleFunProps> & StyleFunProps;
 export const computeStyle = (
   record?: Style,
   style: CssStyle = {},
-  styles: Dictionary<CssStyle | string> = {}
+  styles: Dictionary<CssStyle | string> = {},
 ): CssStyle => {
   if (!record) return {};
   for (const prop in record) {
@@ -390,7 +383,7 @@ export const computeStyle = (
 export const computeStyles = (
   prefix: string,
   inputs?: Dictionary<Style>,
-  styles: Dictionary<CssStyle | string> = {}
+  styles: Dictionary<CssStyle | string> = {},
 ) => {
   for (const k in inputs) {
     const record = inputs[k];
@@ -402,8 +395,7 @@ export const computeStyles = (
 };
 
 const cssPropMap: Dictionary<string> = {};
-export const getCssProp = (prop: string) =>
-  cssPropMap[prop] || (cssPropMap[prop] = pascalToKebabCase(prop));
+export const getCssProp = (prop: string) => cssPropMap[prop] || (cssPropMap[prop] = pascalToKebabCase(prop));
 
 export const styleToCss = (style: string | CssStyle) => {
   if (isString(style)) return style;

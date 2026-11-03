@@ -15,7 +15,7 @@ export const onEvent = (
   target: any,
   type: string,
   listener: (e: any) => any,
-  options: OnEventOptions = {}
+  options: OnEventOptions = {},
 ): (() => void) => {
   const el = target ? target : glb.document.body;
   const off = () => el.removeEventListener(type, handler, options);
@@ -35,7 +35,7 @@ interface OnHtmlEvent {
     target: T | 0,
     type: K,
     listener: (this: T, ev: HTMLElementEventMap[K]) => any,
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
   ): () => void;
 }
 
@@ -45,7 +45,7 @@ export const onEventOnce = (
   target: any,
   type: string,
   listener: (e: any) => any,
-  options: OnEventOptions = {}
+  options: OnEventOptions = {},
 ): (() => void) => onEvent(target, type, listener, { ...options, once: true });
 
 export const onViewportClick = (listener: (e: any) => any, options?: OnEventOptions) => {
@@ -58,11 +58,7 @@ export const onViewportClick = (listener: (e: any) => any, options?: OnEventOpti
   };
 };
 
-export const onClickOutside = (
-  el: HTMLElement | null,
-  listener: (e: any) => any,
-  options?: OnEventOptions
-) =>
+export const onClickOutside = (el: HTMLElement | null, listener: (e: any) => any, options?: OnEventOptions) =>
   onViewportClick((e) => {
     if (el && !el.contains(e.target)) {
       listener(e);
@@ -79,7 +75,7 @@ export const onElMove = (
   el: HTMLElement | null,
   listener: (xywh: Vector4 | undefined) => any,
   ms: number = 100,
-  options?: OnEventOptions
+  options?: OnEventOptions,
 ) => {
   if (!el) return () => {};
 

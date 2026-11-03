@@ -387,21 +387,14 @@ export const WindowFooter = ({ yes, no, cancel, confirm }: WindowFooterProps) =>
     <div {...c('Footer')}>
       {yes && <Button success icon={CheckIcon} title="Oui" onClick={controller.handle('yes')} />}
       {no && <Button warn icon={XCircleIcon} title="Non" onClick={controller.handle('no')} />}
-      {cancel && (
-        <Button error icon={BanIcon} title="Annuler" onClick={controller.handle('cancel')} />
-      )}
-      {confirm && (
-        <Button success icon={CheckIcon} title="Valider" onClick={controller.handle('confirm')} />
-      )}
+      {cancel && <Button error icon={BanIcon} title="Annuler" onClick={controller.handle('cancel')} />}
+      {confirm && <Button success icon={CheckIcon} title="Valider" onClick={controller.handle('confirm')} />}
     </div>
   );
 };
 
 const WindowRender = (props: WindowProps) => {
-  const controller = useMemo(
-    () => props.controller?.init(props) || new WindowController(props),
-    [props.controller]
-  );
+  const controller = useMemo(() => props.controller?.init(props) || new WindowController(props), [props.controller]);
 
   const { modal, draggable, resizable, title, content, children, yes, no, cancel, confirm } = props;
 
@@ -413,10 +406,7 @@ const WindowRender = (props: WindowProps) => {
 
   return (
     <WindowContext value={controller}>
-      <div
-        {...c('', modal && '-modal', open && '-open', mounted && '-mounted')}
-        onClick={controller.close}
-      >
+      <div {...c('', modal && '-modal', open && '-open', mounted && '-mounted')} onClick={controller.close}>
         <div {...c('Box')} style={boxStyle as any} onClick={stopEvent}>
           <div {...c('Header', draggable && '-draggable')} onMouseDown={controller.drag}>
             {title && <div {...c('Title')}>{title}</div>}

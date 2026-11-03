@@ -1,6 +1,6 @@
-import { toError } from "../cast";
-import { toTrue } from "../cast/toTrue";
-import { sleep } from "./sleep";
+import { toError } from '../cast';
+import { toTrue } from '../cast/toTrue';
+import { sleep } from './sleep';
 
 export const withRetry = <F extends (...args: any[]) => Promise<any>>(
   factory: F,

@@ -85,9 +85,7 @@ export const TableFoot = (props: TableFootProps) => <tfoot {...props} {...c('Foo
 export interface RowProps extends JSX.HTMLAttributes<HTMLTableRowElement> {
   mode?: 'success' | 'error' | 'selected';
 }
-export const Row = (props: RowProps) => (
-  <tr {...props} {...c('Row', props.mode && `Row-${props.mode}`, props)} />
-);
+export const Row = (props: RowProps) => <tr {...props} {...c('Row', props.mode && `Row-${props.mode}`, props)} />;
 
 export interface CellProps extends JSX.HTMLAttributes<HTMLTableCellElement> {
   variant?: 'row' | 'center' | 'around' | 'check' | 'actions';

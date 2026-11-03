@@ -18,7 +18,7 @@ const applyResponsive = () => {
     : w < 768 ? 'sm'
     : w < 992 ? 'md'
     : w < 1200 ? 'lg'
-    : 'xl'
+    : 'xl',
   );
   setCss('fontSize', { ',html,body': { fontSize } });
 };

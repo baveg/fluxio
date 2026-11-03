@@ -33,7 +33,7 @@ export const Tooltip = ({ target, children, class: extraCls, ...props }: Tooltip
       <div
         class={cls(
           'absolute left-1/2 -translate-x-1/2 flex items-center justify-center text-center min-w-20 p-2 bg-base-100 text-base-content rounded shadow-md',
-          contentPos
+          contentPos,
         )}
       >
         {comp(children)}

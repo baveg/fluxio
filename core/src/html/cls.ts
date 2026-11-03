@@ -1,5 +1,5 @@
-import { fromEntries } from "../object/fromEntries";
-import type { Dictionary } from "../types/Dictionary";
+import { fromEntries } from '../object/fromEntries';
+import type { Dictionary } from '../types/Dictionary';
 
 export type ClsObj = {
   class?: any;
@@ -13,31 +13,28 @@ export const cls = (...args: ClsArg[]): string => {
   const sb: string[] = [];
   for (const arg of args) {
     if (!arg) continue;
-    if (typeof arg === "string") {
+    if (typeof arg === 'string') {
       sb.push(arg);
       continue;
     }
-    if (typeof arg === "object") {
+    if (typeof arg === 'object') {
       const v = arg.class || arg.className;
       if (v) sb.push(String(v));
     }
   }
-  return sb.join(" ");
+  return sb.join(' ');
 };
 
 export type Cls = Dictionary<boolean | number | undefined | null>;
 
 export const getCls = (el: Element | null | undefined): Cls => {
   if (!el) return {};
-  return fromEntries(el.className.split(" ").map((k) => [k, true]));
+  return fromEntries(el.className.split(' ').map((k) => [k, true]));
 };
 
-export const setCls = (
-  el: Element | null | undefined,
-  classes: Cls | string,
-) => {
+export const setCls = (el: Element | null | undefined, classes: Cls | string) => {
   if (!el) return;
-  if (typeof classes === "string") {
+  if (typeof classes === 'string') {
     el.className = classes;
     return;
   }
@@ -50,13 +47,10 @@ export const setCls = (
 
 export const resetCls = (el: Element | null | undefined) => {
   if (!el) return;
-  el.className = "";
+  el.className = '';
 };
 
-export const replaceCls = (
-  el: HTMLElement | null | undefined,
-  cls: Cls | string,
-) => {
+export const replaceCls = (el: HTMLElement | null | undefined, cls: Cls | string) => {
   resetCls(el);
   setCls(el, cls);
 };

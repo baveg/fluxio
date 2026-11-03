@@ -40,19 +40,12 @@ export type DataTableColumns<T extends {} = any, C extends {} = any> = {
   [K: string]: false | null | undefined | ArrayDataTableColumn<T, C> | DataTableColumn<T, C>;
 };
 
-export interface DataTableProps<T extends {} = any, C extends {} = any> extends Omit<
-  DivProps,
-  'onSelect'
-> {
+export interface DataTableProps<T extends {} = any, C extends {} = any> extends Omit<DivProps, 'onSelect'> {
   ctx?: C;
   cols: DataTableColumns<T, C>;
   select?: boolean;
   getKey?: (row: T, index: number) => string;
-  rowProps?: (
-    item: T,
-    ctx: C,
-    index: number
-  ) => ElProps['tr'] & { mode?: 'success' | 'error' | 'selected' };
+  rowProps?: (item: T, ctx: C, index: number) => ElProps['tr'] & { mode?: 'success' | 'error' | 'selected' };
   rows: Readonly<T[]>;
   onEdit?: (item: T) => void;
   onSelect?: (item: T) => void;
@@ -176,11 +169,7 @@ export const DataTable = (({
           {filteredItems.map((item: any, index: number) => {
             const { mode, ...trProps } = rowProps ? rowProps(item, ctx, index) : {};
             return (
-              <tr
-                key={getKey(item, index)}
-                {...trProps}
-                class={cls('hover', mode && `row-${mode}`, trProps)}
-              >
+              <tr key={getKey(item, index)} {...trProps} class={cls('hover', mode && `row-${mode}`, trProps)}>
                 {onSelect && (
                   <td class="p-0">
                     <Button

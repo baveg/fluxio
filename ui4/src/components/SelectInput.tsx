@@ -29,15 +29,7 @@ interface SelectInputProps {
   onOpen?: () => void;
 }
 
-const SelectList = ({
-  value,
-  items,
-  onPick,
-}: {
-  value: any;
-  items?: [any, Comp][];
-  onPick: (value: any) => void;
-}) => {
+const SelectList = ({ value, items, onPick }: { value: any; items?: [any, Comp][]; onPick: (value: any) => void }) => {
   const [search, setSearch] = useState('');
   const hasSearch = (items?.length || 0) > SEARCH_THRESHOLD;
   const searchRef = useRef<HTMLInputElement>(null);

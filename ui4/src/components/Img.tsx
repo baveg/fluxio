@@ -34,10 +34,7 @@ export const Img = ({
   alt,
   ...props
 }: ImgProps) => {
-  const cachedThumbUrl = withCached(
-    thumbUrl || url,
-    thumbCached === false ? false : thumbCached || cached
-  );
+  const cachedThumbUrl = withCached(thumbUrl || url, thumbCached === false ? false : thumbCached || cached);
   const cachedUrl = withCached(url, cached);
   const [currentSrc, setCurrentSrc] = useState(cachedThumbUrl || src);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -65,14 +62,6 @@ export const Img = ({
   console.debug('render', { isVisible, isOnLine, cachedThumbUrl, cachedUrl, src, currentSrc });
 
   return (
-    <img
-      {...props}
-      ref={imgRef}
-      src={currentSrc}
-      loading={loading}
-      decoding={decoding}
-      alt={alt}
-      aria-hidden={!alt}
-    />
+    <img {...props} ref={imgRef} src={currentSrc} loading={loading} decoding={decoding} alt={alt} aria-hidden={!alt} />
   );
 };

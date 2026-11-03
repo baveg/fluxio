@@ -29,6 +29,6 @@ export const fluxUnion = <T>(...sources: Flux<T>[]) => {
     },
     (pipe) => {
       pipe.set(last);
-    }
+    },
   );
 };

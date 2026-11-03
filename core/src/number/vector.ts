@@ -57,11 +57,7 @@ export const vectorError = (prop: string) => new Error(`VectorError (${prop})`);
  * opVector([1, 2, 3], [10, 20, 30], (a, b) => a + b); // [11, 22, 33]
  * ```
  */
-export const opVector = <V extends Vector<any> = Vector>(
-  a: V,
-  b: V,
-  op: (a: V[0], b: V[0]) => V[0]
-): V => {
+export const opVector = <V extends Vector<any> = Vector>(a: V, b: V, op: (a: V[0], b: V[0]) => V[0]): V => {
   if (!a || !b) throw vectorError(a ? 'b' : 'a');
   const l = a.length;
   if (b.length !== l) throw vectorError('b');
@@ -83,14 +79,14 @@ export const op3Vector = <V extends Vector<any> = Vector>(
   a: V,
   b: V,
   c: V,
-  op: (a: V[0], b: V[0], c: V[0]) => V[0]
+  op: (a: V[0], b: V[0], c: V[0]) => V[0],
 ): V => {
   if (!a || !b || !c)
     throw vectorError(
       a ?
         b ? 'c'
         : 'b'
-      : 'a'
+      : 'a',
     );
   const l = a.length;
   if (b.length !== l) throw vectorError('b');
@@ -108,8 +104,7 @@ export const op3Vector = <V extends Vector<any> = Vector>(
  * clampVector([1, 5, 10], [0, 0, 0], [3, 3, 3]); // [1, 3, 3]
  * ```
  */
-export const clampVector = <V extends Vector>(v: V, min: V, max: V) =>
-  op3Vector<V>(v, min, max, clamp);
+export const clampVector = <V extends Vector>(v: V, min: V, max: V) => op3Vector<V>(v, min, max, clamp);
 
 /**
  * Adds two vectors component-wise.
@@ -183,10 +178,7 @@ export const mergeVector = <V extends Vector>(a: V, b: Vector<V[0] | undefined>)
  * eqVector([1, 2, 3], [1, 2, 4]); // false
  * ```
  */
-export const eqVector = <V extends Vector>(
-  a: V | null | undefined,
-  b: V | null | undefined
-): boolean => {
+export const eqVector = <V extends Vector>(a: V | null | undefined, b: V | null | undefined): boolean => {
   if (!a || !b) return a === b;
   const l = a.length;
   if (b.length !== l) return false;

@@ -119,7 +119,7 @@ const bench = (label: string, iterations: number, fn: () => void) => {
   for (let i = 0; i < iterations; i++) fn();
   const ms = Number(process.hrtime.bigint() - start) / 1_000_000;
   console.log(
-    `${label}: ${ms.toFixed(2)}ms total, ${((ms * 1_000_000) / iterations).toFixed(1)}ns/op (${iterations} ops)`
+    `${label}: ${ms.toFixed(2)}ms total, ${((ms * 1_000_000) / iterations).toFixed(1)}ns/op (${iterations} ops)`,
   );
   return ms;
 };
@@ -137,9 +137,7 @@ const N = 1_000_000;
   age2$.on(() => {}); // live subscriber => push mode, get() should just read the cache
   const pushMs = bench('push mode: get() with a live subscriber', N, () => age2$.get());
 
-  console.log(
-    `pull/push ratio: ${(pullMs / pushMs).toFixed(1)}x (pull mode re-derives from source on every read)`
-  );
+  console.log(`pull/push ratio: ${(pullMs / pushMs).toFixed(1)}x (pull mode re-derives from source on every read)`);
   assert.ok(pushMs < pullMs, 'a subscribed pipe should be cheaper to read than an unsubscribed one');
 }
 

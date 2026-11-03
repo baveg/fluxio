@@ -38,10 +38,7 @@ export const useFluxState = (<T = any>(flux: Flux<T>): [T, (next: T) => void] =>
   return [state, (next) => flux && flux.set(next)];
 }) as UseFluxState;
 
-export const useFluxItem = <T = any>(
-  flux: NFluxDictionary<T>,
-  key: string
-): [T | undefined, (next: T) => void] => {
+export const useFluxItem = <T = any>(flux: NFluxDictionary<T>, key: string): [T | undefined, (next: T) => void] => {
   const [state, setState] = useState(flux ? flux.getItem(key) : undefined);
   useEffect(() => {
     setState(flux ? flux.getItem(key) : undefined);
@@ -55,5 +52,4 @@ export const useFluxItem = <T = any>(
   return [state, (next) => flux && flux.setItem(key, next)];
 };
 
-export const useFluxMemo = <T = any>(factory: () => NFlux<T>, inputs: Inputs = []) =>
-  useFlux(useMemo(factory, inputs));
+export const useFluxMemo = <T = any>(factory: () => NFlux<T>, inputs: Inputs = []) => useFlux(useMemo(factory, inputs));

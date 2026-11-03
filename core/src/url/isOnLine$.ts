@@ -29,5 +29,5 @@ export const isOnLine$ = pipe<boolean>(
   (pipe) => {
     pipe.set(getOnLineStatus());
   },
-  undefined
+  undefined,
 );

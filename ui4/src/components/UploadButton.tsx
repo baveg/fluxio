@@ -38,7 +38,7 @@ export const UploadButton = ({
       xs && 'btn-xs',
       ghost && 'btn-ghost',
       Icon && !title && 'btn-square',
-      extraCls
+      extraCls,
     )}
     {...tooltipProps(tooltip)}
   >

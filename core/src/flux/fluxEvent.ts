@@ -8,7 +8,7 @@ export type FElement<E extends Event = Event, K extends string = string> = {
 export const fluxEvent = <E extends Event = Event, K extends string = string>(
   element: FElement<E, K>,
   type: K,
-  options?: any
+  options?: any,
 ) => {
   let lastEvent: E;
   return pipe<E>(
@@ -23,6 +23,6 @@ export const fluxEvent = <E extends Event = Event, K extends string = string>(
     (pipe) => {
       pipe.set(lastEvent);
     },
-    undefined
+    undefined,
   );
 };

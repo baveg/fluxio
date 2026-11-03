@@ -30,12 +30,4 @@ export type WVector<T = number> =
   | WVector9<T>;
 
 export type Vector<T = number> =
-  | Vector1<T>
-  | Vector2<T>
-  | Vector3<T>
-  | Vector4<T>
-  | Vector5<T>
-  | Vector6<T>
-  | Vector7<T>
-  | Vector8<T>
-  | Vector9<T>;
+  Vector1<T> | Vector2<T> | Vector3<T> | Vector4<T> | Vector5<T> | Vector6<T> | Vector7<T> | Vector8<T> | Vector9<T>;

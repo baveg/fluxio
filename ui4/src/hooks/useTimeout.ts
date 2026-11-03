@@ -3,7 +3,7 @@ import { useEffect, useState } from 'preact/hooks';
 export const useTimeout = (
   callback?: (() => void) | undefined | null,
   delayMs: number = 1000,
-  deps: any[] = []
+  deps: any[] = [],
 ): number => {
   const [[start, now], setState] = useState([0, 0]);
 

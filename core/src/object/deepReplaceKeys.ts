@@ -2,10 +2,7 @@ import { isArray } from '../check/isArray';
 import { isObject } from '../check/isObject';
 import { getKeys } from './getKeys';
 
-export const deepReplaceKeys = (
-  obj: any,
-  replace: (k: string, v: any, parent: any) => string
-): any => {
+export const deepReplaceKeys = (obj: any, replace: (k: string, v: any, parent: any) => string): any => {
   const walk = (v: any): any => {
     if (isObject(v)) {
       if (isArray(v)) {

@@ -20,13 +20,15 @@ export const logToConsole = (tag: string, level: LogLevel, ...args: any[]) => {
 };
 
 let _log = logToConsole;
-export const setLog = (value: typeof _log) => { _log = value };
+export const setLog = (value: typeof _log) => {
+  _log = value;
+};
 
 export const rawLog = (tag: string, level: LogLevel, ...args: any[]) => _log(tag, level, ...args);
 
 const fun = (tag: string, level: LogLevel) => {
   return (...args: any[]) => _log(tag, level, ...args);
-}
+};
 
 export const logger = (tag: string): Logger => {
   const d = fun(tag, 'd') as Logger;
@@ -35,15 +37,11 @@ export const logger = (tag: string): Logger => {
   d.w = fun(tag, 'w');
   d.e = fun(tag, 'e');
   return d;
-}
+};
 
 export const log = logger('');
 
-export const logFun = <T extends (...args: any[]) => any>(
-  fun: T,
-  log: Logger,
-  funName = fun.name
-): T => {
+export const logFun = <T extends (...args: any[]) => any>(fun: T, log: Logger, funName = fun.name): T => {
   return ((...args: Parameters<T>) => {
     try {
       log(funName, ...args);
@@ -51,11 +49,11 @@ export const logFun = <T extends (...args: any[]) => any>(
 
       if (result instanceof Promise) {
         return result
-          .then(asyncResult => {
+          .then((asyncResult) => {
             log(funName, ...args, '-> resolve', asyncResult);
             return asyncResult;
           })
-          .catch(asyncError => {
+          .catch((asyncError) => {
             log.e(funName, ...args, '-> reject', asyncError);
             throw asyncError;
           });

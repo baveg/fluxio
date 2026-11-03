@@ -1,4 +1,3 @@
-
 export const toCp1252 = (text: string): Uint8Array => {
   const bytes: number[] = [];
 
@@ -58,4 +57,4 @@ export const toCp1252 = (text: string): Uint8Array => {
   }
 
   return new Uint8Array(bytes);
-}
+};

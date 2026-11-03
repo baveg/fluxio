@@ -20,5 +20,4 @@ export const useAnimState = (show: boolean, duration: number): AnimState => {
   return state;
 };
 
-export const isAnimStateOpen = (animState: AnimState) =>
-  animState === 'entered' || animState === 'entering';
+export const isAnimStateOpen = (animState: AnimState) => animState === 'entered' || animState === 'entering';

@@ -45,10 +45,7 @@ export const Anim = ({
 
   if (!keepMounted && state === 'unmounted') return null;
 
-  const stateClass =
-    state === 'entered' || state === 'exiting' ?
-      variants[variant][state]
-    : variants[variant].entering;
+  const stateClass = state === 'entered' || state === 'exiting' ? variants[variant][state] : variants[variant].entering;
 
   return (
     <div {...props} class={cls('transition-all duration-300', stateClass, className)}>

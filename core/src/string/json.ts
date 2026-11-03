@@ -5,27 +5,25 @@ import { by } from '../object/by';
 const log = logger('json');
 
 export const toJsonReplacer = (_k: string, v: any) => {
-	if (v instanceof Uint8Array)
-    return { Uint8Array: v.length };
-	if (v instanceof Error) {
+  if (v instanceof Uint8Array) return { Uint8Array: v.length };
+  if (v instanceof Error) {
     const { name, message, code, data } = v as any;
     const error: any = { name, message };
     if (code !== undefined) error.code = code;
     if (data !== undefined) error.data = data;
     return error;
   }
-	return v;
-}
+  return v;
+};
 
 export const toJson = (v: any) => {
-	try {
-		return JSON.stringify(v, toJsonReplacer);
-	}
-	catch (e) {
+  try {
+    return JSON.stringify(v, toJsonReplacer);
+  } catch (e) {
     log.e('toJson', e);
-		return String(v);
-	}
-}
+    return String(v);
+  }
+};
 
 export const fromJson = (json: string | null | undefined): any => {
   try {
@@ -42,7 +40,7 @@ export const jsonStringify = (
   value: any,
   replacer?: ((this: any, key: string, value: any) => any) | undefined,
   space?: string | number | undefined,
-  depth: number = 1
+  depth: number = 1,
 ): string => {
   try {
     return JSON.stringify(value, replacer, space);
@@ -65,7 +63,7 @@ export const jsonStringify = (
 export const jsonParse = (
   text: string | null | undefined,
   reviver?: ((this: any, key: string, value: any) => any) | undefined,
-  errorValue: any = null
+  errorValue: any = null,
 ): any => {
   try {
     return text ? JSON.parse(text, reviver) : null;

@@ -13,10 +13,7 @@ export type PipeSource<_T, U> = Flux<U> | ((listener: () => void) => Unsubscribe
 export type PipeOnSync<T, U> = (pipe: Pipe<T, U>) => void;
 export type PipeOnSet<T, U> = (value: T, pipe: Pipe<T, U>) => void;
 export type PipeOnInit<T, U> = (pipe: Pipe<T, U>) => void;
-export type ReadonlyFlux<T = any> = Omit<
-  Flux<T>,
-  'set' | 'setError' | 'notify' | 'setter' | 'clear'
->;
+export type ReadonlyFlux<T = any> = Omit<Flux<T>, 'set' | 'setError' | 'notify' | 'setter' | 'clear'>;
 
 /**
  * Reactive state container with observable pattern.
@@ -133,11 +130,7 @@ export class Flux<T = any> {
    * @param isRepeat If true, immediately call listener with current value
    * @returns Unsubscribe function
    */
-  on(
-    onValue?: Listener<T>,
-    onError?: Listener<Error | undefined>,
-    isRepeat?: boolean
-  ): Unsubscribe {
+  on(onValue?: Listener<T>, onError?: Listener<Error | undefined>, isRepeat?: boolean): Unsubscribe {
     if (onValue) this.thens.push(onValue);
     if (onError) this.catches.push(onError);
     this.onListeners(this.thens, this.catches);
@@ -199,7 +192,7 @@ export class Flux<T = any> {
           off();
           reject(error);
         },
-        isRepeat
+        isRepeat,
       );
     });
   }
@@ -214,7 +207,7 @@ export class Flux<T = any> {
     onSync: PipeOnSync<U, T>,
     onSet: PipeOnSet<U, T> = toVoid,
     onInit: PipeOnInit<U, T> = toVoid,
-    pull = false
+    pull = false,
   ) {
     return new Pipe<U, T>(this, onSync, onSet, onInit, pull);
   }
@@ -244,7 +237,7 @@ export class Flux<T = any> {
         }
       : undefined,
       undefined,
-      true
+      true,
     );
   }
 
@@ -272,7 +265,7 @@ export class Flux<T = any> {
         }
       : undefined,
       undefined,
-      true
+      true,
     );
   }
 
@@ -289,7 +282,7 @@ export class Flux<T = any> {
     return this.pipe(
       debounce((pipe: Pipe<T, T>) => pipe.set(this.get()), ms),
       (value) => this.set(value),
-      (pipe) => pipe.set(this.get())
+      (pipe) => pipe.set(this.get()),
     );
   }
 
@@ -306,7 +299,7 @@ export class Flux<T = any> {
     return this.pipe(
       throttle((pipe: Pipe<T, T>) => pipe.set(this.get()), ms),
       (value) => this.set(value),
-      (pipe) => pipe.set(this.get())
+      (pipe) => pipe.set(this.get()),
     );
   }
 
@@ -337,7 +330,7 @@ export class Flux<T = any> {
       },
       undefined,
       undefined,
-      true
+      true,
     );
   }
 
@@ -369,7 +362,7 @@ export class Pipe<T = any, U = T> extends Flux<T> {
     public readonly onSync: PipeOnSync<T, U>,
     public readonly onSet: PipeOnSet<T, U> = toVoid,
     public readonly onInit: PipeOnInit<T, U> = toVoid,
-    public readonly pull = false
+    public readonly pull = false,
   ) {
     super(undefined as T);
     if (isFlux(source)) {
@@ -440,7 +433,7 @@ export const pipe = <T = any, U = T>(
   source: PipeSource<T, U>,
   onSync: PipeOnSync<T, U>,
   onSet?: PipeOnSet<T, U>,
-  onInit?: PipeOnInit<T, U>
+  onInit?: PipeOnInit<T, U>,
 ) => new Pipe<T, U>(source, onSync, onSet, onInit);
 
 export const isFlux = (v: any): v is Flux => v instanceof Flux;

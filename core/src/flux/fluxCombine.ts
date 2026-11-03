@@ -32,5 +32,5 @@ export const fluxCombine = <const Sources extends readonly Flux[]>(...sources: S
     },
     (values) => {
       if (Array.isArray(values)) values.forEach((v: any, i) => sources[i]!.set(v));
-    }
+    },
   );

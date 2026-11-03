@@ -1,6 +1,6 @@
-import { isArray } from "../check/isArray";
-import { floor } from "./floor";
-import { round } from "./round";
+import { isArray } from '../check/isArray';
+import { floor } from './floor';
+import { round } from './round';
 
 interface Rand {
   /** float in `[0, 1[` (like `Math.random`) */
@@ -13,11 +13,7 @@ interface Rand {
   <T>(items: readonly T[]): T;
 }
 
-export const rand = ((
-  a?: number | readonly unknown[],
-  b?: number,
-  decimals = 0,
-): unknown => {
+export const rand = ((a?: number | readonly unknown[], b?: number, decimals = 0): unknown => {
   if (a === undefined) return Math.random();
   if (isArray(a)) return a[floor(rand() * a.length)];
   if (b === undefined) return rand() * (a as number);

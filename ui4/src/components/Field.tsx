@@ -45,8 +45,7 @@ export interface FluxInputOptions<T extends InputType | undefined = undefined> {
   type?: T;
 }
 
-const valueToRaw = (value: any, type: InputType): string =>
-  type === 'json' ? jsonStringify(value) : toString(value);
+const valueToRaw = (value: any, type: InputType): string => (type === 'json' ? jsonStringify(value) : toString(value));
 
 const rawToValue = (raw: string, type: InputType): any =>
   type === 'int' ? toInt(raw)
@@ -76,7 +75,7 @@ const useFluxInput = (type: InputType, v$: Flux<any>, delay = 200) => {
       raw$.debounce(delay).on((raw) => {
         v$.set((last[0] = rawToValue(raw, type)));
       }),
-    [raw$, v$]
+    [raw$, v$],
   );
 
   const value = useFlux(raw$);
@@ -227,17 +226,7 @@ const TextInput = ({ error, icon, prefix, suffix, type, sm, xs, ...iProps }: Inp
 };
 
 const FieldInput = (props: FieldInputProps) => {
-  const {
-    label,
-    help,
-    class: className,
-    row,
-    onValue,
-    delay = 400,
-    value: propValue,
-    required,
-    ...inputProps
-  } = props;
+  const { label, help, class: className, row, onValue, delay = 400, value: propValue, required, ...inputProps } = props;
   const { type, error } = inputProps;
 
   // Pas de delay pour les checkboxes et select (interactions instantanées)
@@ -254,11 +243,8 @@ const FieldInput = (props: FieldInputProps) => {
   }, [propValue]);
 
   const debouncedOnValue = useMemo(
-    () =>
-      onValue && effectiveDelay > 0 ?
-        debounce((value: any) => onValue(value), effectiveDelay)
-      : onValue,
-    [onValue, effectiveDelay]
+    () => (onValue && effectiveDelay > 0 ? debounce((value: any) => onValue(value), effectiveDelay) : onValue),
+    [onValue, effectiveDelay],
   );
 
   // Utiliser localValue si on a un delay, sinon propValue
@@ -300,9 +286,7 @@ const FieldInput = (props: FieldInputProps) => {
       : <TextInput type={type} {...inputProps} />}
       {((typeof error === 'string' && error) || help) && (
         <div class="FieldAlt">
-          <span class={error ? 'FieldError' : 'FieldHelp'}>
-            {(typeof error === 'string' && error) || help}
-          </span>
+          <span class={error ? 'FieldError' : 'FieldHelp'}>{(typeof error === 'string' && error) || help}</span>
         </div>
       )}
     </label>
@@ -327,5 +311,4 @@ export interface FieldProps extends FieldInputProps {
   delay?: number;
 }
 
-export const Field = ({ v$, ...rest }: FieldProps) =>
-  v$ ? <FieldFlux v$={v$} {...rest} /> : <FieldInput {...rest} />;
+export const Field = ({ v$, ...rest }: FieldProps) => (v$ ? <FieldFlux v$={v$} {...rest} /> : <FieldInput {...rest} />);

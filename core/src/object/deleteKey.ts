@@ -7,7 +7,7 @@ interface DeleteKey {
     record: T,
     k1: K1,
     k2: K2,
-    k3: K3
+    k3: K3,
   ): Omit<Omit<Omit<T, K1>, K2>, K3>;
   <T>(record: Dictionary<T>, ...keys: string[]): Dictionary<T>;
 }

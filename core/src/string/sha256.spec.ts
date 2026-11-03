@@ -10,10 +10,7 @@ const vectors = [
     '248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1',
   ],
   ['hello world', 'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9'],
-  [
-    'The quick brown fox jumps over the lazy dog',
-    'd7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592',
-  ],
+  ['The quick brown fox jumps over the lazy dog', 'd7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592'],
 ] as const;
 
 describe('sha256 (native crypto.subtle)', () => {

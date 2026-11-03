@@ -14,7 +14,7 @@ interface GetPath {
   <T, A extends keyof T, B extends keyof NN<T[A]>>(obj: T, path: [A, B]): NN<T[A]>[B] | undefined;
   <T, A extends keyof T, B extends keyof NN<T[A]>, C extends keyof NN<NN<T[A]>[B]>>(
     obj: T,
-    path: [A, B, C]
+    path: [A, B, C],
   ): NN<NN<T[A]>[B]>[C] | undefined;
   <
     T,
@@ -24,7 +24,7 @@ interface GetPath {
     D extends keyof NN<NN<NN<T[A]>[B]>[C]>,
   >(
     obj: T,
-    path: [A, B, C, D]
+    path: [A, B, C, D],
   ): NN<NN<NN<T[A]>[B]>[C]>[D] | undefined;
 
   <T, A extends keyof T>(obj: T, path: [A], factory: Factory<T, T[A]>, is?: Is<T[A]>): T[A];
@@ -32,13 +32,13 @@ interface GetPath {
     obj: T,
     path: [A, B],
     factory: Factory<T, NN<NN<T[A]>[B]>>,
-    is?: Is<NN<NN<T[A]>[B]>>
+    is?: Is<NN<NN<T[A]>[B]>>,
   ): NN<NN<T[A]>[B]>;
   <T, A extends keyof T, B extends keyof NN<T[A]>, C extends keyof NN<NN<T[A]>[B]>>(
     obj: T,
     path: [A, B, C],
     factory: Factory<T, NN<NN<NN<T[A]>[B]>[C]>>,
-    is?: Is<NN<NN<NN<T[A]>[B]>[C]>>
+    is?: Is<NN<NN<NN<T[A]>[B]>[C]>>,
   ): NN<NN<NN<T[A]>[B]>[C]>;
   <
     T,
@@ -50,7 +50,7 @@ interface GetPath {
     obj: T,
     path: [A, B, C, D],
     factory: Factory<T, NN<NN<NN<NN<T[A]>[B]>[C]>[D]>>,
-    is?: Is<NN<NN<NN<NN<T[A]>[B]>[C]>[D]>>
+    is?: Is<NN<NN<NN<NN<T[A]>[B]>[C]>[D]>>,
   ): NN<NN<NN<NN<T[A]>[B]>[C]>[D]>;
 }
 
@@ -58,7 +58,7 @@ export const getPath = (<T, U>(
   obj: any,
   path: string | string[],
   factory?: Factory<T, U>,
-  is?: Is<T>
+  is?: Is<T>,
 ): U | undefined => {
   const keys = isArray(path) ? [...path] : path.split('/');
 

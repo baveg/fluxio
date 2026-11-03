@@ -76,11 +76,7 @@ export interface GridProps<T extends {} = any, C extends {} = any> extends DivPr
   cols: GridCols<T, C>;
   select?: boolean;
   getKey?: (row: T, index: number) => string;
-  rowProps?: (
-    item: T,
-    ctx: C,
-    index: number
-  ) => DivProps & { mode?: 'success' | 'error' | 'selected' };
+  rowProps?: (item: T, ctx: C, index: number) => DivProps & { mode?: 'success' | 'error' | 'selected' };
   items: Readonly<T[]>;
 }
 

@@ -12,7 +12,7 @@ export const fluxStored = <T>(
   startValue: T,
   clean?: (value: T) => T | undefined,
   factory?: T | (() => T),
-  storage = getStorage()
+  storage = getStorage(),
 ): Flux<T> =>
   findFlux<T>(key, () => {
     const target = flux<T>(startValue);

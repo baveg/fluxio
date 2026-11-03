@@ -26,7 +26,7 @@ const getElement = <T extends Element>(refOrElement?: RefOrElement<T>): T | null
 export const useIsVisible = <T extends Element>(
   ref?: RefOrElement<T>,
   root?: RefOrElement<Element>,
-  threshold: number = 0
+  threshold: number = 0,
 ): boolean => {
   const [isVisible, setIsVisible] = useState(false);
 

@@ -8,7 +8,7 @@ export const useAsync = <T>(
   initValue: T,
   load: () => T | Promise<T>,
   storedKey?: string | null,
-  deps?: any[]
+  deps?: any[],
 ): [T, () => void, Flux<T>] => {
   const _deps = deps ? [...deps, storedKey] : [storedKey];
 
@@ -21,10 +21,7 @@ export const useAsync = <T>(
   //     return msg;
   // }, _deps);
 
-  const msg = useMemo(
-    () => (storedKey ? fluxStored<T>(storedKey, initValue) : flux(initValue)),
-    _deps
-  );
+  const msg = useMemo(() => (storedKey ? fluxStored<T>(storedKey, initValue) : flux(initValue)), _deps);
 
   const reload = async () => {
     const value = await load();

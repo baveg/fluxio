@@ -14,8 +14,7 @@ const log = logger('router');
 
 // URL Helpers
 
-export const extractBaseUrl = (url: string) =>
-  (url.replace('://', '::').split('/', 1)[0] || '').replace('::', '://');
+export const extractBaseUrl = (url: string) => (url.replace('://', '::').split('/', 1)[0] || '').replace('::', '://');
 
 export const extractUrlSegments = (url: string) =>
   // On coupe avant la query (?) ET le fragment (#) : un ancrage type `#pricing-section`

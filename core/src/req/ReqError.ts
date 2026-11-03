@@ -7,7 +7,7 @@ export class ReqError<T = any> extends Error {
   data?: T | null;
   constructor(
     public error: Error,
-    public ctx: Partial<ReqContext<T>>
+    public ctx: Partial<ReqContext<T>>,
   ) {
     super(error.message);
     this.status = ctx.status || 0;

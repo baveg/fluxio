@@ -18,7 +18,7 @@ import { jsonStringify } from '../string/json';
  */
 export const withCache = <F extends (...args: any[]) => Promise<any>>(
   factory: F,
-  expireIn = FIVE_MINUTES
+  expireIn = FIVE_MINUTES,
 ): F & {
   reload: F;
   set(...args: [...Parameters<F>, value: ReturnType<F> | undefined]): void;

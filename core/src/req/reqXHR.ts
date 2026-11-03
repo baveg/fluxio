@@ -41,8 +41,7 @@ export const reqXHR = async <T = any>(ctx: ReqContext<T>): Promise<void> => {
       const cb = () => {
         let data = xhr.response as any;
         if (responseType === 'text') data = String(data);
-        else if (responseType === 'json')
-          data = typeof data === 'string' ? jsonParse(data) || data : data;
+        else if (responseType === 'json') data = typeof data === 'string' ? jsonParse(data) || data : data;
         ctx.data = data;
         ctx.res = xhr.response;
         ctx.status = xhr.status;

@@ -14,12 +14,7 @@ export interface ToastState {
 export const toasts$ = flux<Dictionary<ToastState>>({});
 
 // Helper pour afficher un toast avec une clé optionnelle
-export const showToast = (
-  content: string,
-  type: ToastType = 'success',
-  duration = 5000,
-  key?: string
-) => {
+export const showToast = (content: string, type: ToastType = 'success', duration = 5000, key?: string) => {
   const toastKey = key || `toast_${Date.now()}_${Math.random()}`;
 
   toasts$.set({
@@ -62,12 +57,7 @@ const getIcon = (type: string) => {
   switch (type) {
     case 'success':
       return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="stroke-current shrink-0 h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -78,12 +68,7 @@ const getIcon = (type: string) => {
       );
     case 'error':
       return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="stroke-current shrink-0 h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -94,12 +79,7 @@ const getIcon = (type: string) => {
       );
     case 'warning':
       return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="stroke-current shrink-0 h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -110,12 +90,7 @@ const getIcon = (type: string) => {
       );
     case 'info':
       return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          class="stroke-current shrink-0 w-6 h-6"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -143,11 +118,7 @@ export const Toast = () => {
         <div key={key} class={`alert ${getAlertClass(toast.type)} shadow-lg`}>
           {getIcon(toast.type)}
           <span>{toast.content}</span>
-          <button
-            type="button"
-            class="btn btn-sm btn-circle btn-ghost"
-            onClick={() => hideToast(key)}
-          >
+          <button type="button" class="btn btn-sm btn-circle btn-ghost" onClick={() => hideToast(key)}>
             ✕
           </button>
         </div>

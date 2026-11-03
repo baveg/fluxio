@@ -25,11 +25,7 @@ const getOnMouseOver = (setOver: SetState<boolean>) => (event: Event) => {
   setOver(true);
 };
 
-export const useOver = (): [
-  boolean,
-  { onMouseOver: (event: Event) => void },
-  SetState<boolean>,
-] => {
+export const useOver = (): [boolean, { onMouseOver: (event: Event) => void }, SetState<boolean>] => {
   const [over, setOver] = useState(false);
   const onMouseOver = useMemo(() => getOnMouseOver(setOver), [setOver]);
   return [over, { onMouseOver }, setOver];

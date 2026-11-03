@@ -9,5 +9,5 @@ export const fluxTimer = (ms: number) =>
     (pipe) => {
       pipe.set(Date.now());
     },
-    undefined
+    undefined,
   );

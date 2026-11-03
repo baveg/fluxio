@@ -31,14 +31,10 @@ export const ModalHeader = ({ children, ...props }: ModalHeaderProps) => {
 };
 
 export interface ModalContentProps extends DivProps {}
-export const ModalContent = (props: ModalContentProps) => (
-  <div {...props} class={cls('ModalContent', props)} />
-);
+export const ModalContent = (props: ModalContentProps) => <div {...props} class={cls('ModalContent', props)} />;
 
 export interface ModalActionsProps extends DivProps {}
-export const ModalActions = (props: DivProps) => (
-  <div {...props} class={cls('ModalActions', props)} />
-);
+export const ModalActions = (props: DivProps) => <div {...props} class={cls('ModalActions', props)} />;
 
 export interface ModalProps extends DivProps {
   onClose: () => void;
@@ -127,7 +123,7 @@ export type ModalComp = Comp<{
 export const openModal = (
   title?: Comp,
   content?: ModalComp,
-  { size, cancel, save, remove, yes, no, right, ...options }: OpenModalOptions = {}
+  { size, cancel, save, remove, yes, no, right, ...options }: OpenModalOptions = {},
 ) => {
   return openPortal(
     ({ onClose }) => (
@@ -144,6 +140,6 @@ export const openModal = (
         right={right}
       />
     ),
-    options
+    options,
   );
 };

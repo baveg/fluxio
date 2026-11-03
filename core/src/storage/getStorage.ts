@@ -122,16 +122,14 @@ export const dbStorage = async (name: string): Promise<DataStore> => {
     name: String,
     key: String,
     cb: (store: IDBObjectStore) => IDBRequest<T>,
-    isReadonly = false
+    isReadonly = false,
   ) => {
     let err;
     for (let i = 0; i < 3; i++) {
       try {
         log.d(name, key);
         const db = await openDb(i > 0);
-        const store = db
-          .transaction(DB_STORE, isReadonly ? 'readonly' : 'readwrite')
-          .objectStore(DB_STORE);
+        const store = db.transaction(DB_STORE, isReadonly ? 'readonly' : 'readwrite').objectStore(DB_STORE);
         return await toPromise(cb(store));
       } catch (e) {
         err = e;
@@ -142,8 +140,7 @@ export const dbStorage = async (name: string): Promise<DataStore> => {
   };
 
   const get = (key: string) => action('get', key, (s) => s.get(key), true);
-  const set = (key: string, value: any) =>
-    action('set', key, (s) => s.put(value, key)).then(toVoid);
+  const set = (key: string, value: any) => action('set', key, (s) => s.put(value, key)).then(toVoid);
   const rm = (key: string) => action('delete', key, (s) => s.delete(key));
   const keys = () => action('keys', '', (s) => s.getAllKeys(), true).then((k) => k.map(toString));
   const clear = () => action('clear', '', (s) => s.clear(), true);

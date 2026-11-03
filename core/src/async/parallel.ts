@@ -7,21 +7,15 @@ interface Parallel {
   <A, B>(promises: [P<A>, P<B>], concurrency?: number): Promise<[A, B]>;
   <A, B, C>(promises: [P<A>, P<B>, P<C>], concurrency?: number): Promise<[A, B, C]>;
   <A, B, C, D>(promises: [P<A>, P<B>, P<C>, P<D>], concurrency?: number): Promise<[A, B, C, D]>;
-  <A, B, C, D, E>(
-    promises: [P<A>, P<B>, P<C>, P<D>, P<E>],
-    concurrency?: number
-  ): Promise<[A, B, C, D, E]>;
-  <A, B, C, D, E, F>(
-    promises: [P<A>, P<B>, P<C>, P<D>, P<E>, P<F>],
-    concurrency?: number
-  ): Promise<[A, B, C, D, E, F]>;
+  <A, B, C, D, E>(promises: [P<A>, P<B>, P<C>, P<D>, P<E>], concurrency?: number): Promise<[A, B, C, D, E]>;
+  <A, B, C, D, E, F>(promises: [P<A>, P<B>, P<C>, P<D>, P<E>, P<F>], concurrency?: number): Promise<[A, B, C, D, E, F]>;
   <A, B, C, D, E, F, G>(
     promises: [P<A>, P<B>, P<C>, P<D>, P<E>, P<F>, P<G>],
-    concurrency?: number
+    concurrency?: number,
   ): Promise<[A, B, C, D, E, F, G]>;
   <A, B, C, D, E, F, G, H>(
     promises: [P<A>, P<B>, P<C>, P<D>, P<E>, P<F>, P<G>, P<H>],
-    concurrency?: number
+    concurrency?: number,
   ): Promise<[A, B, C, D, E, F, G, H]>;
 }
 

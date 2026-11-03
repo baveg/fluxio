@@ -31,13 +31,7 @@ export interface AccordionProps extends DivProps {
   children: Comp;
 }
 
-export const Accordion = ({
-  header,
-  children,
-  headerProps,
-  contentProps,
-  ...props
-}: AccordionProps) => {
+export const Accordion = ({ header, children, headerProps, contentProps, ...props }: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handle = () => setIsOpen((prev) => !prev);

@@ -18,7 +18,8 @@ export const toArray = (<T = any>(v: any, def: T[] = []): T[] =>
 
 export const toArrayOf =
   <T = any>(to: (v: any) => T) =>
-  (v: any): T[] => toArray<T>(v).map(to).filter(isDefined);
+  (v: any): T[] =>
+    toArray<T>(v).map(to).filter(isDefined);
 
 export const toArrayOfNumber = toArrayOf<number>(toNbr);
 export const toArrayOfString = toArrayOf<string>(toStr);

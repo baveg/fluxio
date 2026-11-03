@@ -58,17 +58,7 @@ export interface CssStyle {
   borderBottom?: CssNumber;
   borderLeft?: CssNumber;
   borderWidth?: CssNumber;
-  borderStyle?:
-    | 'none'
-    | 'hidden'
-    | 'dotted'
-    | 'dashed'
-    | 'solid'
-    | 'double'
-    | 'groove'
-    | 'ridge'
-    | 'inset'
-    | 'outset';
+  borderStyle?: 'none' | 'hidden' | 'dotted' | 'dashed' | 'solid' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
   borderColor?: string;
   borderRadius?: CssNumber;
   borderTopLeftRadius?: CssNumber;
@@ -85,23 +75,9 @@ export interface CssStyle {
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
   flexFlow?: CssNumber;
   justifyContent?:
-    | 'flex-start'
-    | 'flex-end'
-    | 'center'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly'
-    | 'baseline'
-    | 'stretch';
+    'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly' | 'baseline' | 'stretch';
   alignItems?: 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch';
-  alignContent?:
-    | 'flex-start'
-    | 'flex-end'
-    | 'center'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly'
-    | 'stretch';
+  alignContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch';
   gap?: CssNumber;
   rowGap?: CssNumber;
   columnGap?: CssNumber;
@@ -188,16 +164,7 @@ export interface CssStyle {
   textTransform?: 'none' | 'capitalize' | 'uppercase' | 'lowercase';
   textOverflow?: 'clip' | 'ellipsis';
   textShadow?: string;
-  verticalAlign?:
-    | 'baseline'
-    | 'sub'
-    | 'super'
-    | 'top'
-    | 'text-top'
-    | 'middle'
-    | 'bottom'
-    | 'text-bottom'
-    | string;
+  verticalAlign?: 'baseline' | 'sub' | 'super' | 'top' | 'text-top' | 'middle' | 'bottom' | 'text-bottom' | string;
 
   // Typography - White Space & Word Breaking
   whiteSpace?: 'normal' | 'nowrap' | 'pre' | 'pre-wrap' | 'pre-line' | 'break-spaces';
@@ -257,8 +224,7 @@ export interface CssStyle {
     | 'zoom-in'
     | 'zoom-out'
     | string;
-  pointerEvents?:
-    'auto' | 'none' | 'visiblePainted' | 'visibleFill' | 'visibleStroke' | 'visible' | 'all';
+  pointerEvents?: 'auto' | 'none' | 'visiblePainted' | 'visibleFill' | 'visibleStroke' | 'visible' | 'all';
   userSelect?: 'auto' | 'none' | 'text' | 'contain' | 'all';
   touchAction?:
     | 'auto'
@@ -359,12 +325,4 @@ export type StyleAnim =
 export type StyleFlexDirection = CssStyle['flexDirection'];
 export type StyleFlexAlign = 'start' | 'end' | 'center' | 'baseline' | 'stretch';
 export type StyleFlexJustify =
-  | 'auto'
-  | 'start'
-  | 'end'
-  | 'center'
-  | 'between'
-  | 'around'
-  | 'space-evenly'
-  | 'baseline'
-  | 'stretch';
+  'auto' | 'start' | 'end' | 'center' | 'between' | 'around' | 'space-evenly' | 'baseline' | 'stretch';
